@@ -1,0 +1,49 @@
+{
+  "accessibility": {
+    "skip_to_text": "Skip to content",
+    "close": "Close"
+  },
+  "customer": {
+    "log_in": "Log in"
+  },
+  "general": {
+    "cart": {
+      "item_added": "Item added to your cart",
+      "checkout": "Checkout"
+    },
+    "continue_shopping": "Continue shopping"
+  },
+  "sections": {
+    "main-index": {
+      "name": "Main Index",
+      "blocks": {
+        "heading": {
+          "name": "Heading",
+          "settings": {
+            "heading": {
+              "label": "Heading"
+            }
+          }
+        },
+        "text": {
+          "name": "Text",
+          "settings": {
+            "text": {
+              "label": "Text"
+            }
+          }
+        }
+      },
+      "presets": {
+        "name": "Main Index"
+      }
+    },
+    "cart": {
+      "item_added_to_cart": "Item added to cart",
+      "items_in_cart": "Items in cart",
+      "view_cart": "View cart",
+      "checkout": "Checkout",
+      "cart": "Cart"
+    }
+  }
+} 
