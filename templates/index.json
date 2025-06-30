@@ -1,15 +1,13 @@
 {
   "sections": {
-    "booking_system": {
-      "type": "booking-system",
-      "settings": {}
-    },
-    "restaurants": {
-      "type": "restaurants",
-      "settings": {}
-    }
+    "header-primary": { "type": "header-primary" },
+    "header-secondary": { "type": "header-secondary" },
+    "booking_system": { "type": "booking-system", "settings": {} },
+    "restaurants": { "type": "restaurants", "settings": {} }
   },
   "order": [
+    "header-primary",
+    "header-secondary",
     "booking_system",
     "restaurants"
   ]

@@ -10,8 +10,8 @@
     "type_header_font": "assistant_n4",
     "type_body_font": "assistant_n4",
     "sections": {
-      "header": {
-        "type": "header",
+      "header-primary": {
+        "type": "header-primary",
         "settings": {
           "logo_position": "middle-left",
           "menu": "main-menu",
@@ -19,6 +19,10 @@
           "enable_sticky_header": true,
           "color_scheme": "background-1"
         }
+      },
+      "header-secondary": {
+        "type": "header-secondary",
+        "settings": {}
       }
     },
     "mapkit_js": {

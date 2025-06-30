@@ -1,0 +1,3346 @@
+{{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}
+{{ 'component-cart-items.css' | asset_url | stylesheet_tag }}
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<!-- Add Mapbox CSS and JS with preload -->
+<link rel="preload" href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' as="style" />
+<link rel="preload" href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js' as="script" />
+<link rel="stylesheet" href='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css' />
+<script defer src='https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js'></script>
+
+<!-- Add Mapbox Geocoder for search with defer -->
+<script defer src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+<!-- Add Mapbox Directions Plugin with defer -->
+<script defer src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css" type="text/css">
+
+<!-- Booking Modal Styles -->
+.booking-modal {
+        display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1f2a48;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 24px 24px 0 0;
+    z-index: 9999;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .booking-modal__title {
+    margin-bottom: 1.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .booking-modal__party-sizes {
+    display: flex;
+    gap: 0.75rem;
+    overflow-x: auto;
+    margin-bottom: 2rem;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .booking-modal__party-size {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: white;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .booking-modal__party-size--selected {
+    background: #750d0c;
+    border-color: #E31837;
+  }
+
+  .booking-modal__datetime {
+    margin-bottom: 1.5rem;
+  }
+
+  .booking-modal__select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 0.65em auto;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2), inset 0 -1px 1px rgba(255,255,255,0.1);
+  }
+
+  .booking-modal__done {
+    width: 100%;
+    padding: 1rem;
+    background: #8B1111;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .booking-modal__done:hover {
+    background: #c41530;
+  }
+
+  .booking-modal__overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+  }
+
+  /* Login Modal Styles */
+  .login-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0B1C3F;
+    color: white;
+    z-index: 10000;
+    padding: 2rem;
+    overflow: auto;
+  }
+
+  .login-modal__content {
+    max-width: 400px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .login-modal__close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    cursor: pointer;
+  }
+
+  .login-modal__title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .login-modal__subtitle {
+    margin-bottom: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .login-modal__input-label {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .login-modal__input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    margin-bottom: 1rem;
+    background: white;
+  }
+
+  .login-modal__phone-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .login-modal__country-code {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: white;
+  }
+
+  .login-modal__submit {
+    width: 100%;
+    background-color: #444;
+    color: white;
+    padding: 12px;
+    border-radius: 999px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+
+  .login-modal__email-link {
+    text-align: center;
+    color: #750d0c;
+    margin-top: 1rem;
+    cursor: pointer;
+    display: block;
+  }
+
+  .login-modal__footer {
+    font-size: 12px;
+    color: #ccc;
+    margin-top: 2rem;
+  }
+
+  .login-modal__footer a {
+    color: #750d0c;
+    text-decoration: none;
+  }
+
+  /* Restaurant Section Styles */
+  .restaurant-section {
+    padding: 2rem 1rem;
+    color: white;
+    background: #0B1C3F;
+  }
+
+  .restaurant-section__content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .restaurant-section__title {
+    margin-bottom: 1rem;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .restaurant-carousel {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 0 1rem 1rem 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .restaurant-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Restaurant Card Styles */
+  .restaurant-card {
+    min-width: 240px;
+    background: #1f2a48;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s;
+    position: relative;
+  }
+
+  .restaurant-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .restaurant-card__image {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+  }
+
+  .restaurant-card__content {
+    padding: 1rem;
+  }
+
+  .restaurant-card__title {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .restaurant-card__meta {
+    margin: 0;
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  .fa-star {
+    color: #FFD700;
+    font-size: 12px;
+    margin-right: 4px;
+  }
+
+  .restaurant-card__meta .fa-star {
+    font-size: 12px;
+    margin-right: 2px;
+  }
+
+  .restaurant-card__slots {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  .time-slot {
+    background-color: #750d0c;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+
+  .time-slot:hover {
+    background-color: #5a0a09;
+  }
+
+  /* Restaurant Detail Modal Styles */
+  .restaurant-detail {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0B1C3F;
+    color: white;
+    overflow-y: auto;
+    z-index: 10000;
+  }
+
+  .restaurant-detail__content {
+    max-width: 768px;
+    margin: auto;
+    padding: 1rem;
+  }
+
+  .restaurant-detail__close {
+    float: right;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+
+  .restaurant-detail__banner {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+  }
+
+  .restaurant-detail__tabs {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 1rem;
+  }
+
+  .tab-button {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+  }
+
+  .tab-button--active {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .menu-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+  }
+
+  .menu-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .menu-item__info h4 {
+    margin: 0 0 0.5rem;
+  }
+
+  .menu-item__info p {
+    margin: 0;
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  .menu-item__meta {
+    margin-top: 0.5rem;
+    font-size: 14px;
+    color: #999;
+  }
+
+  .menu-item__meta span {
+    margin-right: 1rem;
+  }
+
+  .view-all-button {
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: 999px;
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .view-all-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Trending List Styles */
+  .trending-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 1rem;
+  }
+
+  .trending-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: background-color 0.2s;
+  }
+
+  .trending-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .trending-item__image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .trending-item__content {
+    flex: 1;
+  }
+
+  .trending-item__info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .trending-item__right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .trending-item__distance {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: #e0e0e0;
+    font-size: 14px;
+    margin-top: 8px;
+  }
+
+  .trending-item__distance i {
+    font-size: 16px;
+  }
+
+  .trending-item__price {
+    color: #e0e0e0;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .trending-item__title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: white;
+  }
+
+  .trending-item__location {
+    font-size: 14px;
+    color: #ccc;
+    margin: 0;
+  }
+
+  .trending-item__cuisine {
+    font-size: 14px;
+    color: #999;
+    margin: 0;
+  }
+
+  .trending-item__rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .trending-item__stars {
+    color: #FFD700;
+    font-size: 12px;
+  }
+
+  .trending-item__reviews {
+    color: #ccc;
+    font-size: 14px;
+  }
+
+  .trending-item__save {
+    color: #ff0000;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .trending-item__save:hover {
+    color: #cc0000;
+  }
+
+  /* Mobile Menu Styles */
+  .mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  /* Responsive Styles */
+  @media screen and (max-width: 768px) {
+    .header__content {
+      gap: 0.5rem;
+    }
+
+    .header__greeting {
+      font-size: 1.25rem;
+    }
+
+    .header__row {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .header__actions {
+      width: 100%;
+      justify-content: space-between;
+      margin-left: 0;
+    }
+
+    .booking-buttons {
+      width: 100%;
+    }
+
+    .booking-button {
+      width: 100%;
+      padding: 0.5rem 1rem;
+    }
+
+    /* Restaurant Cards */
+    .restaurant-card {
+      min-width: 200px;
+    }
+
+    .restaurant-card__image {
+      height: 120px;
+    }
+
+    /* Trending List */
+    .trending-item {
+      padding: 8px;
+      gap: 12px;
+    }
+
+    .trending-item__image {
+      width: 50px;
+      height: 50px;
+    }
+
+    .trending-item__title {
+      font-size: 14px;
+    }
+
+    .trending-item__location,
+    .trending-item__cuisine,
+    .trending-item__reviews {
+      font-size: 12px;
+    }
+
+    .trending-item__right {
+      gap: 4px;
+    }
+
+    .trending-item__distance,
+    .trending-item__price {
+      font-size: 12px;
+    }
+
+    /* Modal Adjustments */
+    .booking-modal {
+      height: 100%;
+      border-radius: 0;
+    }
+
+    .booking-modal__party-size {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .restaurant-detail__content {
+      padding: 0.5rem;
+    }
+
+    .restaurant-detail__tabs {
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      gap: 0.5rem;
+    }
+
+    .tab-button {
+      font-size: 14px;
+      padding: 0.25rem 0.75rem;
+      white-space: nowrap;
+    }
+
+    .menu-item {
+      flex-direction: column;
+    }
+
+    .menu-item img {
+      width: 100%;
+      height: 160px;
+    }
+
+    .fa-star {
+      font-size: 10px;
+      margin-right: 2px;
+    }
+
+    .trending-item__stars {
+      font-size: 10px;
+    }
+
+    .restaurant-card__meta .fa-star {
+      font-size: 10px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .header {
+      padding: 0.5rem;
+    }
+
+    .restaurant-section {
+      padding: 1rem 0.5rem;
+    }
+
+    .restaurant-carousel {
+      padding: 0 0.5rem 0.5rem 0.5rem;
+    }
+
+    .trending-list {
+      padding: 0 0.5rem;
+    }
+
+    .restaurant-card {
+      min-width: 160px;
+    }
+
+    .restaurant-card__content {
+      padding: 0.75rem;
+    }
+
+    .restaurant-card__title {
+      font-size: 14px;
+    }
+
+    .restaurant-card__meta {
+      font-size: 12px;
+    }
+
+    .time-slot {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    .login-modal__content {
+      padding: 1rem;
+    }
+  }
+
+  /* Add these styles */
+  .search-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+
+  .search-modal__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1f2a48;
+    padding: 2rem;
+    border-radius: 16px;
+    width: 95%;
+    height: 90vh;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-modal__map-container {
+    flex: 1;
+    position: relative;
+    margin-top: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .search-modal__map {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+  }
+
+  .search-modal__input {
+    margin-bottom: 0;
+  }
+
+  .map-annotation {
+    background: #1f2a48;
+    padding: 0.5rem;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .search-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .search-modal__loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(31, 42, 72, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 2;
+  }
+
+  .search-modal__loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  .search-modal__error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1f2a48;
+    padding: 1.5rem;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    max-width: 80%;
+    z-index: 2;
+  }
+
+  .search-modal__error-button {
+    background: #750d0c;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .search-modal__error-button:hover {
+    background: #5a0a09;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .map-control-button {
+    background: rgba(31, 42, 72, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+  }
+
+  .map-control-button:hover {
+    background: rgba(31, 42, 72, 1);
+  }
+
+  .restaurant-callout {
+    background: #1f2a48;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+    max-width: 250px;
+  }
+
+  .restaurant-callout h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 16px;
+  }
+
+  .restaurant-callout p {
+    margin: 0.25rem 0;
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  .restaurant-callout button {
+    background: #750d0c;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+  }
+
+  .restaurant-callout button:hover {
+    background: #5a0a09;
+  }
+
+  /* Custom Mapbox styles */
+  .mapboxgl-popup {
+    max-width: none !important;
+  }
+
+  .mapboxgl-popup-content {
+    background: #1f2a48;
+    padding: 12px;
+    border-radius: 8px;
+    width: 280px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .restaurant-popup {
+    width: 100%;
+    position: relative;
+    padding-right: 2.5rem;
+  }
+
+  .restaurant-popup__content {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .restaurant-popup__image-container {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .restaurant-popup__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .restaurant-popup__info {
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .restaurant-popup h3 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .restaurant-popup p {
+    margin: 2px 0;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .restaurant-popup__details {
+    margin: 6px 0;
+    font-size: 12px;
+  }
+
+  .restaurant-popup__details p {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .restaurant-popup .fa-star {
+    font-size: 10px;
+    color: #FFD700;
+    margin-right: -2px;
+  }
+
+  .restaurant-popup__button {
+    background: #750d0c;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 4px;
+    margin-top: 6px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 13px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+
+  .restaurant-popup__button:hover {
+    background: #5a0a09;
+  }
+
+  /* Custom Mapbox Controls */
+  .mapboxgl-ctrl-group {
+    background: #1f2a48;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+  }
+
+  .mapboxgl-ctrl-group button {
+    width: 40px;
+    height: 40px;
+    color: white !important;
+  }
+
+  /* Make the + and - signs white */
+  .mapboxgl-ctrl-zoom-in .mapboxgl-ctrl-icon,
+  .mapboxgl-ctrl-zoom-out .mapboxgl-ctrl-icon,
+  .mapboxgl-ctrl-compass .mapboxgl-ctrl-icon {
+    filter: invert(1) brightness(100);
+  }
+
+  /* Hide the compass control */
+  .mapboxgl-ctrl-compass {
+    display: none !important;
+  }
+
+  .mapboxgl-ctrl-group button:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Geocoder (Search) Styles */
+  .mapboxgl-ctrl-geocoder {
+    width: 100% !important;
+    max-width: none !important;
+    background: #1f2a48;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+  }
+
+  .mapboxgl-ctrl-geocoder input {
+    color: white;
+    background: transparent;
+  }
+
+  .mapboxgl-ctrl-geocoder input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .mapboxgl-ctrl-geocoder .suggestions {
+    background: #1f2a48;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .mapboxgl-ctrl-geocoder .suggestions > li > a {
+    color: white;
+  }
+
+  .mapboxgl-ctrl-geocoder .suggestions > .active > a,
+  .mapboxgl-ctrl-geocoder .suggestions > li > a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+
+  /* Add styles for filters */
+  .search-modal__filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .search-modal__filter {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    color: white;
+    padding: 0.75rem 1.25rem;
+    min-width: 120px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 1rem;
+  }
+
+  .search-modal__filter:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .search-modal__filter option {
+    background: #1f2a48;
+    color: white;
+    padding: 8px;
+  }
+
+  /* Style Mapbox Directions */
+  .mapboxgl-ctrl-directions {
+    background: #1f2a48 !important;
+    color: white !important;
+  }
+
+  .mapbox-directions-component {
+    background: #1f2a48 !important;
+    color: white !important;
+  }
+
+  .mapbox-directions-inputs button {
+    background-color: #1f2a48 !important;
+    color: white !important;
+  }
+
+  .mapbox-directions-route-summary {
+    color: white !important;
+  }
+
+  .mapbox-directions-instructions {
+    color: white !important;
+  }
+
+  /* Update existing styles */
+  .restaurant-popup {
+    min-width: 250px;
+  }
+
+  .restaurant-popup__details {
+    margin: 8px 0;
+    padding: 8px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .restaurant-popup__hours {
+    font-size: 12px;
+    color: #ccc;
+    margin: 4px 0;
+  }
+
+  .restaurant-popup__actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .restaurant-popup__button {
+    flex: 1;
+    background: #750d0c;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 13px;
+  }
+
+  .restaurant-popup__button:hover {
+    background: #5a0a09;
+  }
+
+  .restaurant-popup__button--outline {
+    background: transparent;
+    border: 1px solid #750d0c;
+  }
+
+  .restaurant-popup__button--outline:hover {
+    background: rgba(117, 13, 12, 0.1);
+  }
+
+  /* Hide the directions control completely */
+  .mapboxgl-ctrl-directions,
+  .mapbox-directions-component,
+  .mapbox-directions-inputs,
+  .mapbox-directions-route-summary,
+  .mapbox-directions-instructions {
+    display: none !important;
+  }
+
+  /* Hide the mode buttons (Traffic, Driving, Walking, Cycling) */
+  .mapbox-directions-profile {
+    display: none !important;
+  }
+
+  /* Update popup styles */
+  .restaurant-popup {
+    min-width: 200px;
+    padding: 4px;
+  }
+
+  .restaurant-popup h3 {
+    margin: 0 0 4px 0;
+    font-size: 14px;
+    color: white;
+  }
+
+  .restaurant-popup p {
+    margin: 2px 0;
+    font-size: 12px;
+    color: #ccc;
+  }
+
+  .restaurant-popup__details {
+    margin: 4px 0;
+    padding: 4px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .restaurant-popup__button {
+    background: #750d0c;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    margin-top: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 12px;
+    transition: background-color 0.2s;
+  }
+
+  .restaurant-popup__button:hover {
+    background: #5a0a09;
+  }
+
+  .restaurant-popup .fa-star {
+    font-size: 10px;
+    color: #FFD700;
+  }
+
+  // ... existing code ...
+
+  // Update the popup HTML template in both initializeMap and updateMapMarkers functions
+  const popupTemplate = `
+    <div class="restaurant-popup">
+      <div class="restaurant-popup__content">
+        <div class="restaurant-popup__image-container">
+          <img src="{{ imageUrl }}" alt="{{ restaurant.name }}" class="restaurant-popup__image">
+          </div>
+        <div class="restaurant-popup__info">
+          <h3>{{ restaurant.name }}</h3>
+          <p>{{ restaurant.cuisine }}</p>
+          <p>{{ restaurant.address }}</p>
+        </div>
+      </div>
+      <div class="restaurant-popup__details">
+        <p>Rating: {{ restaurant.rating }} <i class="fas fa-star"></i> • {{ restaurant.price }}</p>
+      </div>
+      <button class="restaurant-popup__button" onclick="bookRestaurant('{{ restaurant.name }}')">
+        Book Now
+      </button>
+    </div>
+  `;
+
+  // Add the booking function
+  function bookRestaurant(restaurantName) {
+    // Show booking modal
+    const bookingModal = document.getElementById('bookingModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    bookingModal.style.display = 'block';
+    modalOverlay.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    
+    // Update modal title with restaurant name
+    const modalTitle = bookingModal.querySelector('.booking-modal__title');
+    modalTitle.textContent = `Book {{ restaurantName }}`;
+  }
+
+  // ... existing code ...
+
+  /* Add styles for restaurant image */
+  .restaurant-popup__image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+  }
+
+  .restaurant-popup__content {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  /* Update existing popup styles */
+  .mapboxgl-popup-content {
+    background: #1f2a48;
+    padding: 12px;
+    border-radius: 8px;
+    max-width: 240px;
+  }
+
+  // ... existing styles ...
+
+  // Update the popup HTML template in both initializeMap and updateMapMarkers functions
+  function initializeMap() {
+    // ... existing map initialization code ...
+
+    map.on('load', () => {
+      // Add restaurant markers
+      restaurants.forEach(restaurant => {
+        // Get the image URL based on restaurant name
+        const imageUrl = getRestaurantImage(restaurant.name);
+        
+        // Create popup
+        const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+          <div class="restaurant-popup">
+            <div class="restaurant-popup__content">
+              <div class="restaurant-popup__image-container">
+                <img src="{{ imageUrl }}" alt="{{ restaurant.name }}" class="restaurant-popup__image">
+          </div>
+              <div class="restaurant-popup__info">
+                <h3>{{ restaurant.name }}</h3>
+                <p>{{ restaurant.cuisine }}</p>
+                <p>{{ restaurant.address }}</p>
+              </div>
+            </div>
+            <div class="restaurant-popup__details">
+              <p>Rating: {{ restaurant.rating }} <i class="fas fa-star"></i> • {{ restaurant.price }}</p>
+            </div>
+            <button class="restaurant-popup__button" onclick="bookRestaurant('{{ restaurant.name }}')">
+              Book Now
+            </button>
+          </div>
+        `);
+
+        // ... rest of the marker creation code ...
+      });
+    });
+  }
+
+  function updateMapMarkers(filteredRestaurants) {
+    // ... existing marker removal code ...
+
+    // Add filtered markers
+    filteredRestaurants.forEach(restaurant => {
+      // Get the image URL based on restaurant name
+      const imageUrl = getRestaurantImage(restaurant.name);
+      
+      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
+        <div class="restaurant-popup">
+          <div class="restaurant-popup__content">
+            <div class="restaurant-popup__image-container">
+              <img src="{{ imageUrl }}" alt="{{ restaurant.name }}" class="restaurant-popup__image">
+              </div>
+            <div class="restaurant-popup__info">
+              <h3>{{ restaurant.name }}</h3>
+              <p>{{ restaurant.cuisine }}</p>
+              <p>{{ restaurant.address }}</p>
+            </div>
+          </div>
+          <div class="restaurant-popup__details">
+            <p>Rating: {{ restaurant.rating }} <i class="fas fa-star"></i> • {{ restaurant.price }}</p>
+          </div>
+          <button class="restaurant-popup__button" onclick="bookRestaurant('{{ restaurant.name }}')">
+            Book Now
+          </button>
+        </div>
+      `);
+
+      // ... rest of the marker update code ...
+    });
+  }
+
+  // Helper function to get restaurant image URL
+  function getRestaurantImage(restaurantName) {
+    const imageMap = {
+      'Alubali': 'https://imgur.com/W5x0iFf.png',
+      'Orangery': 'https://imgur.com/iycCzV0.png',
+      'Coffee Shop Company': 'https://imgur.com/ZK08ntt.png',
+      'Paul': 'https://imgur.com/npKcyus.png',
+      'Strada': 'https://imgur.com/ffNFiWL.png',
+      '8000 Vintages': 'https://imgur.com/nhIwbAE.png',
+      'Canape': 'https://imgur.com/A2XSgKc.png',
+      'Khedi': 'https://imgur.com/vKzlLfm.png',
+      'Tsiskvili': 'https://imgur.com/JNsWf7e.png',
+      'Rigi': 'https://imgur.com/Z4Mjh6u.png'
+    };
+
+    // Extract base name for restaurants with multiple locations
+    const baseName = restaurantName.split(' - ')[0];
+    return imageMap[baseName] || 'https://imgur.com/placeholder.png';
+  }
+
+  /* Add bookmark button styles */
+  .bookmark-button {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(31, 42, 72, 0.9);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 1;
+  }
+
+  .bookmark-button:hover {
+    background: rgba(31, 42, 72, 1);
+    transform: scale(1.05);
+  }
+
+  .bookmark-button[data-favorited="true"] {
+    color: #E31837;
+  }
+
+  .bookmark-tooltip {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(31, 42, 72, 0.9);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+
+  .bookmark-button:hover .bookmark-tooltip {
+    opacity: 1;
+  }
+
+  /* Update restaurant card to include bookmark */
+  .restaurant-card {
+    position: relative;
+    /* ... existing code ... */
+  }
+
+  /* Update popup styles to accommodate bookmark */
+  .restaurant-popup {
+    position: relative;
+    padding-right: 2.5rem;
+  }
+
+  // ... existing code ...
+
+  /* Add favorites management */
+  let userFavorites = [];
+  let isAuthenticated = false;
+
+  // Function to toggle favorite
+  async function toggleFavorite(restaurantId, button) {
+    if (!isAuthenticated) {
+      document.querySelector('.login-modal').style.display = 'block';
+      return;
+    }
+
+    const isFavorited = userFavorites.includes(restaurantId);
+    
+    // Optimistic UI update
+    if (isFavorited) {
+      userFavorites = userFavorites.filter(id => id !== restaurantId);
+    } else {
+      userFavorites.push(restaurantId);
+    }
+    
+    // Update UI
+    updateFavoriteButton(button, !isFavorited);
+    
+    try {
+      // API call
+      const response = await fetch(`/api/favorites/${isFavorited ? 'remove' : 'add'}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ restaurantId }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update favorites');
+      }
+    } catch (error) {
+      console.error('Error updating favorites:', error);
+      // Revert optimistic update on error
+      if (isFavorited) {
+        userFavorites.push(restaurantId);
+      } else {
+        userFavorites = userFavorites.filter(id => id !== restaurantId);
+      }
+      updateFavoriteButton(button, isFavorited);
+    }
+  }
+
+  // Function to update favorite button UI
+  function updateFavoriteButton(button, isFavorited) {
+    button.setAttribute('data-favorited', isFavorited);
+    button.innerHTML = `
+      <i class="fas fa-bookmark${isFavorited ? '' : '-regular'}"></i>
+      <span class="bookmark-tooltip">${isFavorited ? 'Remove from favorites' : 'Save to favorites'}</span>
+    `;
+  }
+
+  // Update restaurant card template
+  function createRestaurantCard(restaurant) {
+    const isFavorited = userFavorites.includes(restaurant.id);
+    return `
+      <div class="restaurant-card">
+        <button 
+          class="bookmark-button" 
+          data-favorited="${isFavorited}"
+          onclick="toggleFavorite('${restaurant.id}', this)"
+        >
+          <i class="fas fa-bookmark${isFavorited ? '' : '-regular'}"></i>
+          <span class="bookmark-tooltip">${isFavorited ? 'Remove from favorites' : 'Save to favorites'}</span>
+        </button>
+        <img class="restaurant-card__image" src="{{ restaurant.image }}" alt="{{ restaurant.name }}">
+        <div class="restaurant-card__content">
+          <!-- ... existing content ... -->
+        </div>
+      </div>
+    `;
+  }
+
+  // Update popup HTML generation
+  function getPopupHTML(restaurant) {
+    const isFavorited = userFavorites.includes(restaurant.id);
+    return `
+      <div class="restaurant-popup">
+        <button 
+          class="bookmark-button" 
+          data-favorited="${isFavorited}"
+          onclick="toggleFavorite('${restaurant.id}', this)"
+        >
+          <i class="fas fa-bookmark${isFavorited ? '' : '-regular'}"></i>
+          <span class="bookmark-tooltip">${isFavorited ? 'Remove from favorites' : 'Save to favorites'}</span>
+        </button>
+        <img class="restaurant-popup__image" src="{{ restaurant.image }}" alt="{{ restaurant.name }}" loading="lazy">
+        <div class="restaurant-popup__content">
+          <h3>{{ restaurant.name }}</h3>
+          <p>{{ restaurant.cuisine }}</p>
+          <p>{{ restaurant.address }}</p>
+          <div class="restaurant-popup__details">
+            <span class="rating">
+              {{ restaurant.rating }}
+            </span>
+            <span class="price">{{ restaurant.price }}</span>
+          </div>
+          <button class="restaurant-popup__button">Book Now</button>
+        </div>
+      </div>
+    `;
+  }
+
+  // Initialize favorites when user logs in
+  function initializeFavorites(favorites = []) {
+    userFavorites = favorites;
+    isAuthenticated = true;
+    // Update all existing bookmark buttons
+    document.querySelectorAll('.bookmark-button').forEach(button => {
+      const restaurantId = button.closest('[data-restaurant-id]').dataset.restaurantId;
+      updateFavoriteButton(button, userFavorites.includes(restaurantId));
+    });
+  }
+
+  // ... existing code ...
+
+  /* Update restaurant-popup__details styles */
+  .restaurant-popup__details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0;
+  }
+
+  .restaurant-popup__details .rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .restaurant-popup__details .price {
+    color: #ccc;
+  }
+
+  /* Update bookmark button styles for popup */
+  .restaurant-popup .bookmark-button {
+    position: static; /* Override absolute positioning */
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+    background: transparent;
+  }
+
+  .restaurant-popup .bookmark-button:hover {
+    transform: scale(1.1);
+    background: transparent;
+  }
+
+  /* Update popup HTML generation function */
+  function getPopupHTML(restaurant) {
+    const isFavorited = userFavorites.includes(restaurant.id);
+    return `
+      <div class="restaurant-popup">
+        <img class="restaurant-popup__image" src="{{ restaurant.image }}" alt="{{ restaurant.name }}" loading="lazy">
+        <div class="restaurant-popup__content">
+          <h3>{{ restaurant.name }}</h3>
+          <p>{{ restaurant.cuisine }}</p>
+          <p>{{ restaurant.address }}</p>
+          <div class="popup-details-row">
+            <div class="popup-rating">
+              <i class="fas fa-star"></i>
+              <span>{{ restaurant.rating }}</span>
+          </div>
+            <span class="popup-price">{{ restaurant.price }}</span>
+            <button 
+              class="popup-bookmark" 
+              data-favorited="{{ isFavorited }}"
+              onclick="toggleFavorite('{{ restaurant.id }}', this)"
+              title="{% if isFavorited %}Remove from favorites{% else %}Save to favorites{% endif %}"
+            >
+              <i class="fas fa-bookmark{% unless isFavorited %}-regular{% endunless %}"></i>
+            </button>
+          </div>
+          <button class="restaurant-popup__button">Book Now</button>
+        </div>
+      </div>
+    `;
+  }
+
+  /* Add styles for the popup details row */
+  .popup-details-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin: 8px 0;
+  }
+
+  .popup-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: white;
+  }
+
+  .popup-rating .fa-star {
+    color: #FFD700;
+    font-size: 14px;
+  }
+
+  .popup-price {
+    color: #ccc;
+  }
+
+  .popup-bookmark {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .popup-bookmark:hover {
+    transform: scale(1.1);
+  }
+
+  .popup-bookmark[data-favorited="true"] {
+    color: #E31837;
+  }
+
+  .popup-bookmark .fa-bookmark,
+  .popup-bookmark .fa-bookmark-regular {
+    font-size: 16px;
+  }
+
+  /* Update the popup HTML generation function */
+  function getPopupHTML(restaurant) {
+    const isFavorited = userFavorites.includes(restaurant.id);
+    return `
+      <div class="restaurant-popup">
+        <img class="restaurant-popup__image" src="{{ restaurant.image }}" alt="{{ restaurant.name }}" loading="lazy">
+        <div class="restaurant-popup__content">
+          <h3>{{ restaurant.name }}</h3>
+          <p>{{ restaurant.cuisine }}</p>
+          <p>{{ restaurant.address }}</p>
+          <div class="popup-details-row">
+            <div class="popup-rating">
+              <i class="fas fa-star"></i>
+              <span>{{ restaurant.rating }}</span>
+          </div>
+            <span class="popup-price">{{ restaurant.price }}</span>
+            <button 
+              class="popup-bookmark" 
+              data-favorited="{{ isFavorited }}"
+              onclick="toggleFavorite('{{ restaurant.id }}', this)"
+              title="{% if isFavorited %}Remove from favorites{% else %}Save to favorites{% endif %}"
+            >
+              <i class="fas fa-bookmark{% unless isFavorited %}-regular{% endunless %}"></i>
+            </button>
+          </div>
+          <button class="restaurant-popup__button">Book Now</button>
+        </div>
+      </div>
+    `;
+  }
+
+  /* First, create the BookmarkButton component styles */
+  .bookmark-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-left: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .bookmark-button:hover {
+    transform: scale(1.1);
+  }
+
+  .bookmark-button i {
+    font-size: 20px;
+  }
+
+  .bookmark-button[data-favorited="true"] i {
+    color: #E31837;
+  }
+
+  /* Update the popup details container styles */
+  .popup-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 8px 0;
+    width: 100%;
+  }
+
+  .popup-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .popup-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+  }
+
+  .popup-rating i {
+    color: #FFD700;
+  }
+
+  .popup-price {
+    color: #ccc;
+    font-size: 14px;
+  }
+
+  /* Update the popup HTML generation function */
+  function getPopupHTML(restaurant) {
+    const isFavorited = userFavorites.includes(restaurant.id);
+    return `
+      <div class="restaurant-popup">
+        <img class="restaurant-popup__image" src="{{ restaurant.image }}" alt="{{ restaurant.name }}" loading="lazy">
+        <div class="restaurant-popup__content">
+          <h3>{{ restaurant.name }}</h3>
+          <p>{{ restaurant.cuisine }}</p>
+          <p>{{ restaurant.address }}</p>
+          <div class="popup-details">
+            <div class="popup-info">
+              <div class="popup-rating">
+                <i class="fas fa-star"></i>
+                <span>{{ restaurant.rating }}</span>
+              </div>
+              <span class="popup-price">{{ restaurant.price }}</span>
+            </div>
+            <button 
+              class="bookmark-button" 
+              data-favorited="{{ isFavorited }}"
+              onclick="toggleFavorite('{{ restaurant.id }}', this)"
+              aria-label="{% if isFavorited %}Remove from favorites{% else %}Add to favorites{% endif %}"
+            >
+              <i class="fa-{% if isFavorited %}solid{% else %}regular{% endif %} fa-bookmark"></i>
+            </button>
+          </div>
+          <button class="restaurant-popup__button">Book Now</button>
+        </div>
+      </div>
+    `;
+  }
+
+  /* Update popup details styles */
+  .popup-details {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin: 8px 0;
+    width: 100%;
+  }
+
+  .popup-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .popup-rating .fa-star {
+    color: #FFD700;
+    font-size: 14px;
+  }
+
+  .popup-rating span {
+    color: white;
+    font-size: 14px;
+  }
+
+  .popup-price {
+    color: #ccc;
+    font-size: 14px;
+  }
+
+  .popup-bookmark {
+    margin-left: auto;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: white;
+    transition: transform 0.2s;
+  }
+
+  .popup-bookmark:hover {
+    transform: scale(1.1);
+  }
+
+  .popup-bookmark[data-favorited="true"] {
+    color: #E31837;
+  }
+
+  .popup-bookmark i {
+    font-size: 18px;
+  }
+
+  /* Update the popup HTML generation function */
+  function getPopupHTML(restaurant) {
+    const isFavorited = userFavorites.includes(restaurant.id);
+    return `
+      <div class="restaurant-popup">
+        <img class="restaurant-popup__image" src="{{ restaurant.image }}" alt="{{ restaurant.name }}" loading="lazy">
+        <div class="restaurant-popup__content">
+          <h3>{{ restaurant.name }}</h3>
+          <p>{{ restaurant.cuisine }}</p>
+          <p>{{ restaurant.address }}</p>
+          <div class="popup-details">
+            <div class="popup-rating">
+              <i class="fas fa-star"></i>
+              <span>{{ restaurant.rating }}</span>
+            </div>
+            <span class="popup-price">{{ restaurant.price }}</span>
+            <button 
+              class="popup-bookmark" 
+              data-favorited="{{ isFavorited }}"
+              onclick="toggleFavorite('{{ restaurant.id }}', this)"
+              aria-label="{% if isFavorited %}Remove from favorites{% else %}Add to favorites{% endif %}"
+            >
+              <i class="fa-{% if isFavorited %}solid{% else %}regular{% endif %} fa-bookmark"></i>
+            </button>
+          </div>
+          <button class="restaurant-popup__button">Book Now</button>
+        </div>
+      </div>
+    `;
+  }
+
+  /* Add styles for the map popup */
+  .mapboxgl-popup-content {
+    background: #1f2a48;
+    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    min-width: 240px;
+  }
+
+  .mapboxgl-popup-close-button {
+    color: white;
+    font-size: 18px;
+    padding: 5px 8px;
+  }
+
+  .popup-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .popup-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .popup-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .popup-subtitle {
+    margin: 4px 0;
+    font-size: 14px;
+    color: #ccc;
+  }
+
+  .popup-details {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+  }
+
+  .popup-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .popup-rating .fa-star {
+    color: #FFD700;
+    font-size: 14px;
+  }
+
+  .popup-rating span {
+    color: white;
+    font-size: 14px;
+  }
+
+  .popup-price {
+    color: #ccc;
+    font-size: 14px;
+  }
+
+  .popup-bookmark {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+
+  .popup-bookmark:hover {
+    transform: scale(1.1);
+  }
+
+  .popup-bookmark i {
+    font-size: 18px;
+  }
+
+  .popup-bookmark[data-favorited="true"] i {
+    color: #E31837;
+  }
+
+  .popup-book-button {
+    width: 100%;
+    background: #750d0c;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .popup-book-button:hover {
+    background: #8f100f;
+  }
+
+  /* Update the popup HTML generation function */
+  function getPopupHTML(restaurant) {
+    const isFavorited = userFavorites.includes(restaurant.id);
+    return `
+      <div class="popup-content">
+        <div class="popup-header">
+          <img class="popup-image" src="{{ restaurant.image }}" alt="{{ restaurant.name }}">
+              <div>
+            <h3 class="popup-title">{{ restaurant.name }}</h3>
+            <p class="popup-subtitle">{{ restaurant.cuisine }}</p>
+            <p class="popup-subtitle">{{ restaurant.address }}</p>
+              </div>
+      </div>
+        <div class="popup-details">
+          <div class="popup-rating">
+            <i class="fas fa-star"></i>
+            <span>{{ restaurant.rating }}</span>
+          </div>
+          <span class="popup-price">{{ restaurant.price }}</span>
+          <button 
+            class="popup-bookmark" 
+            data-favorited="{{ isFavorited }}"
+            onclick="toggleFavorite('{{ restaurant.id }}', this)"
+            aria-label="{% if isFavorited %}Remove from favorites{% else %}Add to favorites{% endif %}"
+          >
+            <i class="fa-{% if isFavorited %}solid{% else %}regular{% endif %} fa-bookmark"></i>
+          </button>
+        </div>
+        <button class="popup-book-button">Book Now</button>
+      </div>
+    `;
+  }
+
+  /* Update the map marker creation function */
+  function createMarker(restaurant) {
+    const marker = new mapboxgl.Marker({
+      color: '#E31837'
+    })
+    .setLngLat(restaurant.coordinates)
+    .setPopup(
+      new mapboxgl.Popup({
+        closeButton: true,
+        closeOnClick: false,
+        maxWidth: 'none',
+        className: 'restaurant-popup'
+      })
+      .setHTML(getPopupHTML(restaurant))
+    )
+    .addTo(map);
+    
+    markers.push(marker);
+  }
+
+  /* Map popup styles */
+  .mapboxgl-popup-content {
+    background: #0E1B38;
+    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    width: 288px; /* w-72 equivalent */
+  }
+
+  .venue-popup {
+    color: white;
+  }
+
+  .venue-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .venue-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    margin-right: 8px;
+    object-fit: cover;
+  }
+
+  .venue-name {
+    font-size: 18px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .venue-description {
+    font-size: 14px;
+    color: #9CA3AF;
+    margin-bottom: 4px;
+  }
+
+  .venue-address {
+    font-size: 14px;
+    color: #6B7280;
+    margin-bottom: 8px;
+  }
+
+  .venue-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+
+  .venue-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .venue-rating, .venue-price {
+    font-size: 14px;
+    color: white;
+  }
+
+  .venue-rating i {
+    color: #FFD700;
+    margin-right: 2px;
+  }
+
+  .venue-bookmark {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+
+  .venue-bookmark:hover {
+    transform: scale(1.1);
+  }
+
+  .venue-bookmark i {
+    font-size: 20px;
+  }
+
+  .venue-bookmark[data-favorited="true"] i {
+    color: #E31837;
+  }
+
+  .venue-book-button {
+    width: 100%;
+    background: #DC2626;
+    color: white;
+    padding: 8px 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .venue-book-button:hover {
+    background: #B91C1C;
+  }
+
+  /* Update the popup HTML generation function */
+  function getPopupHTML(restaurant) {
+    const isFavorited = userFavorites.includes(restaurant.id);
+    return `
+      <div class="venue-popup">
+        <div class="venue-header">
+          <img 
+            src="{{ restaurant.image }}" 
+            alt="{{ restaurant.name }}" 
+            class="venue-image"
+          />
+          <h2 class="venue-name">{{ restaurant.name }}</h2>
+        </div>
+        
+        <p class="venue-description">{{ restaurant.cuisine }}</p>
+        <p class="venue-address">{{ restaurant.address }}</p>
+        
+        <div class="venue-details">
+          <div class="venue-meta">
+            <span class="venue-rating">
+              <i class="fas fa-star"></i>
+              {{ restaurant.rating }}
+            </span>
+            <span class="venue-price">{{ restaurant.price }}</span>
+          </div>
+          
+          <!-- Bookmark Button -->
+          <button 
+            class="venue-bookmark" 
+            data-favorited="{{ isFavorited }}"
+            onclick="toggleFavorite('{{ restaurant.id }}', this)"
+            aria-label="{% if isFavorited %}Remove from favorites{% else %}Add to favorites{% endif %}"
+          >
+            <i class="fa-{% if isFavorited %}solid{% else %}regular{% endif %} fa-bookmark"></i>
+          </button>
+        </div>
+        
+        <button class="venue-book-button">
+          Book Now
+        </button>
+      </div>
+    `;
+  }
+
+  /* Update cuisine carousel styles */
+  .cuisine-section {
+    padding: 1rem 0 1.5rem;
+    background: #0B1C3F;
+    color: white;
+    will-change: transform;
+    margin-bottom: 2rem;
+  }
+
+  .cuisine-section__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .cuisine-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0.5rem 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  .cuisine-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cuisine-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 64px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .cuisine-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .cuisine-card__image-container {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .cuisine-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translateZ(0); /* Force GPU acceleration */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    loading: "lazy"; /* Lazy load images */
+  }
+
+  .cuisine-card__title {
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .cuisine-card__count {
+    font-size: 12px;
+    color: #9CA3AF;
+    margin: 0;
+  }
+
+  /* Add preload hints for critical images */
+  <link rel="preload" href="https://imgur.com/tR9r1lW.jpg" as="image">
+  <link rel="preload" href="https://imgur.com/X05FKgP.jpg" as="image">
+  <link rel="preload" href="https://imgur.com/NJX6ldy.jpg" as="image">
+
+  <!-- Optimize image loading with srcset and lazy loading -->
+  <!-- Georgian -->
+  <div class="cuisine-card" onclick="filterByCuisine('Georgian')">
+    <div class="cuisine-card__image-container">
+      <img src="https://i.imgur.com/tR9r1lW.jpg" 
+           loading="lazy"
+           decoding="async"
+           alt="Georgian" 
+           class="cuisine-card__image">
+    </div>
+    <h3 class="cuisine-card__title">Georgian</h3>
+  </div>
+
+  <!-- Pizza -->
+  <div class="cuisine-card" onclick="filterByCuisine('Pizza')">
+    <div class="cuisine-card__image-container">
+      <img src="https://i.imgur.com/X05FKgP.jpg"
+           loading="lazy"
+           decoding="async"
+           alt="Pizza" 
+           class="cuisine-card__image">
+    </div>
+    <h3 class="cuisine-card__title">Pizza</h3>
+  </div>
+
+  <!-- Add debounced scroll handler -->
+  <script>
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  // Optimize scroll performance
+  document.querySelector('.cuisine-carousel').addEventListener('wheel', debounce((e) => {
+    const carousel = e.currentTarget;
+    const isScrollable = carousel.scrollWidth > carousel.clientWidth;
+    
+    if (isScrollable) {
+      const isAtLeftEdge = carousel.scrollLeft === 0 && e.deltaY < 0;
+      const isAtRightEdge = carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth && e.deltaY > 0;
+      
+      if (!isAtLeftEdge && !isAtRightEdge) {
+        e.preventDefault();
+        carousel.scrollLeft += e.deltaY;
+      }
+    }
+  }, 16)); // Debounce to 60fps
+
+  // Optimize cuisine filtering
+  function filterByCuisine(cuisine) {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.cuisine-card').forEach(card => {
+        card.classList.toggle('selected', card.querySelector('.cuisine-card__title').textContent === cuisine);
+      });
+      console.log(`Filtering by cuisine: ${cuisine}`);
+    });
+  }
+  </script>
+
+  <!-- Defer non-critical CSS -->
+  <link rel="stylesheet" href="non-critical.css" media="print" onload="this.media='all'">
+
+  <!-- Preconnect to image domain -->
+  <link rel="preconnect" href="https://imgur.com">
+  <link rel="dns-prefetch" href="https://imgur.com">
+
+  /* Adjust trending section spacing */
+  .restaurant-section {
+    padding-top: 1rem;
+  }
+
+  .restaurant-section__title {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  <style>
+  body {
+    background: #0B1C3F !important;
+  }
+  </style>
+
+  <style>
+  .wine-tasting-card__reserve {
+    margin-top: 10px !important;
+    background: #8B1111 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background 0.2s !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+    width: 100%;
+    justify-content: center;
+  }
+  .wine-tasting-card__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 120px;
+  }
+  .wine-tasting-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 260px;
+    min-width: 240px;
+    max-width: 240px;
+    box-sizing: border-box;
+  }
+  .wine-tasting-card__title {
+    min-height: 22px;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+  }
+  .wine-tasting-card__image {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+</style>
+
+<header class="header">
+  <div class="header__content">
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <h1 class="header__greeting">Ready to book your table?</h1>
+      <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+              </div>
+    
+    <div class="header__row">
+      <div class="booking-buttons">
+        <button class="booking-button" id="bookingTrigger">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <span id="bookingLabel">2 • 7:00 PM Tonight</span>
+        </button>
+
+        <button class="booking-button" id="locationButton">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span id="locationText">Tbilisi, Georgia</span>
+        </button>
+
+        <button class="booking-button" id="searchButton">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <span>Search Restaurants</span>
+        </button>
+      </div>
+
+      <div class="header__actions">
+        <img src="https://imgur.com/8s7t9g4.png" alt="Logo" style="height: 40px; margin-right: 16px;" />
+
+      {%- if shop.customer_accounts_enabled -%}
+          <a href="{{ routes.account_url }}" class="header__icon header__icon--account">
+            {% render 'icon-account' %}
+            <span class="visually-hidden">
+              {%- if customer -%}
+                {{ 'customer.account_fallback' | t }}
+              {%- else -%}
+                {{ 'customer.log_in' | t }}
+              {%- endif -%}
+          </span>
+        </a>
+      {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if settings.cart_type == 'notification' -%}
+    {%- render 'cart-notification' -%}
+            {%- endif -%}
+
+  <!-- Booking Modal -->
+  <div class="booking-modal__overlay" id="modalOverlay"></div>
+  <div class="booking-modal" id="bookingModal">
+    <h3 class="booking-modal__title">Party size</h3>
+    <div class="booking-modal__party-sizes" id="partySizes"></div>
+    
+    <h3 class="booking-modal__title">Date and time</h3>
+    <div class="booking-modal__datetime">
+      <select class="booking-modal__select" id="dateSelect"></select>
+      <select class="booking-modal__select" id="timeSelect">
+        <option value="11:00">11:00</option>
+        <option value="11:30">11:30</option>
+        <option value="12:00">12:00</option>
+        <option value="12:30">12:30</option>
+        <option value="13:00">13:00</option>
+        <option value="13:30">13:30</option>
+        <option value="14:00">14:00</option>
+        <option value="14:30">14:30</option>
+        <option value="15:00">15:00</option>
+        <option value="15:30">15:30</option>
+        <option value="16:00">16:00</option>
+        <option value="16:30">16:30</option>
+        <option value="17:00">17:00</option>
+        <option value="17:30">17:30</option>
+        <option value="18:00">18:00</option>
+        <option value="18:30">18:30</option>
+        <option value="19:00" selected>19:00</option>
+        <option value="19:30">19:30</option>
+        <option value="20:00">20:00</option>
+        <option value="20:30">20:30</option>
+        <option value="21:00">21:00</option>
+        <option value="21:30">21:30</option>
+        <option value="22:00">22:00</option>
+        <option value="22:30">22:30</option>
+        <option value="23:00">23:00</option>
+        <option value="23:30">23:30</option>
+      </select>
+          </div>
+    
+    <button class="booking-modal__done" id="bookingDone">Done</button>
+    </div>
+  </header>
+
+<!-- Login Modal -->
+<div class="login-modal" id="loginModal">
+  <div class="login-modal__content">
+    <button class="login-modal__close" id="loginModalClose">&times;</button>
+    <h2 class="login-modal__title">Enter your phone number</h2>
+    <p class="login-modal__subtitle">We'll need to verify it's you to continue.</p>
+
+    <label class="login-modal__input-label">Name</label>
+    <input type="text" id="loginName" placeholder="Your full name" class="login-modal__input" />
+
+    <label class="login-modal__input-label">Phone number</label>
+    <div class="login-modal__phone-group">
+      <select id="countryCode" class="login-modal__country-code">
+        <option value="+995" selected>🇬🇪 +995</option>
+        <option value="+1">🇺🇸 +1</option>
+        <option value="+44">🇬🇧 +44</option>
+        <option value="+33">🇫🇷 +33</option>
+        <option value="+49">🇩🇪 +49</option>
+        <option value="+81">🇯🇵 +81</option>
+        <option value="+61">🇦🇺 +61</option>
+        <option value="+91">🇮🇳 +91</option>
+        <option value="+7">🇷🇺 +7</option>
+        <option value="+86">🇨🇳 +86</option>
+        <option value="+34">🇪🇸 +34</option>
+        <option value="+39">🇮🇹 +39</option>
+        <option value="+972">🇮🇱 +972</option>
+        <option value="+82">🇰🇷 +82</option>
+        <option value="+47">🇳🇴 +47</option>
+        <option value="+370">🇱🇹 +370</option>
+        <option value="+994">🇦🇿 +994</option>
+        <option value="+380">🇺🇦 +380</option>
+        <option value="+374">🇦🇲 +374</option>
+        <option value="+212">🇲🇦 +212</option>
+        <option value="+31">🇳🇱 +31</option>
+        <option value="+46">🇸🇪 +46</option>
+        <option value="+45">🇩🇰 +45</option>
+        <option value="+358">🇫🇮 +358</option>
+        <option value="+48">🇵🇱 +48</option>
+        <option value="+43">🇦🇹 +43</option>
+        <option value="+36">🇭🇺 +36</option>
+        <option value="+420">🇨🇿 +420</option>
+        <option value="+30">🇬🇷 +30</option>
+        <option value="+40">🇷🇴 +40</option>
+        <option value="+359">🇧🇬 +359</option>
+        <option value="+351">🇵🇹 +351</option>
+        <option value="+353">🇮🇪 +353</option>
+        <option value="+32">🇧🇪 +32</option>
+        <option value="+41">🇨🇭 +41</option>
+        <option value="+90">🇹🇷 +90</option>
+        <option value="+20">🇪🇬 +20</option>
+        <option value="+27">🇿🇦 +27</option>
+        <option value="+55">🇧🇷 +55</option>
+        <option value="+52">🇲🇽 +52</option>
+        <option value="+54">🇦🇷 +54</option>
+      </select>
+      <input type="tel" id="loginPhone" placeholder="Phone number" class="login-modal__input" style="margin-bottom: 0;" />
+    </div>
+
+    <button id="loginSubmit" class="login-modal__submit">Continue</button>
+    <a class="login-modal__email-link">Use email instead</a>
+
+    <p class="login-modal__footer">
+      By continuing, you agree to our <a href="#">Cookies policy</a> and <a href="#">Privacy policy</a>.
+    </p>
+  </div>
+</div>
+
+<!-- Add search modal -->
+<div class="search-modal" id="searchModal">
+  <div class="search-modal__content">
+    <button class="search-modal__close" id="searchModalClose">&times;</button>
+    <div class="search-modal__filters">
+      <select id="cuisineFilter" class="search-modal__filter">
+        <option value="">All Cuisines</option>
+        <option value="Georgian">Georgian</option>
+        <option value="European">European</option>
+        <option value="French">French</option>
+        <option value="Wine Bar">Wine Bar</option>
+        <option value="Austrian">Austrian</option>
+      </select>
+      <select id="priceFilter" class="search-modal__filter">
+        <option value="">All Prices</option>
+        <option value="$">$</option>
+        <option value="$$">$$</option>
+        <option value="$$$">$$$</option>
+        <option value="$$$$">$$$$</option>
+      </select>
+      <select id="ratingFilter" class="search-modal__filter">
+        <option value="">All Ratings</option>
+        <option value="4.8">4.8+</option>
+        <option value="4.5">4.5+</option>
+        <option value="4.0">4.0+</option>
+        <option value="3.5">3.5+</option>
+        <option value="3.0">3.0+</option>
+      </select>
+      <select id="distanceFilter" class="search-modal__filter">
+        <option value="">Any Distance</option>
+        <option value="2">Within 2 km</option>
+        <option value="5">Within 5 km</option>
+        <option value="7">Within 7 km</option>
+        <option value="10">Within 10 km</option>
+      </select>
+    </div>
+    <div class="search-modal__map-container">
+      <div id="searchMap" class="search-modal__map"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Static sample restaurant cards for visual testing -->
+<section class="restaurant-section">
+  <div class="restaurant-section__content">
+    <h2 class="restaurant-section__title">Available now</h2>
+    <div class="restaurant-carousel">
+      <!-- Restaurant Card 1 -->
+      <div class="restaurant-card">
+        <img src="https://i.imgur.com/rII6OSp.png" alt="Honoré" class="restaurant-card__image">
+        <div class="restaurant-card__content">
+          <h3 class="restaurant-card__title">Honoré</h3>
+          <p class="restaurant-card__meta">$$$ • Georgian • European • Barbecue • <i class="fas fa-star"></i> 4.8</p>
+          <div class="restaurant-card__slots">
+            <button class="time-slot">5:45 PM</button>
+            <button class="time-slot">6:00 PM</button>
+            <button class="time-slot">6:15 PM</button>
+          </div>
+        </div>
+      </div>
+      <!-- Restaurant Card 2 -->
+      <div class="restaurant-card">
+        <img src="https://i.imgur.com/3MmiwHU.png" alt="Lolita Bar Interior" class="restaurant-card__image">
+        <div class="restaurant-card__content">
+          <h3 class="restaurant-card__title">Lolita</h3>
+          <p class="restaurant-card__meta">$$ • New American • Italian-Inspired • Cocktail Bar • <i class="fas fa-star"></i> 4.7</p>
+          <div class="restaurant-card__slots">
+            <button class="time-slot">5:30 PM</button>
+            <button class="time-slot">6:30 PM</button>
+            <button class="time-slot">7:00 PM</button>
+          </div>
+        </div>
+      </div>
+      <!-- Restaurant Card 3 -->
+      <div class="restaurant-card">
+        <img src="https://i.imgur.com/0vnzZ6R.png" alt="Rooms Tbilisi" class="restaurant-card__image">
+        <div class="restaurant-card__content">
+          <h3 class="restaurant-card__title">Rooms Tbilisi</h3>
+          <p class="restaurant-card__meta">$$$ • Modern American • New Nordic • Farm-to-Table • <i class="fas fa-star"></i> 4.9</p>
+          <div class="restaurant-card__slots">
+            <button class="time-slot">6:00 PM</button>
+            <button class="time-slot">6:45 PM</button>
+            <button class="time-slot">7:15 PM</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End static sample block -->
+
+<!-- Cuisine Categories Section -->
+<section class="cuisine-section">
+  <div class="cuisine-section__content">
+    <div class="cuisine-carousel">
+      <!-- Georgian -->
+      <div class="cuisine-card" onclick="filterByCuisine('Georgian')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/tR9r1lW.jpg" alt="Georgian" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Georgian</h3>
+      </div>
+
+      <!-- Pizza -->
+      <div class="cuisine-card" onclick="filterByCuisine('Pizza')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/X05FKgP.jpg" alt="Pizza" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Pizza</h3>
+      </div>
+
+      <!-- Sushi -->
+      <div class="cuisine-card" onclick="filterByCuisine('Sushi')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/NJX6ldy.jpg" alt="Sushi" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Sushi</h3>
+      </div>
+
+      <!-- Italian -->
+      <div class="cuisine-card" onclick="filterByCuisine('Italian')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/v00y30w.jpg" alt="Italian" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Italian</h3>
+      </div>
+
+      <!-- Wine Bar -->
+      <div class="cuisine-card" onclick="filterByCuisine('Wine Bar')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/ZxCHmpz.jpg" alt="Wine Bar" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Wine Bar</h3>
+      </div>
+
+      <!-- European -->
+      <div class="cuisine-card" onclick="filterByCuisine('European')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/cNEh111.jpg" alt="European" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">European</h3>
+      </div>
+
+      <!-- Bar/Lounge -->
+      <div class="cuisine-card" onclick="filterByCuisine('Bar/Lounge')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/eQDARHA.jpg" alt="Bar/Lounge" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Bar/Lounge</h3>
+      </div>
+
+      <!-- Bakery -->
+      <div class="cuisine-card" onclick="filterByCuisine('Bakery')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/D40e1v6.jpg" alt="Bakery" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Bakery</h3>
+      </div>
+
+      <!-- Fine Dining -->
+      <div class="cuisine-card" onclick="filterByCuisine('Fine Dining')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/RIcnsPk.jpg" alt="Fine Dining" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Fine Dining</h3>
+      </div>
+
+      <!-- Brunch Spot -->
+      <div class="cuisine-card" onclick="filterByCuisine('Brunch Spot')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/pE2GUrU.jpg" alt="Brunch Spot" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Brunch Spot</h3>
+      </div>
+
+      <!-- Asian -->
+      <div class="cuisine-card" onclick="filterByCuisine('Asian')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/c9gLXSF.jpg" alt="Asian" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Asian</h3>
+      </div>
+
+      <!-- Mediterranean -->
+      <div class="cuisine-card" onclick="filterByCuisine('Mediterranean')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/2lgJh6w.jpg" alt="Mediterranean" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Mediterranean</h3>
+      </div>
+
+      <!-- Seafood -->
+      <div class="cuisine-card" onclick="filterByCuisine('Seafood')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/meK7DUB.jpg" alt="Seafood" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Seafood</h3>
+      </div>
+
+      <!-- Vegetarian -->
+      <div class="cuisine-card" onclick="filterByCuisine('Vegetarian')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/EPJuDmk.jpg" alt="Vegetarian" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Vegetarian</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trending Section -->
+<section class="restaurant-section" style="padding-top: 0; margin-top: -2rem; border-top: none;">
+  <div class="restaurant-section__content">
+    <h2 class="restaurant-section__title">See what's trending with our weekly lists</h2>
+    <div class="trending-list">
+      <!-- Restaurant 1 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/W5x0iFf.png" alt="Alubali" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Alubali</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Authentic Georgian</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(70 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>2.3 km</span>
+          </div>
+          <span class="trending-item__price">$$$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 2 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/iycCzV0.png" alt="Orangery" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Orangery</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Georgian & European</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(45 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>800 m</span>
+          </div>
+          <span class="trending-item__price">$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 3 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/ZK08ntt.png" alt="Coffee Shop Company" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Coffee Shop Company</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Austrian & Eastern European</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(12 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>1.5 km</span>
+          </div>
+          <span class="trending-item__price">$$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 4 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/npKcyus.png" alt="Paul" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Paul</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">French Inspired</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(59 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>3.2 km</span>
+          </div>
+          <span class="trending-item__price">$$$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 5 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/ffNFiWL.png" alt="Strada" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Strada</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Contemporary American & Asian</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(38 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>4.7 km</span>
+          </div>
+          <span class="trending-item__price">$$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 6 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/nhIwbAE.png" alt="8000 Vintages" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">8000 Vintages</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Wine Bar & Gourmet Bords</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(82 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>650 m</span>
+          </div>
+          <span class="trending-item__price">$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 7 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/A2XSgKc.png" alt="Canape" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Canape</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Georgian & European</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(59 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>3.2 km</span>
+          </div>
+          <span class="trending-item__price">$$$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 8 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/vKzlLfm.png" alt="Khedi" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Khedi</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Georgian & European</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(59 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>3.2 km</span>
+          </div>
+          <span class="trending-item__price">$$$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 9 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/JNsWf7e.png" alt="Tsiskvili" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Tsiskvili</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Authentic Georgian</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(59 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>3.2 km</span>
+          </div>
+          <span class="trending-item__price">$$$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 10 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/Z4Mjh6u.png" alt="Rigi" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Rigi</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Old Georgian Gastronomic Douqan</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(59 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>3.2 km</span>
+          </div>
+          <span class="trending-item__price">$$$$</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wine Tasting Section -->
+<section class="wine-tasting-section" style="background: #0B1C3F; padding: 2rem 1rem;">
+  <div class="wine-tasting-section__content" style="max-width: 1200px; margin: 0 auto;">
+    <h2 class="wine-tasting-section__title" style="color: white; font-size: 18px; font-weight: 600; margin-bottom: 1rem;">Wine tasting</h2>
+    <div class="wine-tasting-carousel" style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 1rem; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+      <!-- Card 1 -->
+      <div class="wine-tasting-card" style="min-width: 240px; background: #1f2a48; border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative;">
+        <img src="https://imgur.com/nhIwbAE.png" alt="8000 Vintages" class="wine-tasting-card__image" style="width: 100%; height: 140px; object-fit: cover;">
+        <div class="wine-tasting-card__content" style="padding: 1rem;">
+          <h3 class="wine-tasting-card__title" style="margin: 0 0 6px; font-size: 16px; font-weight: 600; color: white;">8000 Vintages</h3>
+          <p class="wine-tasting-card__meta" style="margin: 0; font-size: 14px; color: #ccc;">Wine Bar • Gourmet Boards • <i class="fas fa-star"></i> 4.9</p>
+          <button class="wine-tasting-card__reserve" style="margin-top: 12px; background: #DC2626; color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-wine-glass-alt"></i> Reserve a Tasting!
+          </button>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="wine-tasting-card" style="min-width: 240px; background: #1f2a48; border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative;">
+        <img src="https://imgur.com/A2XSgKc.png" alt="Canape" class="wine-tasting-card__image" style="width: 100%; height: 140px; object-fit: cover;">
+        <div class="wine-tasting-card__content" style="padding: 1rem;">
+          <h3 class="wine-tasting-card__title" style="margin: 0 0 6px; font-size: 16px; font-weight: 600; color: white;">Canape</h3>
+          <p class="wine-tasting-card__meta" style="margin: 0; font-size: 14px; color: #ccc;">Georgian & European • <i class="fas fa-star"></i> 4.8</p>
+          <button class="wine-tasting-card__reserve" style="margin-top: 12px; background: #DC2626; color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-wine-glass-alt"></i> Reserve a Tasting!
+          </button>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="wine-tasting-card" style="min-width: 240px; background: #1f2a48; border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative;">
+        <img src="https://imgur.com/iycCzV0.png" alt="Orangery" class="wine-tasting-card__image" style="width: 100%; height: 140px; object-fit: cover;">
+        <div class="wine-tasting-card__content" style="padding: 1rem;">
+          <h3 class="wine-tasting-card__title" style="margin: 0 0 6px; font-size: 16px; font-weight: 600; color: white;">Orangery</h3>
+          <p class="wine-tasting-card__meta" style="margin: 0; font-size: 14px; color: #ccc;">Georgian & European • <i class="fas fa-star"></i> 4.7</p>
+          <button class="wine-tasting-card__reserve" style="margin-top: 12px; background: #DC2626; color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-wine-glass-alt"></i> Reserve a Tasting!
+          </button>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="wine-tasting-card" style="min-width: 240px; background: #1f2a48; border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative;">
+        <img src="https://imgur.com/JNsWf7e.png" alt="Tsiskvili" class="wine-tasting-card__image" style="width: 100%; height: 140px; object-fit: cover;">
+        <div class="wine-tasting-card__content" style="padding: 1rem;">
+          <h3 class="wine-tasting-card__title" style="margin: 0 0 6px; font-size: 16px; font-weight: 600; color: white;">Tsiskvili</h3>
+          <p class="wine-tasting-card__meta" style="margin: 0; font-size: 14px; color: #ccc;">Authentic Georgian • <i class="fas fa-star"></i> 4.8</p>
+          <button class="wine-tasting-card__reserve" style="margin-top: 12px; background: #DC2626; color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-wine-glass-alt"></i> Reserve a Tasting!
+          </button>
+        </div>
+      </div>
+      <!-- Card 5 -->
+      <div class="wine-tasting-card" style="min-width: 240px; background: #1f2a48; border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative;">
+        <img src="https://imgur.com/Z4Mjh6u.png" alt="Rigi" class="wine-tasting-card__image" style="width: 100%; height: 140px; object-fit: cover;">
+        <div class="wine-tasting-card__content" style="padding: 1rem;">
+          <h3 class="wine-tasting-card__title" style="margin: 0 0 6px; font-size: 16px; font-weight: 600; color: white;">Rigi</h3>
+          <p class="wine-tasting-card__meta" style="margin: 0; font-size: 14px; color: #ccc;">Old Georgian Gastronomic Douqan • <i class="fas fa-star"></i> 4.8</p>
+          <button class="wine-tasting-card__reserve" style="margin-top: 12px; background: #DC2626; color: white; border: none; border-radius: 8px; padding: 10px 16px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-wine-glass-alt"></i> Reserve a Tasting!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Restaurant Detail Modal -->
+<div id="restaurantDetail" class="restaurant-detail">
+  <div class="restaurant-detail__content" style="padding: 0; max-width: 768px; margin: auto;">
+    <button onclick="closeRestaurantDetails()" class="restaurant-detail__close" style="z-index: 10; top: 1rem; right: 1rem; background: rgba(0,0,0,0.4); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">&times;</button>
+    
+      <div class="honore-slider-container" style="position: relative; width: calc(100% - 3rem); margin: 1.5rem auto 0; border-radius: 16px; overflow: hidden; height: 350px; background: #333;">
+        <div class="honore-slider-wrapper" style="display: flex; transition: transform 0.5s ease-in-out; height: 100%;">
+          <img src="https://i.postimg.cc/hvMRSkkC/temp-Imagek1-Fc5-E.avif" class="honore-slide" style="width:100%; height: 100%; object-fit: cover; flex-shrink: 0;">
+          <img src="https://i.postimg.cc/Lsfdqgdg/temp-Image6ssyvx.avif" class="honore-slide" style="width:100%; height: 100%; object-fit: cover; flex-shrink: 0;">
+          <img src="https://i.postimg.cc/d1mz6MVq/temp-Image7-P8fb-T.avif" class="honore-slide" style="width:100%; height: 100%; object-fit: cover; flex-shrink: 0;">
+          <img src="https://i.postimg.cc/zG4ZXSQ1/temp-Image-GLett7.avif" class="honore-slide" style="width:100%; height: 100%; object-fit: cover; flex-shrink: 0;">
+          <img src="https://i.postimg.cc/NjKvcPp4/temp-Imagem-LNH2e.avif" class="honore-slide" style="width:100%; height: 100%; object-fit: cover; flex-shrink: 0;">
+          <img src="https://i.postimg.cc/Y9w5Q2kn/temp-Image-P1-T8-Ih.avif" class="honore-slide" style="width:100%; height: 100%; object-fit: cover; flex-shrink: 0;">
+          <img src="https://i.postimg.cc/NffwN0XZ/temp-Image-Wb-YAf-A.avif" class="honore-slide" style="width:100%; height: 100%; object-fit: cover; flex-shrink: 0;">
+          <img src="https://i.postimg.cc/hPyRNqbv/temp-Image-Yy-Un-Qk.avif" class="honore-slide" style="width:100%; height: 100%; object-fit: cover; flex-shrink: 0;">
+        </div>
+        <button class="honore-slider-btn honore-prev" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 24px; z-index:1;">&#10094;</button>
+        <button class="honore-slider-btn honore-next" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 24px; z-index:1;">&#10095;</button>
+      </div>
+      
+      <div class="restaurant-detail__info-new" style="padding: 1rem 1.5rem;">
+        <h2 style="font-size: 2rem; font-weight: 600; margin: 0 0 0.75rem;">Honoré</h2>
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; color: #ccc; cursor: pointer;" id="reviewsTabTrigger">
+          <span style="color: #750d0c;">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </span>
+          <i class="far fa-comment-alt"></i>
+          <span>4.8 (215 Reviews)</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; color: #ccc;">
+            <i class="fas fa-money-bill-alt" style="width: 20px; text-align: center;"></i>
+            <span>$$$</span>
+            <span style="margin: 0 0.25rem;">•</span>
+            <i class="fas fa-utensils" style="width: 20px; text-align: center;"></i>
+            <span>Georgian & European</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; color: #ccc;">
+          <i class="fas fa-map-marker-alt" style="width: 20px; text-align: center;"></i>
+          <span>4 Constitution street, Tbilisi 0112</span>
+        </div>
+
+        <button class="booking-button" id="restaurantBookingTrigger" style="width: 100%; justify-content: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          <span id="restaurantBookingLabel">2 • 7:00 PM Tonight</span>
+        </button>
+      </div>
+
+    <div class="restaurant-detail__menu" style="padding: 0 1.5rem 1.5rem;">
+      <h3 style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;">Menu</h3>
+      <div class="menu-items" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+
+        <!-- Hot smoked salmon on twigs -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/SRXF8CrW/temp-Image-Dsgb1-Q.avif" alt="Hot smoked salmon on twigs" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Hot smoked salmon on twigs</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">ორაგული წალამზე ცხლად შებოლილი</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">45.00 GEL</p>
+          </div>
+        </div>
+
+        <!-- Chicken liver with plums -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/QNnSnR8N/temp-Image00-Zx-Os.avif" alt="Chicken liver with plums" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Chicken liver with plums</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">ქათმის ღვიძლი ქლიავთან ერთად</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">26 GEL</p>
+          </div>
+        </div>
+
+        <!-- Burger -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/GtLtygWN/temp-Image-Mno-IMs.avif" alt="Burger" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Burger</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">ბურგერი</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">26 GEL</p>
+          </div>
+        </div>
+
+        <!-- Grilled Veggies -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/TwHFVpF6/temp-Image-HT9-Kz6.avif" alt="Grilled Veggies" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Grilled Veggies</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">გრილზე შემწვარი ბოსტენული</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">19 GEL</p>
+          </div>
+        </div>
+
+        <!-- Arugula salad -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/0j0ttjHj/temp-Image-Ec-Hk5-X.avif" alt="Arugula salad" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Arugula salad</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">რუკოლას სალათი</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">17 GEL</p>
+          </div>
+        </div>
+
+        <!-- Dolma with Vine leaf -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/brSykX6m/temp-Imagego-Gfp-R.avif" alt="Dolma with Vine leaf" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Dolma with Vine leaf</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">ტოლმა ვაზის ფოთოლით</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">22 GEL</p>
+          </div>
+        </div>
+
+        <!-- Pork tenderloin barbecue -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/X7XHKjkj/temp-Image6-AYPRx.avif" alt="Pork tenderloin barbecue" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Pork tenderloin barbecue</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">სუკის მწვადი</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">25 GEL</p>
+          </div>
+        </div>
+
+        <!-- Greens Plate -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/cJWBz0w8/temp-Image09-Ad-Wz.avif" alt="Greens Plate" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Greens Plate</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">მწვანილის თეფში</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">13 GEL</p>
+          </div>
+        </div>
+
+        <!-- Corn Bread -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/nrTLnKPJ/temp-Imagekr-CBLj.avif" alt="Corn Bread" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Corn Bread</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">სიმინდის პური</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">8 GEL</p>
+          </div>
+        </div>
+
+        <!-- Green Salad -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/SRZmBSnQ/temp-Image-SKWb-EP.avif" alt="Green Salad" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Green Salad</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">მწვანე სალათი</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">15 GEL</p>
+          </div>
+        </div>
+
+        <!-- Eggplant with walnuts -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/mrXfZXbV/temp-Imagejy8hj-K.avif" alt="Eggplant with walnuts" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Eggplant with walnuts</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">ბადრიჯანი ნიგვზით</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">15 GEL</p>
+          </div>
+        </div>
+
+        <!-- Cucumber and Guda cheese -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/85X13kJp/temp-Image-Fd12-Fh.avif" alt="Cucumber and Guda cheese" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Cucumber and Guda cheese</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">კიტრი და გუდის ყველი</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">17 GEL</p>
+          </div>
+        </div>
+
+        <!-- Khachapuri on Pan -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/FR3Mb9yC/temp-Image-TWZSBw.avif" alt="Khachapuri on Pan" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Khachapuri on Pan</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">ხაჭაპური ტაფაზე</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">17 GEL</p>
+          </div>
+        </div>
+
+        <!-- Lobiani -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.postimg.cc/T1yWN4Ps/temp-Image-OFo-Rwi.avif" alt="Lobiani" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+          <div class="menu-item-details">
+            <h4 style="margin: 0; font-size: 16px; font-weight: 500;">Lobiani</h4>
+            <p style="margin: 4px 0 0; font-size: 14px; color: #ccc;">ლობიანი</p>
+            <p style="margin: 8px 0 0; font-weight: 600;">12 GEL</p>
+          </div>
+        </div>
+
+        <!-- Chichen in walnuts sauce -->
+        <div class="menu-item" style="display: flex; align-items: center; background-color: #2a2a2a; padding: 15px; border-radius: 10px;">
+          <img src="https://i.imgur.com/0vnzZ6R.png" alt="Chichen in walnuts sauce" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px; margin-right: 16px;">
+
+{% schema %}
+{
+  "name": "Header Primary",
+  "settings": [],
+  "blocks": [],
+  "presets": [{ "name": "Default" }]
+}
+{% endschema %}
