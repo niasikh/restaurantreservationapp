@@ -3,9 +3,14 @@
     "booking_system": {
       "type": "booking-system",
       "settings": {}
+    },
+    "restaurants": {
+      "type": "restaurants",
+      "settings": {}
     }
   },
   "order": [
-    "booking_system"
+    "booking_system",
+    "restaurants"
   ]
 } 

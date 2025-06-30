@@ -1,0 +1,76 @@
+{{ 'restaurants.css' | asset_url | stylesheet_tag }}
+
+<!-- Book for Dinner Section -->
+<section class="restaurant-section">
+  <div class="restaurant-section__content">
+    <h2 class="restaurant-section__title">Available now</h2>
+
+    <div class="restaurant-carousel">
+      <!-- Restaurant Card 1: Honoré -->
+      <div class="restaurant-card" onclick="openRestaurantDetails('honore')">
+        <img src="https://i.imgur.com/rII6OSp.png" 
+             loading="eager" 
+             fetchpriority="high"
+             decoding="async" 
+             alt="Honoré" 
+             class="restaurant-card__image">
+        <div class="restaurant-card__content">
+          <h3 class="restaurant-card__title">Honoré</h3>
+          <p class="restaurant-card__meta">$$$ • Georgian • European • Barbecue • <i class="fas fa-star"></i> 4.8</p>
+          <div class="restaurant-card__slots">
+            <button class="time-slot">5:45 PM</button>
+            <button class="time-slot">6:00 PM</button>
+            <button class="time-slot">6:15 PM</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Restaurant Card 2: Lolita -->
+      <div class="restaurant-card" onclick="openRestaurantDetails('lolita')">
+        <img src="https://i.imgur.com/3MmiwHU.png" alt="Lolita Bar Interior" class="restaurant-card__image">
+        <div class="restaurant-card__content">
+          <h3 class="restaurant-card__title">Lolita</h3>
+          <p class="restaurant-card__meta">$$ • New American • Italian-Inspired • Cocktail Bar • <i class="fas fa-star"></i> 4.7</p>
+          <div class="restaurant-card__slots">
+            <button class="time-slot">5:30 PM</button>
+            <button class="time-slot">6:30 PM</button>
+            <button class="time-slot">7:00 PM</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Restaurant Card 3: Rooms Tbilisi -->
+      <div class="restaurant-card" onclick="openRestaurantDetails('rooms')">
+        <img src="https://i.imgur.com/0vnzZ6R.png" alt="Rooms Tbilisi" class="restaurant-card__image">
+        <div class="restaurant-card__content">
+          <h3 class="restaurant-card__title">Rooms Tbilisi</h3>
+          <p class="restaurant-card__meta">$$$ • Modern American • New Nordic • Farm-to-Table • <i class="fas fa-star"></i> 4.9</p>
+          <div class="restaurant-card__slots">
+            <button class="time-slot">6:00 PM</button>
+            <button class="time-slot">6:45 PM</button>
+            <button class="time-slot">7:15 PM</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Restaurants",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Available now"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Restaurants"
+    }
+  ]
+}
+{% endschema %}

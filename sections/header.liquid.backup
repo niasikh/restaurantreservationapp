@@ -2636,6 +2636,218 @@
 </div>
 
 <!-- Book for Dinner Section -->
+<section class="restaurant-section">
+  <div class="restaurant-section__content">
+    <h2 class="restaurant-section__title">Available now</h2>
+
+    <div class="restaurant-carousel">
+      <!-- Restaurant Card 1: Honoré -->
+      <div class="restaurant-card" onclick="openRestaurantDetails('honore')">
+        <img src="https://i.imgur.com/rII6OSp.png" 
+             loading="eager" 
+             fetchpriority="high"
+             decoding="async" 
+             alt="Honoré" 
+             class="restaurant-card__image">
+        <div class="restaurant-card__content">
+          <h3 class="restaurant-card__title">Honoré</h3>
+          <p class="restaurant-card__meta">$$$ • Georgian • European • Barbecue • <i class="fas fa-star"></i> 4.8</p>
+          <div class="restaurant-card__slots">
+            <button class="time-slot">5:45 PM</button>
+            <button class="time-slot">6:00 PM</button>
+            <button class="time-slot">6:15 PM</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Restaurant Card 2: Lolita -->
+      <div class="restaurant-card" onclick="openRestaurantDetails('lolita')">
+        <img src="https://i.imgur.com/3MmiwHU.png" alt="Lolita Bar Interior" class="restaurant-card__image">
+        <div class="restaurant-card__content">
+          <h3 class="restaurant-card__title">Lolita</h3>
+          <p class="restaurant-card__meta">$$ • New American • Italian-Inspired • Cocktail Bar • <i class="fas fa-star"></i> 4.7</p>
+          <div class="restaurant-card__slots">
+            <button class="time-slot">5:30 PM</button>
+            <button class="time-slot">6:30 PM</button>
+            <button class="time-slot">7:00 PM</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Restaurant Card 3: Rooms Tbilisi -->
+      <div class="restaurant-card" onclick="openRestaurantDetails('rooms')">
+        <img src="https://i.imgur.com/0vnzZ6R.png" alt="Rooms Tbilisi" class="restaurant-card__image">
+        <div class="restaurant-card__content">
+          <h3 class="restaurant-card__title">Rooms Tbilisi</h3>
+          <p class="restaurant-card__meta">$$$ • Modern American • New Nordic • Farm-to-Table • <i class="fas fa-star"></i> 4.9</p>
+          <div class="restaurant-card__slots">
+            <button class="time-slot">6:00 PM</button>
+            <button class="time-slot">6:45 PM</button>
+            <button class="time-slot">7:15 PM</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Cuisine Categories Section -->
+<section class="cuisine-section">
+  <div class="cuisine-section__content">
+    <div class="cuisine-carousel">
+      <!-- Georgian -->
+      <div class="cuisine-card" onclick="filterByCuisine('Georgian')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/tR9r1lW.jpg" alt="Georgian" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Georgian</h3>
+      </div>
+
+      <!-- Pizza -->
+      <div class="cuisine-card" onclick="filterByCuisine('Pizza')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/X05FKgP.jpg" alt="Pizza" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Pizza</h3>
+      </div>
+
+      <!-- Sushi -->
+      <div class="cuisine-card" onclick="filterByCuisine('Sushi')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/NJX6ldy.jpg" alt="Sushi" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Sushi</h3>
+      </div>
+
+      <!-- Italian -->
+      <div class="cuisine-card" onclick="filterByCuisine('Italian')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/v00y30w.jpg" alt="Italian" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Italian</h3>
+      </div>
+
+      <!-- Wine Bar -->
+      <div class="cuisine-card" onclick="filterByCuisine('Wine Bar')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/ZxCHmpz.jpg" alt="Wine Bar" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Wine Bar</h3>
+      </div>
+
+      <!-- European -->
+      <div class="cuisine-card" onclick="filterByCuisine('European')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/cNEh111.jpg" alt="European" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">European</h3>
+      </div>
+
+      <!-- Bar/Lounge -->
+      <div class="cuisine-card" onclick="filterByCuisine('Bar/Lounge')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/eQDARHA.jpg" alt="Bar/Lounge" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Bar/Lounge</h3>
+      </div>
+
+      <!-- Bakery -->
+      <div class="cuisine-card" onclick="filterByCuisine('Bakery')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/D40e1v6.jpg" alt="Bakery" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Bakery</h3>
+      </div>
+
+      <!-- Fine Dining -->
+      <div class="cuisine-card" onclick="filterByCuisine('Fine Dining')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/RIcnsPk.jpg" alt="Fine Dining" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Fine Dining</h3>
+      </div>
+
+      <!-- Brunch Spot -->
+      <div class="cuisine-card" onclick="filterByCuisine('Brunch Spot')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/pE2GUrU.jpg" alt="Brunch Spot" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Brunch Spot</h3>
+      </div>
+
+      <!-- Asian -->
+      <div class="cuisine-card" onclick="filterByCuisine('Asian')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/c9gLXSF.jpg" alt="Asian" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Asian</h3>
+      </div>
+
+      <!-- Mediterranean -->
+      <div class="cuisine-card" onclick="filterByCuisine('Mediterranean')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/2lgJh6w.jpg" alt="Mediterranean" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Mediterranean</h3>
+      </div>
+
+      <!-- Seafood -->
+      <div class="cuisine-card" onclick="filterByCuisine('Seafood')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/meK7DUB.jpg" alt="Seafood" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Seafood</h3>
+      </div>
+
+      <!-- Vegetarian -->
+      <div class="cuisine-card" onclick="filterByCuisine('Vegetarian')">
+        <div class="cuisine-card__image-container">
+          <img src="https://i.imgur.com/EPJuDmk.jpg" alt="Vegetarian" class="cuisine-card__image">
+        </div>
+        <h3 class="cuisine-card__title">Vegetarian</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Trending Section -->
+<section class="restaurant-section" style="padding-top: 0; margin-top: -2rem; border-top: none;">
+  <div class="restaurant-section__content">
+    <h2 class="restaurant-section__title">See what's trending with our weekly lists</h2>
+    <div class="trending-list">
+      <!-- Restaurant 1 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/W5x0iFf.png" alt="Alubali" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Alubali</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Authentic Georgian</p>
+          <div class="trending-item__rating">
+            <div class="trending-item__stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+            </div>
+            <span class="trending-item__reviews">(70 Reviews)</span>
+          </div>
+        </div>
+        <div class="trending-item__right">
+          <button class="trending-item__save">
+            <i class="far fa-bookmark"></i>
+          </button>
+          <div class="trending-item__distance">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>2.3 km</span>
+          </div>
+          <span class="trending-item__price">$$$$</span>
+        </div>
+      </div>
+
+      <!-- Restaurant 2 -->
+      <div class="trending-item">
+        <img src="https://i.imgur.com/iycCzV0.png" alt="Orangery" class="trending-item__image">
+        <div class="trending-item__content">
+          <h3 class="trending-item__title">Orangery</h3>
+          <p class="trending-item__location">Tbilisi</p>
+          <p class="trending-item__cuisine">Georgian & European</p>
           <div class="trending-item__rating">
             <div class="trending-item__stars">
               <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
