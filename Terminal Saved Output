@@ -1,0 +1,52 @@
+Last login: Mon Jun 30 17:34:55 on ttys008
+Now using node v20.19.0 (npm v10.8.2)
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+Nias-MacBook-Air-2:~ niasikharulidze$ cd /Users/niasikharulidze/Desktop/theme_export__bcsf5t-i9-myshopify-com-dawn__15APR2025-0155pm
+Nias-MacBook-Air-2:theme_export__bcsf5t-i9-myshopify-com-dawn__15APR2025-0155pm niasikharulidze$ code .env
+-bash: code: command not found
+Nias-MacBook-Air-2:theme_export__bcsf5t-i9-myshopify-com-dawn__15APR2025-0155pm niasikharulidze$ pwd
+/Users/niasikharulidze/Desktop/theme_export__bcsf5t-i9-myshopify-com-dawn__15APR2025-0155pm
+Nias-MacBook-Air-2:theme_export__bcsf5t-i9-myshopify-com-dawn__15APR2025-0155pm niasikharulidze$ cd /Users/niasikharulidze/Desktop/theme_export__bcsf5t-i9-myshopify-com-dawn__15APR2025-0155pm
+Nias-MacBook-Air-2:theme_export__bcsf5t-i9-myshopify-com-dawn__15APR2025-0155pm niasikharulidze$ ls
+# Just hit Enter at each prompt to accept the defaults.
+# Just hit Enter at each prompt to accept the defaults..pub
+assets
+config
+layout
+locales
+node_modules
+package-lock.json
+package.json
+sections
+server
+snippets
+templates
+Nias-MacBook-Air-2:theme_export__bcsf5t-i9-myshopify-com-dawn__15APR2025-0155pm niasikharulidze$ nano .env
+
+  UW PICO 5.09                       File: .env                       Modified  
+
+SHOPIFY_STORE_DOMAIN=https://bcsf5t-i9.myshopify.com
+SHOPIFY_STOREFRONT_TOKEN=1c502f4531a3e71bcce7fbd253bd67cc                      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+^G Get Help  ^O WriteOut  ^R Read File ^Y Prev Pg   ^K Cut Text  ^C Cur Pos   
+^X Exit      ^J Justify   ^W Where is  ^V Next Pg   ^U UnCut Text^T To Spell  
