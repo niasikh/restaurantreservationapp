@@ -39,22 +39,22 @@ const cuisines = [
   { id: '2', name: 'Pizza', image: require('../assets/images/pizza.jpg') },
   { id: '3', name: 'Italian', image: require('../assets/images/italian.jpg') },
   { id: '4', name: 'Brunch', image: require('../assets/images/brunch.jpg') },
-  { id: '5', name: 'American', image: require('../assets/images/icon.png') },
-  { id: '6', name: 'Sushi', image: require('../assets/images/icon.png') },
-  { id: '7', name: 'Ukrainian', image: require('../assets/images/icon.png') },
-  { id: '8', name: 'Mexican', image: require('../assets/images/icon.png') },
-  { id: '9', name: 'European', image: require('../assets/images/icon.png') },
-  { id: '10', name: 'Fine Dining', image: require('../assets/images/icon.png') },
-  { id: '11', name: 'Seafood', image: require('../assets/images/icon.png') },
-  { id: '12', name: 'Vegetarian', image: require('../assets/images/icon.png') },
-  { id: '13', name: 'Vegan', image: require('../assets/images/icon.png') },
-  { id: '14', name: 'Indian', image: require('../assets/images/icon.png') },
-  { id: '15', name: 'Chinese', image: require('../assets/images/icon.png') },
-  { id: '16', name: 'Burgers', image: require('../assets/images/icon.png') },
-  { id: '17', name: 'Soups', image: require('../assets/images/icon.png') },
-  { id: '18', name: 'Breakfast', image: require('../assets/images/icon.png') },
-  { id: '19', name: 'Bakery', image: require('../assets/images/icon.png') },
-  { id: '20', name: 'Wine Bar', image: require('../assets/images/icon.png') },
+  { id: '5', name: 'American', image: require('../assets/images/american.jpg') },
+  { id: '6', name: 'Sushi', image: require('../assets/images/sushi.jpg') },
+  { id: '7', name: 'Ukrainian', image: require('../assets/images/ukrainian.jpg') },
+  { id: '8', name: 'Mexican', image: require('../assets/images/mexican.jpg') },
+  { id: '9', name: 'European', image: require('../assets/images/european.jpg') },
+  { id: '10', name: 'Fine Dining', image: require('../assets/images/fine-dining.jpg') },
+  { id: '11', name: 'Seafood', image: require('../assets/images/seafood.jpg') },
+  { id: '12', name: 'Vegetarian', image: require('../assets/images/vegetarian.jpg') },
+  { id: '13', name: 'Vegan', image: require('../assets/images/vegan.jpg') },
+  { id: '14', name: 'Indian', image: require('../assets/images/indian.jpg') },
+  { id: '15', name: 'Chinese', image: require('../assets/images/chinese.jpg') },
+  { id: '16', name: 'Burgers', image: require('../assets/images/burgers.jpg') },
+  { id: '17', name: 'Soups', image: require('../assets/images/soups.jpg') },
+  { id: '18', name: 'Breakfast', image: require('../assets/images/breakfast.jpg') },
+  { id: '19', name: 'Bakery', image: require('../assets/images/bakery.jpg') },
+  { id: '20', name: 'Wine Bar', image: require('../assets/images/wine-bar.jpg') },
   // Add more from backend as needed
 ];
 
@@ -545,10 +545,11 @@ export default function HomeScreen() {
   }, [showBookingModal]);
 
   return (
-    <LinearGradient
-      colors={['#606060', '#202020', '#000000']}
-      style={{ flex: 1 }}
-    >
+    <>
+      <LinearGradient
+        colors={['#606060', '#202020', '#000000']}
+        style={{ flex: 1 }}
+      >
       {/* Sticky Header */}
       <SafeAreaView style={styles.stickyHeaderSafe}>
         <View style={styles.stickyHeader}>
@@ -907,7 +908,21 @@ export default function HomeScreen() {
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
           <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
-          <View style={{ backgroundColor: '#f2be35', borderRadius: 24, width: '85%', padding: 20 }}>
+          <LinearGradient
+            colors={['#606060', '#202020', '#000000']}
+            style={{ 
+              borderRadius: 24, 
+              width: '85%', 
+              padding: 20,
+              shadowColor: '#000',
+              shadowOpacity: 0.9,
+              shadowRadius: 40,
+              shadowOffset: { width: 0, height: 20 },
+              elevation: 50,
+              borderWidth: 3,
+              borderColor: '#000000',
+              transform: [{ scale: 1.02 }],
+            }}>
             <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold', marginBottom: 18 }}>Party size</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 24 }}>
               {partySizes.map(size => (
@@ -944,13 +959,13 @@ export default function HomeScreen() {
                 >
                   {dateOptions.map((opt, idx) => (
                     <View key={idx} style={{ height: 38, justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ color: '#000', fontSize: 16 }}>{opt.label}</Text>
+                      <Text style={{ color: '#fff', fontSize: 16 }}>{opt.label}</Text>
                     </View>
                   ))}
                 </ScrollView>
                 {/* Fixed pill outline for date */}
                 <View style={{ position: 'absolute', top: 76, left: 0, width: 140, height: 38, justifyContent: 'center', alignItems: 'center', pointerEvents: 'none' }}>
-                  <View style={{ paddingVertical: 10, paddingHorizontal: 0, borderRadius: 28, borderWidth: 2, borderColor: '#000000', alignSelf: 'center', minWidth: 0, minHeight: 38 }}>
+                  <View style={{ paddingVertical: 10, paddingHorizontal: 0, borderRadius: 28, borderWidth: 2, borderColor: '#FF8C00', alignSelf: 'center', minWidth: 0, minHeight: 38 }}>
                     <Text style={{ color: 'transparent', fontSize: 16, paddingHorizontal: 24 }}>
                       {dateOptions[dateScrollIndex]?.label || ''}
                     </Text>
@@ -974,13 +989,13 @@ export default function HomeScreen() {
                 >
                   {timeOptions.map((t, idx) => (
                     <View key={idx} style={{ height: 38, justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ color: '#000', fontSize: 16 }}>{t}</Text>
+                      <Text style={{ color: '#fff', fontSize: 16 }}>{t}</Text>
                     </View>
                   ))}
                 </ScrollView>
                 {/* Fixed pill outline for time */}
                 <View style={{ position: 'absolute', top: 76, left: 0, width: 120, height: 38, justifyContent: 'center', alignItems: 'center', pointerEvents: 'none' }}>
-                  <View style={{ paddingVertical: 10, paddingHorizontal: 0, borderRadius: 28, borderWidth: 2, borderColor: '#000000', alignSelf: 'center', minWidth: 0, minHeight: 38 }}>
+                  <View style={{ paddingVertical: 10, paddingHorizontal: 0, borderRadius: 28, borderWidth: 2, borderColor: '#FF8C00', alignSelf: 'center', minWidth: 0, minHeight: 38 }}>
                     <Text style={{ color: 'transparent', fontSize: 16, paddingHorizontal: 24 }}>
                       {timeOptions[timeScrollIndex] || ''}
                     </Text>
@@ -989,12 +1004,23 @@ export default function HomeScreen() {
               </View>
             </View>
             <TouchableOpacity
-              style={{ backgroundColor: '#000000', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginTop: 8 }}
+              style={{ 
+                backgroundColor: '#000000', 
+                borderRadius: 12, 
+                paddingVertical: 16, 
+                alignItems: 'center', 
+                marginTop: 8,
+                shadowColor: '#666666',
+                shadowOpacity: 0.6,
+                shadowRadius: 15,
+                shadowOffset: { width: 0, height: 8 },
+                elevation: 15,
+              }}
               onPress={() => setShowBookingModal(false)}
             >
               <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Done</Text>
             </TouchableOpacity>
-          </View>
+          </LinearGradient>
         </View>
       </Modal>
       {/* Registration Modal */}
@@ -1010,10 +1036,10 @@ export default function HomeScreen() {
           <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <View style={{ backgroundColor: '#f2be35', borderRadius: 24, width: '85%', padding: 0, overflow: 'hidden', maxHeight: '85%' }}>
-                              {/* Logo at the top */}
+              {/* Logo at the top */}
                 <View style={{ alignItems: 'center', marginTop: 4, marginBottom: 4 }}>
                   <Image source={require('../assets/images/nia.png')} style={{ width: 140, height: 140, resizeMode: 'contain' }} />
-                </View>
+              </View>
               {/* Top Bar */}
               <View style={{ flexDirection: 'row', alignItems: 'center', padding: 12 }}>
                 <View style={{ flex: 1, alignItems: 'center' }}>
@@ -1101,10 +1127,12 @@ export default function HomeScreen() {
           {/* Blurred background overlay */}
           <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
           <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
-          <View style={{ backgroundColor: '#1a2233', borderRadius: 24, width: '92%', maxWidth: 420, padding: 24, alignSelf: 'center', justifyContent: 'center' }}>
+          <LinearGradient
+            colors={['#606060', '#202020', '#000000']}
+            style={{ borderRadius: 24, width: '92%', maxWidth: 420, padding: 24, alignSelf: 'center', justifyContent: 'center' }}>
             {/* Row for name, bookmark, and X button aligned */}
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12, position: 'relative' }}>
-              <Text style={{ color: '#000', fontSize: 22, fontWeight: 'bold', flex: 1 }}>
+              <Text style={{ color: '#fff', fontSize: 22, fontWeight: 'bold', flex: 1 }}>
                 {selectedRestaurant?.name}
               </Text>
               <TouchableOpacity
@@ -1118,7 +1146,7 @@ export default function HomeScreen() {
                 <Ionicons name={favorites[selectedRestaurant?.id] ? 'bookmark' : 'bookmark-outline'} size={24} color={'#FF8C00'} />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => setShowRestaurantModal(false)} style={{ marginLeft: 0 }}>
-                <Ionicons name="close" size={28} color="#fff" />
+                <Ionicons name="close" size={24} color="#000" />
               </TouchableOpacity>
             </View>
             {selectedRestaurant?.name === 'Lolita' ? (
@@ -1130,12 +1158,20 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/icon.png")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/icon.png")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/icon.png")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/icon.png")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/icon.png")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_5244.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5245.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5243.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/nia3.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4142.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
               </View>
             ) : (
               <Image source={selectedRestaurant?.image} style={{ width: '100%', height: 180, borderRadius: 16, marginBottom: 16 }} />
@@ -1144,22 +1180,22 @@ export default function HomeScreen() {
               <>
                 {/* Description row with $$ New-American, Cocktail Bar and 4.3 stars */}
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
-                  <Text style={{ color: '#b0b8c1', fontSize: 15, marginRight: 8 }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
                     $$ New-American, Cocktail Bar
                   </Text>
                   <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
                   <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.3</Text>
                 </View>
                 {/* Second description, smaller */}
-                <Text style={{ color: '#000', fontSize: 13, marginBottom: 18 }}>
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
                   Stylish courtyard hotspot in Tbilisi, offering comfort food and cocktails in cool industrial-chic setting. Perfect for Brunch, dinner, and late-night drinks!
                 </Text>
                 {/* Booking button/modal (identical to header) */}
                 <TouchableOpacity
-                  style={{ backgroundColor: '#000000', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
                   onPress={() => setShowBookingModal(true)}
                 >
-                  <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
                 </TouchableOpacity>
                 {/* Menu Section */}
                 <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
@@ -1168,33 +1204,33 @@ export default function HomeScreen() {
                   {[...Array(20)].map((_, i) => (
                     i === 0 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
-                        <Image source={require("../assets/images/icon.png")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <Image source={require("../assets/images/ko.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
-                          <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold' }}>Cheese Sticks</Text>
-                          <Text style={{ color: '#b0b8c1', fontSize: 13 }}>Sweet Chili Sauce, Sulguni Cheese, Panko, Garlic, Egg</Text>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Cheese Sticks</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Sweet Chili Sauce, Sulguni Cheese, Panko, Garlic, Egg</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Appetizer</Text>
                         </View>
-                        <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
                       </View>
                     ) : i === 1 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
-                        <Image source={require("../assets/images/icon.png")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <Image source={require("../assets/images/nnn.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
-                          <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold' }}>Avocado Toast</Text>
-                          <Text style={{ color: '#b0b8c1', fontSize: 13 }}>Avocado, Red Onion, Garlic, Coriander, Olive Oil, Lime</Text>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Avocado Toast</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Avocado, Red Onion, Garlic, Coriander, Olive Oil, Lime</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Appetizer</Text>
                         </View>
-                        <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
                       </View>
                     ) : i === 2 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
-                        <Image source={require("../assets/images/icon.png")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <Image source={require("../assets/images/jj.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
-                          <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold' }}>Margherita Pizza</Text>
-                          <Text style={{ color: '#b0b8c1', fontSize: 13 }}>Tomato sauce, Fresh Mozzarella</Text>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Margherita Pizza</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Tomato sauce, Fresh Mozzarella</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pizzette</Text>
                         </View>
-                        <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>19 GEL</Text>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>19 GEL</Text>
                       </View>
                     ) : (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1202,10 +1238,10 @@ export default function HomeScreen() {
                           <Ionicons name="fast-food-outline" size={32} color="#fff" />
                         </View>
                         <View style={{ flex: 1 }}>
-                          <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold' }}>Sample Dish {i + 1}</Text>
-                          <Text style={{ color: '#b0b8c1', fontSize: 13 }}>A delicious sample dish description goes here.</Text>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Sample Dish {i + 1}</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>A delicious sample dish description goes here.</Text>
                         </View>
-                        <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>$15.00</Text>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>$15.00</Text>
                       </View>
                     )
                   ))}
@@ -1231,10 +1267,11 @@ export default function HomeScreen() {
                 {selectedRestaurant?.tags?.join(' • ')}
               </Text>
             )}
-          </View>
+          </LinearGradient>
         </View>
       </Modal>
-    </LinearGradient>
+      </LinearGradient>
+    </>
   );
 }
 
