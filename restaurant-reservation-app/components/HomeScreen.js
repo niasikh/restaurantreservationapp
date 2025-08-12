@@ -1199,7 +1199,7 @@ export default function HomeScreen() {
                 </TouchableOpacity>
                 {/* Menu Section */}
                 <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
-                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }}>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
                   {/* 20 sample dishes */}
                   {[...Array(20)].map((_, i) => (
                     i === 0 ? (
@@ -1231,6 +1231,176 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pizzette</Text>
                         </View>
                         <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>19 GEL</Text>
+                      </View>
+                    ) : i === 3 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/k.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Bolognese Rigatoni</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Beef, Bacon, Tomato, Red Wine, Spicy Sour Cream</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pasta</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>27 GEL</Text>
+                      </View>
+                    ) : i === 4 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5253.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Grilled Artichoke Salad</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Artichoke, Frisée, Romano, Parmesan, Nuts, Parsley Dressing</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Salad</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
+                      </View>
+                    ) : i === 5 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5254.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Nachos</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Cheese Sauce, Guacamole, Tomato Salsa, Nachos, Jalapenos</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Side</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>13 GEL</Text>
+                      </View>
+                    ) : i === 6 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5255.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Roasted Chicken</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Grilled Corn, Lemon, Herbs</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Large Plate</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>33 GEL</Text>
+                      </View>
+                    ) : i === 7 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/88.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Chicken Wings</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Sweet Chili Sauce, White Sesame, Green Onion, Fresh Pepper Mix</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Small Plate</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
+                      </View>
+                    ) : i === 8 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5258.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Mac & Cheese</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Cheddar, Gouda, Parmesan, Mozzarella, Panko</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pasta</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>21 GEL</Text>
+                      </View>
+                    ) : i === 9 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5259.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Tom Yum</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Shrimp, Rice Noodles, Ginger, Mushroom, Lemongrass, Potato, Coconut Cream</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Soup</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>21 GEL</Text>
+                      </View>
+                    ) : i === 10 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5260.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Cauliflower Bites with Kimchi Mayo</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Cauliflower, Panko, Onion, Garlic, Kimchi, Egg, Lime, Parsley</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Appetizer</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>11 GEL</Text>
+                      </View>
+                    ) : i === 11 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5261.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Chicken Bites</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Chicken, Panko, Tartar Sauce</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Small Plate</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>15 GEL</Text>
+                      </View>
+                    ) : i === 12 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5262.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Chicken Focaccia Sandwich</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Focaccia, Chicken, Avocado, Tomato, Bacon, Spinach, Sauce, Fries</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Burger & Sandwich</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>25 GEL</Text>
+                      </View>
+                    ) : i === 13 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5263.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Cheeseburger</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Beef, Pickles, Onion, Cocktail Sauce, Fries</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Burger & Sandwich</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>27 GEL</Text>
+                      </View>
+                    ) : i === 14 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5264.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Pita Caesar</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Chicken, Bacon, Parmesan Cheese, Caesar Sauce, Fries</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Burger & Sandwich</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>25 GEL</Text>
+                      </View>
+                    ) : i === 15 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5265.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Gnocchi</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Crispy Prosciutto, Cream, Permesan, Black Pepper</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pasta</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>19 GEL</Text>
+                      </View>
+                    ) : i === 16 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5266.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Lolita Khatchapuri</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Sulguni Cheese, Mozzarella Cheese, Imeruli Cheese, Egg, Butter</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pizzette</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>19 GEL</Text>
+                      </View>
+                    ) : i === 17 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5267.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Apple Crumble</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Apple Pie, Vanilla Ice Cream</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Dessert</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>13 GEL</Text>
+                      </View>
+                    ) : i === 18 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5268.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Tiramisu</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Mascarpone, Espresso, Cocoa, Port Wine</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Dessert</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>13 GEL</Text>
+                      </View>
+                    ) : i === 19 ? (
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                        <Image source={require("../assets/images/IMG_5269.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
+                        <View style={{ flex: 1 }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Churros</Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Chocolate Sauce</Text>
+                          <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Dessert</Text>
+                        </View>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>11 GEL</Text>
                       </View>
                     ) : (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
