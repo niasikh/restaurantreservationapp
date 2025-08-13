@@ -547,7 +547,7 @@ export default function HomeScreen() {
   return (
     <>
       <LinearGradient
-        colors={['#606060', '#202020', '#000000']}
+        colors={['#808080', '#202020', '#000000']}
         style={{ flex: 1 }}
       >
       {/* Sticky Header */}
@@ -567,8 +567,8 @@ export default function HomeScreen() {
               <Text style={styles.selectorText}>{partySize} • {selectedTime} {selectedDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.selectorButton}>
-              <Ionicons name="location-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
-              <Text style={styles.selectorText}>Tbilisi, Georgia</Text>
+              <Ionicons name="search-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
+              <Text style={styles.selectorText}>Search</Text>
             </TouchableOpacity>
           </View>
 
@@ -660,7 +660,9 @@ export default function HomeScreen() {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.cuisineCarousel} contentContainerStyle={{ paddingLeft: 8, paddingRight: 8 }}>
           {cuisines.map(cuisine => (
             <View key={cuisine.id} style={styles.cuisineItem}>
-              <Image source={cuisine.image} style={styles.cuisineImageLarge} />
+              <View style={styles.cuisineFrame}>
+                <Image source={cuisine.image} style={styles.cuisineImageLarge} />
+              </View>
               <Text style={styles.cuisineText}>{cuisine.name}</Text>
             </View>
           ))}
@@ -898,224 +900,6 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       </SafeAreaView>
-      {/* Booking Modal */}
-      <Modal
-        visible={showBookingModal}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setShowBookingModal(false)}
-      >
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
-          <LinearGradient
-            colors={['#606060', '#202020', '#000000']}
-            style={{ 
-              borderRadius: 24, 
-              width: '85%', 
-              padding: 20,
-              shadowColor: '#000',
-              shadowOpacity: 0.9,
-              shadowRadius: 40,
-              shadowOffset: { width: 0, height: 20 },
-              elevation: 50,
-              borderWidth: 3,
-              borderColor: '#000000',
-              transform: [{ scale: 1.02 }],
-            }}>
-            <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold', marginBottom: 18 }}>Party size</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 24 }}>
-              {partySizes.map(size => (
-                <TouchableOpacity
-                  key={size}
-                  onPress={() => setPartySize(size)}
-                  style={{
-                    width: 44, height: 44, borderRadius: 22, borderWidth: 2,
-                    borderColor: partySize === size ? '#000000' : '#000000',
-                    alignItems: 'center', justifyContent: 'center', marginRight: 12,
-                    backgroundColor: partySize === size ? '#FF8C00' : '#000000',
-                  }}
-                >
-                  <Text style={{ color: '#fff', fontSize: 18, fontWeight: partySize === size ? 'bold' : 'normal' }}>{size}</Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-            <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Date and time</Text>
-            <View style={{ flexDirection: 'row', marginBottom: 24, position: 'relative', height: 190, justifyContent: 'center', alignItems: 'center' }}>
-              {/* Date Picker */}
-              <View style={{ width: 140, height: 190, overflow: 'hidden', position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
-                <ScrollView
-                  ref={dateScrollRef}
-                  style={{ width: 140, height: 190 }}
-                  showsVerticalScrollIndicator={false}
-                  snapToInterval={38}
-                  decelerationRate="fast"
-                  onMomentumScrollEnd={e => {
-                    const idx = Math.round(e.nativeEvent.contentOffset.y / 38);
-                    setDateScrollIndex(idx);
-                    setSelectedDate(dateOptions[idx].value);
-                  }}
-                  contentContainerStyle={{ paddingTop: 76, paddingBottom: 76 }}
-                >
-                  {dateOptions.map((opt, idx) => (
-                    <View key={idx} style={{ height: 38, justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ color: '#fff', fontSize: 16 }}>{opt.label}</Text>
-                    </View>
-                  ))}
-                </ScrollView>
-                {/* Fixed pill outline for date */}
-                <View style={{ position: 'absolute', top: 76, left: 0, width: 140, height: 38, justifyContent: 'center', alignItems: 'center', pointerEvents: 'none' }}>
-                  <View style={{ paddingVertical: 10, paddingHorizontal: 0, borderRadius: 28, borderWidth: 2, borderColor: '#FF8C00', alignSelf: 'center', minWidth: 0, minHeight: 38 }}>
-                    <Text style={{ color: 'transparent', fontSize: 16, paddingHorizontal: 24 }}>
-                      {dateOptions[dateScrollIndex]?.label || ''}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-              {/* Time Picker */}
-              <View style={{ width: 120, height: 190, marginLeft: 16, overflow: 'hidden', position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
-                <ScrollView
-                  ref={timeScrollRef}
-                  style={{ width: 120, height: 190 }}
-                  showsVerticalScrollIndicator={false}
-                  snapToInterval={38}
-                  decelerationRate="fast"
-                  onMomentumScrollEnd={e => {
-                    const idx = Math.round(e.nativeEvent.contentOffset.y / 38);
-                    setTimeScrollIndex(idx);
-                    setSelectedTime(timeOptions[idx]);
-                  }}
-                  contentContainerStyle={{ paddingTop: 76, paddingBottom: 76 }}
-                >
-                  {timeOptions.map((t, idx) => (
-                    <View key={idx} style={{ height: 38, justifyContent: 'center', alignItems: 'center' }}>
-                      <Text style={{ color: '#fff', fontSize: 16 }}>{t}</Text>
-                    </View>
-                  ))}
-                </ScrollView>
-                {/* Fixed pill outline for time */}
-                <View style={{ position: 'absolute', top: 76, left: 0, width: 120, height: 38, justifyContent: 'center', alignItems: 'center', pointerEvents: 'none' }}>
-                  <View style={{ paddingVertical: 10, paddingHorizontal: 0, borderRadius: 28, borderWidth: 2, borderColor: '#FF8C00', alignSelf: 'center', minWidth: 0, minHeight: 38 }}>
-                    <Text style={{ color: 'transparent', fontSize: 16, paddingHorizontal: 24 }}>
-                      {timeOptions[timeScrollIndex] || ''}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </View>
-            <TouchableOpacity
-              style={{ 
-                backgroundColor: '#000000', 
-                borderRadius: 12, 
-                paddingVertical: 16, 
-                alignItems: 'center', 
-                marginTop: 8,
-                shadowColor: '#666666',
-                shadowOpacity: 0.6,
-                shadowRadius: 15,
-                shadowOffset: { width: 0, height: 8 },
-                elevation: 15,
-              }}
-              onPress={() => setShowBookingModal(false)}
-            >
-              <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Done</Text>
-            </TouchableOpacity>
-          </LinearGradient>
-        </View>
-      </Modal>
-      {/* Registration Modal */}
-      <Modal
-        visible={showRegisterModal}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setShowRegisterModal(false)}
-      >
-        <View style={{ flex: 1 }}>
-          {/* Light blur background */}
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ backgroundColor: '#f2be35', borderRadius: 24, width: '85%', padding: 0, overflow: 'hidden', maxHeight: '85%' }}>
-              {/* Logo at the top */}
-                <View style={{ alignItems: 'center', marginTop: 4, marginBottom: 4 }}>
-                  <Image source={require('../assets/images/nia.png')} style={{ width: 140, height: 140, resizeMode: 'contain' }} />
-              </View>
-              {/* Top Bar */}
-              <View style={{ flexDirection: 'row', alignItems: 'center', padding: 12 }}>
-                <View style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Enter your phone number</Text>
-                </View>
-              </View>
-              <TouchableOpacity onPress={() => setShowRegisterModal(false)} style={{ position: 'absolute', right: 12, top: 12 }}>
-                <Ionicons name="close" size={24} color="#000000" />
-              </TouchableOpacity>
-              <Text style={{ color: '#000', fontSize: 16, textAlign: 'center', marginHorizontal: 24, marginBottom: 8 }}>One quick text and you're in!</Text>
-              {/* Phone Input */}
-              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#000000', borderRadius: 12, marginHorizontal: 24, marginTop: 18, marginBottom: 8, paddingHorizontal: 12, height: 48 }}>
-                <TouchableOpacity onPress={() => setShowCountryPicker(true)} style={{ flexDirection: 'row', alignItems: 'center', marginRight: 8 }}>
-                  <Text style={{ fontSize: 22 }}>{COUNTRIES.find(c => c.code === countryCode)?.flag || '🇬🇪'}</Text>
-                  <Text style={{ color: '#fff', fontSize: 16, marginLeft: 4 }}>+{callingCode}</Text>
-                  <Ionicons name="chevron-down" size={18} color="#fff" style={{ marginLeft: 2 }} />
-                </TouchableOpacity>
-                <TextInput
-                  style={{ flex: 1, color: '#fff', fontSize: 16 }}
-                  placeholder="Phone number"
-                  placeholderTextColor="#b0b8c1"
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                  keyboardType="phone-pad"
-                  maxLength={15}
-                />
-              </View>
-              {/* Simple Country Picker Modal */}
-              <Modal visible={showCountryPicker} animationType="slide" transparent onRequestClose={() => setShowCountryPicker(false)}>
-                <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
-                  <View style={{ backgroundColor: '#23283a', borderRadius: 16, width: '80%', maxHeight: '70%' }}>
-                    <ScrollView>
-                      {COUNTRIES.map((country) => (
-                        <TouchableOpacity
-                          key={country.code}
-                          style={{ flexDirection: 'row', alignItems: 'center', padding: 14, borderBottomWidth: 1, borderBottomColor: '#222' }}
-                          onPress={() => {
-                            setCountryCode(country.code);
-                            setCallingCode(country.callingCode);
-                            setShowCountryPicker(false);
-                          }}
-                        >
-                          <Text style={{ fontSize: 22, marginRight: 12 }}>{country.flag}</Text>
-                          <Text style={{ color: '#fff', fontSize: 16, flex: 1 }}>{country.name}</Text>
-                          <Text style={{ color: '#fff', fontSize: 16 }}>+{country.callingCode}</Text>
-                        </TouchableOpacity>
-                      ))}
-                    </ScrollView>
-                    <TouchableOpacity onPress={() => setShowCountryPicker(false)} style={{ alignItems: 'center', padding: 12 }}>
-                      <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Cancel</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </Modal>
-
-              <Animated.View style={{ transform: [{ scale: continueAnim }] }}>
-                <TouchableOpacity
-                  style={{ backgroundColor: '#000000', borderRadius: 12, paddingVertical: 12, alignItems: 'center', marginHorizontal: 24, marginBottom: 12, height: 48 }}
-                  onPress={() => {
-                    Animated.sequence([
-                      Animated.timing(continueAnim, { toValue: 0.95, duration: 80, useNativeDriver: true }),
-                      Animated.timing(continueAnim, { toValue: 1, duration: 80, useNativeDriver: true })
-                    ]).start();
-                  }}
-                >
-                  <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Let's Go!</Text>
-                </TouchableOpacity>
-              </Animated.View>
-
-              <Text style={{ color: '#000', fontSize: 12, marginHorizontal: 24, marginBottom: 18, textAlign: 'center' }}>
-                We respect your privacy. We only use your info to verify your account.
-              </Text>
-            </View>
-          </View>
-        </View>
-      </Modal>
       {/* Restaurant Details Modal */}
       <Modal
         visible={showRestaurantModal}
@@ -1441,6 +1225,224 @@ export default function HomeScreen() {
         </View>
       </Modal>
       </LinearGradient>
+      {/* Booking Modal */}
+      <Modal
+        visible={showBookingModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowBookingModal(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <LinearGradient
+            colors={['#606060', '#202020', '#000000']}
+            style={{ 
+              borderRadius: 24, 
+              width: '85%', 
+              padding: 20,
+              shadowColor: '#000',
+              shadowOpacity: 0.9,
+              shadowRadius: 40,
+              shadowOffset: { width: 0, height: 20 },
+              elevation: 50,
+              borderWidth: 3,
+              borderColor: '#000000',
+              transform: [{ scale: 1.02 }],
+            }}>
+            <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold', marginBottom: 18 }}>Party size</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 24 }}>
+              {partySizes.map(size => (
+                <TouchableOpacity
+                  key={size}
+                  onPress={() => setPartySize(size)}
+                  style={{
+                    width: 44, height: 44, borderRadius: 22, borderWidth: 2,
+                    borderColor: partySize === size ? '#000000' : '#000000',
+                    alignItems: 'center', justifyContent: 'center', marginRight: 12,
+                    backgroundColor: partySize === size ? '#FF8C00' : '#000000',
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontSize: 18, fontWeight: partySize === size ? 'bold' : 'normal' }}>{size}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+            <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Date and time</Text>
+            <View style={{ flexDirection: 'row', marginBottom: 24, position: 'relative', height: 190, justifyContent: 'center', alignItems: 'center' }}>
+              {/* Date Picker */}
+              <View style={{ width: 140, height: 190, overflow: 'hidden', position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
+                <ScrollView
+                  ref={dateScrollRef}
+                  style={{ width: 140, height: 190 }}
+                  showsVerticalScrollIndicator={false}
+                  snapToInterval={38}
+                  decelerationRate="fast"
+                  onMomentumScrollEnd={e => {
+                    const idx = Math.round(e.nativeEvent.contentOffset.y / 38);
+                    setDateScrollIndex(idx);
+                    setSelectedDate(dateOptions[idx].value);
+                  }}
+                  contentContainerStyle={{ paddingTop: 76, paddingBottom: 76 }}
+                >
+                  {dateOptions.map((opt, idx) => (
+                    <View key={idx} style={{ height: 38, justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ color: '#fff', fontSize: 16 }}>{opt.label}</Text>
+                    </View>
+                  ))}
+                </ScrollView>
+                {/* Fixed pill outline for date */}
+                <View style={{ position: 'absolute', top: 76, left: 0, width: 140, height: 38, justifyContent: 'center', alignItems: 'center', pointerEvents: 'none' }}>
+                  <View style={{ paddingVertical: 10, paddingHorizontal: 0, borderRadius: 28, borderWidth: 2, borderColor: '#FF8C00', alignSelf: 'center', minWidth: 0, minHeight: 38 }}>
+                    <Text style={{ color: 'transparent', fontSize: 16, paddingHorizontal: 24 }}>
+                      {dateOptions[dateScrollIndex]?.label || ''}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              {/* Time Picker */}
+              <View style={{ width: 120, height: 190, marginLeft: 16, overflow: 'hidden', position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
+                <ScrollView
+                  ref={timeScrollRef}
+                  style={{ width: 120, height: 190 }}
+                  showsVerticalScrollIndicator={false}
+                  snapToInterval={38}
+                  decelerationRate="fast"
+                  onMomentumScrollEnd={e => {
+                    const idx = Math.round(e.nativeEvent.contentOffset.y / 38);
+                    setTimeScrollIndex(idx);
+                    setSelectedTime(timeOptions[idx]);
+                  }}
+                  contentContainerStyle={{ paddingTop: 76, paddingBottom: 76 }}
+                >
+                  {timeOptions.map((t, idx) => (
+                    <View key={idx} style={{ height: 38, justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ color: '#fff', fontSize: 16 }}>{t}</Text>
+                    </View>
+                  ))}
+                </ScrollView>
+                {/* Fixed pill outline for time */}
+                <View style={{ position: 'absolute', top: 76, left: 0, width: 120, height: 38, justifyContent: 'center', alignItems: 'center', pointerEvents: 'none' }}>
+                  <View style={{ paddingVertical: 10, paddingHorizontal: 0, borderRadius: 28, borderWidth: 2, borderColor: '#FF8C00', alignSelf: 'center', minWidth: 0, minHeight: 38 }}>
+                    <Text style={{ color: 'transparent', fontSize: 16, paddingHorizontal: 24 }}>
+                      {timeOptions[timeScrollIndex] || ''}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </View>
+            <TouchableOpacity
+              style={{ 
+                backgroundColor: '#000000', 
+                borderRadius: 12, 
+                paddingVertical: 16, 
+                alignItems: 'center', 
+                marginTop: 8,
+                shadowColor: '#666666',
+                shadowOpacity: 0.6,
+                shadowRadius: 15,
+                shadowOffset: { width: 0, height: 8 },
+                elevation: 15,
+              }}
+              onPress={() => setShowBookingModal(false)}
+            >
+              <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Done</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+      </Modal>
+      {/* Registration Modal */}
+      <Modal
+        visible={showRegisterModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowRegisterModal(false)}
+      >
+        <View style={{ flex: 1 }}>
+          {/* Light blur background */}
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ backgroundColor: '#f2be35', borderRadius: 24, width: '85%', padding: 0, overflow: 'hidden', maxHeight: '85%' }}>
+              {/* Logo at the top */}
+                <View style={{ alignItems: 'center', marginTop: 4, marginBottom: 4 }}>
+                  <Image source={require('../assets/images/nia.png')} style={{ width: 140, height: 140, resizeMode: 'contain' }} />
+              </View>
+              {/* Top Bar */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', padding: 12 }}>
+                <View style={{ flex: 1, alignItems: 'center' }}>
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Enter your phone number</Text>
+                </View>
+              </View>
+              <TouchableOpacity onPress={() => setShowRegisterModal(false)} style={{ position: 'absolute', right: 12, top: 12 }}>
+                <Ionicons name="close" size={24} color="#000000" />
+              </TouchableOpacity>
+              <Text style={{ color: '#000', fontSize: 16, textAlign: 'center', marginHorizontal: 24, marginBottom: 8 }}>One quick text and you're in!</Text>
+              {/* Phone Input */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#000000', borderRadius: 12, marginHorizontal: 24, marginTop: 18, marginBottom: 8, paddingHorizontal: 12, height: 48 }}>
+                <TouchableOpacity onPress={() => setShowCountryPicker(true)} style={{ flexDirection: 'row', alignItems: 'center', marginRight: 8 }}>
+                  <Text style={{ fontSize: 22 }}>{COUNTRIES.find(c => c.code === countryCode)?.flag || '🇬🇪'}</Text>
+                  <Text style={{ color: '#fff', fontSize: 16, marginLeft: 4 }}>+{callingCode}</Text>
+                  <Ionicons name="chevron-down" size={18} color="#fff" style={{ marginLeft: 2 }} />
+                </TouchableOpacity>
+                <TextInput
+                  style={{ flex: 1, color: '#fff', fontSize: 16 }}
+                  placeholder="Phone number"
+                  placeholderTextColor="#b0b8c1"
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                  keyboardType="phone-pad"
+                  maxLength={15}
+                />
+              </View>
+              {/* Simple Country Picker Modal */}
+              <Modal visible={showCountryPicker} animationType="slide" transparent onRequestClose={() => setShowCountryPicker(false)}>
+                <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
+                  <View style={{ backgroundColor: '#23283a', borderRadius: 16, width: '80%', maxHeight: '70%' }}>
+                    <ScrollView>
+                      {COUNTRIES.map((country) => (
+                        <TouchableOpacity
+                          key={country.code}
+                          style={{ flexDirection: 'row', alignItems: 'center', padding: 14, borderBottomWidth: 1, borderBottomColor: '#222' }}
+                          onPress={() => {
+                            setCountryCode(country.code);
+                            setCallingCode(country.callingCode);
+                            setShowCountryPicker(false);
+                          }}
+                        >
+                          <Text style={{ fontSize: 22, marginRight: 12 }}>{country.flag}</Text>
+                          <Text style={{ color: '#fff', fontSize: 16, flex: 1 }}>{country.name}</Text>
+                          <Text style={{ color: '#fff', fontSize: 16 }}>+{country.callingCode}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </ScrollView>
+                    <TouchableOpacity onPress={() => setShowCountryPicker(false)} style={{ alignItems: 'center', padding: 12 }}>
+                      <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Cancel</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+
+              <Animated.View style={{ transform: [{ scale: continueAnim }] }}>
+                <TouchableOpacity
+                  style={{ backgroundColor: '#000000', borderRadius: 12, paddingVertical: 12, alignItems: 'center', marginHorizontal: 24, marginBottom: 12, height: 48 }}
+                  onPress={() => {
+                    Animated.sequence([
+                      Animated.timing(continueAnim, { toValue: 0.95, duration: 80, useNativeDriver: true }),
+                      Animated.timing(continueAnim, { toValue: 1, duration: 80, useNativeDriver: true })
+                    ]).start();
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Let's Go!</Text>
+                </TouchableOpacity>
+              </Animated.View>
+
+              <Text style={{ color: '#000', fontSize: 12, marginHorizontal: 24, marginBottom: 18, textAlign: 'center' }}>
+                We respect your privacy. We only use your info to verify your account.
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
@@ -1576,7 +1578,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   cuisineCarousel: {
-    marginTop: 32,
+    marginTop: 16,
     marginBottom: 16,
   },
   cuisineItem: {
@@ -1584,11 +1586,21 @@ const styles = StyleSheet.create({
     marginRight: 16,
     width: 100,
   },
+  cuisineFrame: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#2a2a2a',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
+    borderWidth: 2,
+    borderColor: '#404040',
+  },
   cuisineImageLarge: {
     width: 88,
     height: 88,
     borderRadius: 44,
-    marginBottom: 4,
   },
   cuisineText: {
     color: '#fff',
