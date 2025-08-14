@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Image, FlatList, Dimensions, Modal, Pressable, Platform, SafeAreaView, StatusBar, Animated } from 'react-native';
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
-import { COUNTRIES } from './countries.js';
-import { BlurView } from 'expo-blur';
+import React, { useState, useRef } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Image, Modal, TextInput, FlatList, SafeAreaView, Dimensions, StyleSheet, Animated, Pressable, Platform, StatusBar } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
+import CuisineResultsModal from './CuisineResultsModal';
+import { COUNTRIES } from './countries';
 
 const { width } = Dimensions.get('window');
 
@@ -31,6 +32,78 @@ const restaurants = [
     tags: ['$$$', 'Georgian', 'European', 'Barbecue', 'Cocktail Bar'],
     rating: 4.8,
     times: ['5:45 PM', '6:00 PM', '6:15 PM'],
+  },
+  {
+    id: '4',
+    name: 'Alubali',
+    image: require('../assets/images/alubali.jpg'),
+    tags: ['$$$', 'Georgian', 'Authentic Georgian'],
+    rating: 5.0,
+    times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+  },
+  {
+    id: '5',
+    name: 'Orangery',
+    image: require('../assets/images/alubali.jpg'),
+    tags: ['$$', 'Georgian', 'European', 'Georgian & European'],
+    rating: 4.5,
+    times: ['5:30 PM', '6:00 PM', '6:30 PM'],
+  },
+  {
+    id: '6',
+    name: 'Khedi',
+    image: require('../assets/images/alubali.jpg'),
+    tags: ['$$', 'Georgian', 'Traditional Georgian'],
+    rating: 4.6,
+    times: ['6:00 PM', '6:45 PM', '7:15 PM'],
+  },
+  {
+    id: '7',
+    name: 'Restaurant Tavaduri',
+    image: require('../assets/images/alubali.jpg'),
+    tags: ['$$', 'Georgian', 'Traditional Georgian', 'Khinkali'],
+    rating: 4.8,
+    times: ['5:30 PM', '6:00 PM', '6:30 PM'],
+  },
+  {
+    id: '8',
+    name: 'Bakery Racha',
+    image: require('../assets/images/alubali.jpg'),
+    tags: ['$', 'Georgian', 'Bakery', 'Khachapuri'],
+    rating: 4.7,
+    times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+  },
+  {
+    id: '9',
+    name: 'Limoncello',
+    image: require('../assets/images/alubali.jpg'),
+    tags: ['$$', 'Georgian', 'Italian', 'Fusion'],
+    rating: 4.5,
+    times: ['5:45 PM', '6:15 PM', '6:45 PM'],
+  },
+  {
+    id: '10',
+    name: 'Shemomechama',
+    image: require('../assets/images/alubali.jpg'),
+    tags: ['$$', 'Georgian', 'Traditional', 'Home-style'],
+    rating: 4.9,
+    times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+  },
+  {
+    id: '11',
+    name: 'Kakhelebi',
+    image: require('../assets/images/alubali.jpg'),
+    tags: ['$$$', 'Georgian', 'Fine Dining', 'Authentic'],
+    rating: 4.8,
+    times: ['6:30 PM', '7:00 PM', '7:30 PM'],
+  },
+  {
+    id: '12',
+    name: 'Maspindzelo',
+    image: require('../assets/images/alubali.jpg'),
+    tags: ['$$', 'Georgian', 'Rustic', 'Traditional'],
+    rating: 4.6,
+    times: ['5:30 PM', '6:00 PM', '6:30 PM'],
   },
 ];
 
@@ -485,6 +558,9 @@ export default function HomeScreen() {
   const [showRestaurantModal, setShowRestaurantModal] = useState(false);
   // Add state for favorites
   const [favorites, setFavorites] = useState({});
+  // Add state for cuisine modal
+  const [selectedCuisine, setSelectedCuisine] = useState(null);
+  const [showCuisineModal, setShowCuisineModal] = useState(false);
 
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
@@ -543,6 +619,8 @@ export default function HomeScreen() {
       scrollToIndex(timeScrollRef, 0, 38);
     }
   }, [showBookingModal]);
+
+
 
   return (
     <>
@@ -659,12 +737,19 @@ export default function HomeScreen() {
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.cuisineCarousel} contentContainerStyle={{ paddingLeft: 8, paddingRight: 8 }}>
           {cuisines.map(cuisine => (
-            <View key={cuisine.id} style={styles.cuisineItem}>
+            <TouchableOpacity 
+              key={cuisine.id} 
+              style={styles.cuisineItem}
+              onPress={() => {
+                setSelectedCuisine(cuisine);
+                setShowCuisineModal(true);
+              }}
+            >
               <View style={styles.cuisineFrame}>
                 <Image source={cuisine.image} style={styles.cuisineImageLarge} />
               </View>
               <Text style={styles.cuisineText}>{cuisine.name}</Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </ScrollView>
         {/* Trending Section */}
@@ -1211,7 +1296,6 @@ export default function HomeScreen() {
           </LinearGradient>
         </View>
       </Modal>
-      </LinearGradient>
       {/* Booking Modal */}
       <Modal
         visible={showBookingModal}
@@ -1430,6 +1514,24 @@ export default function HomeScreen() {
           </View>
         </View>
       </Modal>
+      {/* Cuisine Modal */}
+      <CuisineResultsModal
+        visible={showCuisineModal}
+        cuisine={selectedCuisine?.name}
+        onClose={() => setShowCuisineModal(false)}
+        restaurants={restaurants}
+        loading={false}
+        onRestaurantPress={(restaurant) => {
+          setSelectedRestaurant(restaurant);
+          setShowCuisineModal(false);
+          setShowRestaurantModal(true);
+        }}
+        favorites={favorites}
+        onToggleFavorite={(restaurantId) => {
+          setFavorites(favs => ({ ...favs, [restaurantId]: !favs[restaurantId] }));
+        }}
+      />
+      </LinearGradient>
     </>
   );
 }
