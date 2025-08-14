@@ -28,7 +28,7 @@ const restaurants = [
   {
     id: '1',
     name: 'Honoré',
-    image: require('../assets/images/honore.jpg'),
+    image: require('../assets/images/IMG_5347.jpg'),
     tags: ['$$$', 'Georgian', 'European', 'Barbecue', 'Cocktail Bar'],
     rating: 4.8,
     times: ['5:45 PM', '6:00 PM', '6:15 PM'],
@@ -36,7 +36,7 @@ const restaurants = [
   {
     id: '4',
     name: 'Alubali',
-    image: require('../assets/images/alubali.jpg'),
+    image: require('../assets/images/IMG_5351.jpg'),
     tags: ['$$$', 'Georgian', 'Authentic Georgian'],
     rating: 5.0,
     times: ['6:00 PM', '6:30 PM', '7:00 PM'],
@@ -44,7 +44,7 @@ const restaurants = [
   {
     id: '5',
     name: 'Orangery',
-    image: require('../assets/images/alubali.jpg'),
+    image: require('../assets/images/IMG_5352.jpg'),
     tags: ['$$', 'Georgian', 'European', 'Georgian & European'],
     rating: 4.5,
     times: ['5:30 PM', '6:00 PM', '6:30 PM'],
@@ -52,39 +52,39 @@ const restaurants = [
   {
     id: '6',
     name: 'Khedi',
-    image: require('../assets/images/alubali.jpg'),
+    image: require('../assets/images/IMG_5353.jpg'),
     tags: ['$$', 'Georgian', 'Traditional Georgian'],
     rating: 4.6,
     times: ['6:00 PM', '6:45 PM', '7:15 PM'],
   },
   {
     id: '7',
-    name: 'Restaurant Tavaduri',
-    image: require('../assets/images/alubali.jpg'),
+    name: 'Tavaduri',
+    image: require('../assets/images/IMG_5354.jpg'),
     tags: ['$$', 'Georgian', 'Traditional Georgian', 'Khinkali'],
     rating: 4.8,
     times: ['5:30 PM', '6:00 PM', '6:30 PM'],
   },
   {
     id: '8',
-    name: 'Bakery Racha',
-    image: require('../assets/images/alubali.jpg'),
-    tags: ['$', 'Georgian', 'Bakery', 'Khachapuri'],
+    name: 'Keto and Kote',
+    image: require('../assets/images/IMG_5355.jpg'),
+    tags: ['$', 'Georgian', 'Khachapuri'],
     rating: 4.7,
     times: ['6:00 PM', '6:30 PM', '7:00 PM'],
   },
   {
     id: '9',
-    name: 'Limoncello',
-    image: require('../assets/images/alubali.jpg'),
-    tags: ['$$', 'Georgian', 'Italian', 'Fusion'],
+    name: 'Tsiskvili',
+    image: require('../assets/images/IMG_5356.jpg'),
+    tags: ['$$', 'Georgian', 'Fusion'],
     rating: 4.5,
     times: ['5:45 PM', '6:15 PM', '6:45 PM'],
   },
   {
     id: '10',
     name: 'Shemomechama',
-    image: require('../assets/images/alubali.jpg'),
+    image: require('../assets/images/IMG_5357.jpg'),
     tags: ['$$', 'Georgian', 'Traditional', 'Home-style'],
     rating: 4.9,
     times: ['6:00 PM', '6:30 PM', '7:00 PM'],
@@ -92,7 +92,7 @@ const restaurants = [
   {
     id: '11',
     name: 'Kakhelebi',
-    image: require('../assets/images/alubali.jpg'),
+    image: require('../assets/images/IMG_5358.jpg'),
     tags: ['$$$', 'Georgian', 'Fine Dining', 'Authentic'],
     rating: 4.8,
     times: ['6:30 PM', '7:00 PM', '7:30 PM'],
@@ -100,7 +100,7 @@ const restaurants = [
   {
     id: '12',
     name: 'Maspindzelo',
-    image: require('../assets/images/alubali.jpg'),
+    image: require('../assets/images/IMG_5360.jpg'),
     tags: ['$$', 'Georgian', 'Rustic', 'Traditional'],
     rating: 4.6,
     times: ['5:30 PM', '6:00 PM', '6:30 PM'],
@@ -1526,9 +1526,9 @@ export default function HomeScreen() {
           setShowCuisineModal(false);
           setShowRestaurantModal(true);
         }}
-        favorites={favorites}
-        onToggleFavorite={(restaurantId) => {
-          setFavorites(favs => ({ ...favs, [restaurantId]: !favs[restaurantId] }));
+        onBookRestaurant={(restaurant) => {
+          setShowCuisineModal(false);
+          setShowBookingModal(true);
         }}
       />
       </LinearGradient>

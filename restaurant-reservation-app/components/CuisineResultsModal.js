@@ -1,6 +1,8 @@
 import React, { useMemo } from "react";
 import { Modal, View, Text, Pressable, FlatList, ActivityIndicator, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { BlurView } from 'expo-blur';
 import { normalize } from "../utils/normalize";
 
 export default function CuisineResultsModal({
@@ -10,8 +12,7 @@ export default function CuisineResultsModal({
   restaurants,
   loading = false,
   onRestaurantPress,
-  favorites,
-  onToggleFavorite,
+  onBookRestaurant,
 }) {
   const results = useMemo(() => {
     if (!cuisine || !restaurants?.length) return [];
@@ -38,7 +39,14 @@ export default function CuisineResultsModal({
         marginBottom: 16,
         backgroundColor: 'rgba(255,255,255,0.1)',
         borderRadius: 16,
-        padding: 12
+        padding: 12,
+        borderWidth: 1,
+        borderColor: '#404040',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
+        elevation: 3,
       }}
       onPress={() => onRestaurantPress(item)}
     >
@@ -59,10 +67,10 @@ export default function CuisineResultsModal({
       </View>
       <TouchableOpacity
         style={{ padding: 4, backgroundColor: 'rgba(42,42,42,0.85)', borderRadius: 16 }}
-        onPress={() => onToggleFavorite(item.id)}
+        onPress={() => onBookRestaurant(item)}
       >
         <Ionicons 
-          name={favorites[item.id] ? 'bookmark' : 'bookmark-outline'} 
+          name="calendar-outline" 
           size={22} 
           color="#FF8C00" 
         />
@@ -83,13 +91,15 @@ export default function CuisineResultsModal({
         justifyContent: "center",
         alignItems: "center",
       }}>
-        <View style={{
-          backgroundColor: "#333",
-          borderRadius: 16,
-          padding: 20,
-          width: '90%',
-          maxHeight: '80%',
-        }}>
+        <BlurView intensity={15} tint="dark" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+        <LinearGradient
+          colors={['#606060', '#202020', '#000000']}
+          style={{
+            borderRadius: 16,
+            padding: 20,
+            width: '90%',
+            maxHeight: '80%',
+          }}>
           <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
             <Text style={{ fontSize: 24, fontWeight: "700", color: "white", flex: 1 }}>
               {cuisine || ""}
@@ -116,7 +126,7 @@ export default function CuisineResultsModal({
               showsVerticalScrollIndicator={false}
             />
           )}
-        </View>
+        </LinearGradient>
       </View>
     </Modal>
   );
