@@ -556,7 +556,7 @@ export default function HomeScreen() {
           {/* Header Row */}
           <View style={styles.headerRow}>
             <Text style={styles.headerText}>Ready to book your table?</Text>
-            <TouchableOpacity style={styles.selectorButton} onPress={() => setShowRegisterModal(true)}>
+            <TouchableOpacity style={styles.loginButton} onPress={() => setShowRegisterModal(true)}>
               <Ionicons name="person-outline" size={20} color="#fff" />
             </TouchableOpacity>
           </View>
@@ -576,7 +576,7 @@ export default function HomeScreen() {
       </SafeAreaView>
       {/* Main Scrollable Content */}
       <ScrollView
-        style={[styles.container, { paddingTop: 160 }]}
+        style={[styles.container]}
         contentContainerStyle={{ paddingBottom: 16 }}
       >
         {/* Available Now */}
@@ -1199,20 +1199,7 @@ export default function HomeScreen() {
                       </View>
                     )
                   ))}
-                  {/* 10 sample drinks */}
-                  <Text style={{ color: '#000', fontSize: 17, fontWeight: 'bold', marginTop: 10, marginBottom: 8 }}>Drinks</Text>
-                  {[...Array(10)].map((_, i) => (
-                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
-                      <View style={{ width: 64, height: 64, borderRadius: 16, backgroundColor: '#23283a', marginRight: 14, justifyContent: 'center', alignItems: 'center' }}>
-                        <Ionicons name="wine-outline" size={32} color="#fff" />
-                      </View>
-                      <View style={{ flex: 1 }}>
-                        <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold' }}>Sample Drink {i + 1}</Text>
-                        <Text style={{ color: '#b0b8c1', fontSize: 13 }}>A refreshing sample drink description goes here.</Text>
-                      </View>
-                      <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>$8.00</Text>
-                    </View>
-                  ))}
+
                 </ScrollView>
               </>
             ) : (
@@ -1250,7 +1237,7 @@ export default function HomeScreen() {
               borderColor: '#000000',
               transform: [{ scale: 1.02 }],
             }}>
-            <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold', marginBottom: 18 }}>Party size</Text>
+            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 18 }}>Party size</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 24 }}>
               {partySizes.map(size => (
                 <TouchableOpacity
@@ -1267,7 +1254,7 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               ))}
             </ScrollView>
-            <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Date and time</Text>
+            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Date and time</Text>
             <View style={{ flexDirection: 'row', marginBottom: 24, position: 'relative', height: 190, justifyContent: 'center', alignItems: 'center' }}>
               {/* Date Picker */}
               <View style={{ width: 140, height: 190, overflow: 'hidden', position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
@@ -1338,10 +1325,10 @@ export default function HomeScreen() {
                 alignItems: 'center', 
                 marginTop: 8,
                 shadowColor: '#666666',
-                shadowOpacity: 0.6,
-                shadowRadius: 15,
-                shadowOffset: { width: 0, height: 8 },
-                elevation: 15,
+                shadowOpacity: 0.8,
+                shadowRadius: 25,
+                shadowOffset: { width: 0, height: 12 },
+                elevation: 25,
               }}
               onPress={() => setShowBookingModal(false)}
             >
@@ -1451,7 +1438,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
-    paddingTop: 72,
+    paddingTop: 0,
     paddingHorizontal: 0,
   },
   headerRow: {
@@ -1473,7 +1460,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     marginHorizontal: 8,
   },
-  selectorButton: {
+  loginButton: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#000000',
@@ -1481,6 +1468,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     marginRight: 8,
+  },
+  selectorButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#404040',
+    borderRadius: 24,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#fff',
   },
   selectorText: {
     color: '#fff',
@@ -1926,7 +1924,7 @@ const styles = StyleSheet.create({
   },
   stickyHeader: {
     backgroundColor: 'transparent',
-    paddingTop: (Platform.OS === 'android' ? StatusBar.currentHeight : 0) + 72,
+    paddingTop: (Platform.OS === 'android' ? StatusBar.currentHeight : 0) + 10,
     paddingBottom: 2,
     paddingHorizontal: 0,
     borderBottomWidth: 0,
@@ -1936,7 +1934,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
-    position: 'absolute',
+    position: 'sticky',
     top: 0,
     left: 0,
     right: 0,
