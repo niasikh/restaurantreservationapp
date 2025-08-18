@@ -50,7 +50,13 @@ export default function CuisineResultsModal({
       }}
       onPress={() => onRestaurantPress(item)}
     >
-      <Image source={item.image} style={{ width: 80, height: 80, borderRadius: 12, marginRight: 12 }} />
+      <Image 
+        source={item.image} 
+        style={{ width: 80, height: 80, borderRadius: 12, marginRight: 12 }}
+        resizeMode="cover"
+        fadeDuration={0}
+        loading="eager"
+      />
       <View style={{ flex: 1 }}>
         <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 4 }}>
           {item.name}
@@ -119,12 +125,37 @@ export default function CuisineResultsModal({
               </Text>
             </View>
           ) : (
-            <FlatList
-              data={results}
-              keyExtractor={(item) => item.id}
-              renderItem={renderRestaurant}
-              showsVerticalScrollIndicator={false}
-            />
+            <>
+              <FlatList
+                data={results}
+                keyExtractor={(item) => item.id}
+                renderItem={renderRestaurant}
+                showsVerticalScrollIndicator={true}
+                indicatorStyle="white"
+                scrollIndicatorInsets={{ right: 1, top: 200, bottom: 200 }}
+                style={{ scrollIndicatorSize: 20 }}
+              />
+              <TouchableOpacity
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  borderRadius: 12,
+                  paddingVertical: 12,
+                  paddingHorizontal: 20,
+                  marginTop: 16,
+                  borderWidth: 1,
+                  borderColor: '#404040',
+                  alignItems: 'center',
+                }}
+                onPress={() => {
+                  // Handle view all action
+                  onClose();
+                }}
+              >
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
+                  View All
+                </Text>
+              </TouchableOpacity>
+            </>
           )}
         </LinearGradient>
       </View>

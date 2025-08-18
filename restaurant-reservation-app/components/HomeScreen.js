@@ -38,7 +38,7 @@ const restaurants = [
     name: 'Alubali',
     image: require('../assets/images/IMG_5351.jpg'),
     tags: ['$$$', 'Georgian', 'Authentic Georgian'],
-    rating: 5.0,
+    rating: 4.7,
     times: ['6:00 PM', '6:30 PM', '7:00 PM'],
   },
   {
@@ -680,33 +680,15 @@ export default function HomeScreen() {
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 0, marginLeft: 0 }}>
                 <Text style={[styles.restaurantTags, { flex: 1 }]}> 
                   {item.tags.map((tag, idx) => {
-                    if (
-                      (item.name === 'Lolita' && tag === 'Cocktail Bar') ||
-                      (item.name === 'Rooms Tbilisi' && tag === 'Farm-to-Table')
-                    ) {
-                      return (
-                        <React.Fragment key={tag}>
-                          {tag}
-                          {' '}
-                          <Ionicons name="star" size={14} color="#FFD700" />
-                          <Text style={styles.ratingText}>{item.rating}</Text>
-                          {idx < item.tags.length - 1 ? ' • ' : ''}
-                        </React.Fragment>
-                      );
-                    }
                     return (
                       <React.Fragment key={tag}>
                         {tag}{idx < item.tags.length - 1 ? ' • ' : ''}
                       </React.Fragment>
                     );
                   })}
-                  {item.name === 'Honoré' && (
-                    <>
-                      {' '}
-                      <Ionicons name="star" size={14} color="#FFD700" />
-                      <Text style={styles.ratingText}>{item.rating}</Text>
-                    </>
-                  )}
+                  {' '}
+                  <Ionicons name="star" size={14} color="#FFD700" />
+                  <Text style={styles.ratingText}>{item.rating}</Text>
                 </Text>
                 {/* Favourites icon inside card, right side, never overflowing */}
                 <TouchableOpacity
@@ -1317,8 +1299,8 @@ export default function HomeScreen() {
               shadowRadius: 40,
               shadowOffset: { width: 0, height: 20 },
               elevation: 50,
-              borderWidth: 3,
-              borderColor: '#000000',
+              borderWidth: 1,
+              borderColor: '#808080',
               transform: [{ scale: 1.02 }],
             }}>
             <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 18 }}>Party size</Text>
