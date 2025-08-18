@@ -1877,10 +1877,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   timeButton: {
-    backgroundColor: '#000000',
+    backgroundColor: '#FF8C00',
     borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     marginRight: 8,
   },
   timeButtonSmall: {
@@ -2060,7 +2060,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   wineCard: {
-    backgroundColor: '#1a2747',
+    backgroundColor: '#2a2a2a',
     borderRadius: 16,
     width: 220,
     marginRight: 16,
@@ -2095,7 +2095,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   timeButton: {
-    backgroundColor: '#000000',
+    backgroundColor: '#FF8C00',
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -2112,7 +2112,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   outdoorCard: {
-    backgroundColor: '#1a2747',
+    backgroundColor: '#2a2a2a',
     borderRadius: 20,
     width: 200,
     height: 320,
@@ -2174,7 +2174,7 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   rooftopCard: {
-    backgroundColor: '#1a2747',
+    backgroundColor: '#2a2a2a',
     borderRadius: 20,
     marginBottom: 20,
     padding: 14,
