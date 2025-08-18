@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Modal, View, Text, Pressable, FlatList, ActivityIndicator, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -14,11 +14,14 @@ export default function CuisineResultsModal({
   onRestaurantPress,
   onBookRestaurant,
 }) {
+  const [sortByRating, setSortByRating] = useState(false);
+  const [showHappyHour, setShowHappyHour] = useState(false);
+
   const results = useMemo(() => {
     if (!cuisine || !restaurants?.length) return [];
     const q = normalize(cuisine);
 
-    return restaurants.filter((r) => {
+    let filtered = restaurants.filter((r) => {
       const haystack = [
         r.name,
         ...(r.cuisines || []),
@@ -29,7 +32,19 @@ export default function CuisineResultsModal({
         .join(" • ");
       return haystack.includes(q);
     });
-  }, [cuisine, restaurants]);
+
+    // Filter for Happy Hour restaurants
+    if (showHappyHour) {
+      filtered = filtered.filter((r) => r.name === 'Honoré' || r.name === 'Orangery');
+    }
+
+    // Sort by rating if Top Rated is selected
+    if (sortByRating) {
+      filtered = filtered.sort((a, b) => b.rating - a.rating);
+    }
+
+    return filtered;
+  }, [cuisine, restaurants, sortByRating, showHappyHour]);
 
   const renderRestaurant = ({ item }) => (
     <TouchableOpacity
@@ -103,8 +118,8 @@ export default function CuisineResultsModal({
           style={{
             borderRadius: 16,
             padding: 20,
-            width: '90%',
-            maxHeight: '80%',
+            width: '95%',
+            maxHeight: '90%',
           }}>
           <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
             <Text style={{ fontSize: 24, fontWeight: "700", color: "white", flex: 1 }}>
@@ -112,6 +127,60 @@ export default function CuisineResultsModal({
             </Text>
             <TouchableOpacity onPress={onClose}>
               <Ionicons name="close" size={28} color="#fff" />
+            </TouchableOpacity>
+          </View>
+
+          {/* Filter Buttons */}
+          <View style={{ flexDirection: 'row', marginBottom: 20, justifyContent: 'space-between' }}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#202020',
+                borderRadius: 12,
+                paddingVertical: 10,
+                paddingHorizontal: 16,
+                borderWidth: 1,
+                borderColor: '#fff',
+                flex: 1,
+                marginRight: 8,
+              }}
+              onPress={() => setSortByRating(!sortByRating)}
+            >
+              <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600', textAlign: 'center' }}>
+                Open Now
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#202020',
+                borderRadius: 12,
+                paddingVertical: 10,
+                paddingHorizontal: 16,
+                borderWidth: 1,
+                borderColor: '#fff',
+                flex: 1,
+                marginRight: 8,
+              }}
+              onPress={() => setSortByRating(!sortByRating)}
+            >
+              <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600', textAlign: 'center' }}>
+                Top Rated
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#202020',
+                borderRadius: 12,
+                paddingVertical: 10,
+                paddingHorizontal: 16,
+                borderWidth: 1,
+                borderColor: '#fff',
+                flex: 1,
+              }}
+              onPress={() => setShowHappyHour(!showHappyHour)}
+            >
+              <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600', textAlign: 'center' }}>
+                Happy Hour
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -132,18 +201,18 @@ export default function CuisineResultsModal({
                 renderItem={renderRestaurant}
                 showsVerticalScrollIndicator={true}
                 indicatorStyle="white"
-                scrollIndicatorInsets={{ right: 1, top: 200, bottom: 200 }}
-                style={{ scrollIndicatorSize: 20 }}
+                scrollIndicatorInsets={{ right: 2 }}
+                style={{ scrollIndicatorSize: 8, height: 600 }}
               />
               <TouchableOpacity
                 style={{
-                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  backgroundColor: '#202020',
                   borderRadius: 12,
                   paddingVertical: 12,
                   paddingHorizontal: 20,
                   marginTop: 16,
                   borderWidth: 1,
-                  borderColor: '#404040',
+                  borderColor: '#fff',
                   alignItems: 'center',
                 }}
                 onPress={() => {

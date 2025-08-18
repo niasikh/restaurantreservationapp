@@ -678,18 +678,30 @@ export default function HomeScreen() {
               <Image source={item.image} style={styles.restaurantImage} />
               <Text style={styles.restaurantName}>{item.name}</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 0, marginLeft: 0 }}>
-                <Text style={[styles.restaurantTags, { flex: 1 }]}> 
-                  {item.tags.map((tag, idx) => {
-                    return (
-                      <React.Fragment key={tag}>
-                        {tag}{idx < item.tags.length - 1 ? ' • ' : ''}
-                      </React.Fragment>
-                    );
-                  })}
-                  {' '}
-                  <Ionicons name="star" size={14} color="#FFD700" />
-                  <Text style={styles.ratingText}>{item.rating}</Text>
-                </Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={[styles.restaurantTags, { flex: 1 }]}> 
+                    {item.tags.map((tag, idx) => {
+                      return (
+                        <React.Fragment key={tag}>
+                          {tag}{idx < item.tags.length - 1 ? ' • ' : ''}
+                        </React.Fragment>
+                      );
+                    })}
+                    {item.name !== 'Keto and Kote' && item.name !== 'Tsiskvili' && (
+                      <>
+                        {' '}
+                        <Ionicons name="star" size={14} color="#FFD700" />
+                        <Text style={styles.ratingText}>{item.rating}</Text>
+                      </>
+                    )}
+                  </Text>
+                  {(item.name === 'Keto and Kote' || item.name === 'Tsiskvili') && (
+                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+                      <Ionicons name="star" size={14} color="#FFD700" />
+                      <Text style={styles.ratingText}>{item.rating}</Text>
+                    </View>
+                  )}
+                </View>
                 {/* Favourites icon inside card, right side, never overflowing */}
                 <TouchableOpacity
                   style={{ padding: 4, marginLeft: 8, backgroundColor: 'rgba(42,42,42,0.85)', borderRadius: 16, alignSelf: 'flex-start' }}
