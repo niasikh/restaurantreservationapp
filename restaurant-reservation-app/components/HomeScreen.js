@@ -561,6 +561,14 @@ export default function HomeScreen() {
   // Add state for cuisine modal
   const [selectedCuisine, setSelectedCuisine] = useState(null);
   const [showCuisineModal, setShowCuisineModal] = useState(false);
+  // Add state for search modal
+  const [showSearchModal, setShowSearchModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
+  // Add state for location search
+  const [locationQuery, setLocationQuery] = useState('Tbilisi, Georgia');
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+  const [showLocationSuggestions, setShowLocationSuggestions] = useState(false);
 
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
@@ -620,7 +628,35 @@ export default function HomeScreen() {
     }
   }, [showBookingModal]);
 
+  // Search functionality
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query.length > 0) {
+      const suggestions = restaurants.filter(restaurant =>
+        restaurant.name.toLowerCase().includes(query.toLowerCase()) ||
+        restaurant.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+      );
+      setSearchSuggestions(suggestions);
+    } else {
+      setSearchSuggestions([]);
+    }
+  };
 
+  // Location search functionality
+  const handleLocationSearch = (query) => {
+    setLocationQuery(query);
+    if (query.length > 0) {
+      const cities = ['Tbilisi, Georgia', 'Batumi, Georgia', 'Kutaisi, Georgia', 'Rustavi, Georgia', 'Gori, Georgia', 'Zugdidi, Georgia', 'Poti, Georgia', 'Telavi, Georgia'];
+      const suggestions = cities.filter(city =>
+        city.toLowerCase().includes(query.toLowerCase())
+      );
+      setLocationSuggestions(suggestions);
+      setShowLocationSuggestions(true);
+    } else {
+      setLocationSuggestions([]);
+      setShowLocationSuggestions(false);
+    }
+  };
 
   return (
     <>
@@ -644,7 +680,7 @@ export default function HomeScreen() {
               <Ionicons name="people-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>{partySize} • {selectedTime} {selectedDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.selectorButton}>
+            <TouchableOpacity style={styles.selectorButton} onPress={() => setShowSearchModal(true)}>
               <Ionicons name="search-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>Search</Text>
             </TouchableOpacity>
@@ -1313,7 +1349,6 @@ export default function HomeScreen() {
               elevation: 50,
               borderWidth: 1,
               borderColor: '#808080',
-              transform: [{ scale: 1.02 }],
             }}>
             <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 18 }}>Party size</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 24 }}>
@@ -1322,10 +1357,10 @@ export default function HomeScreen() {
                   key={size}
                   onPress={() => setPartySize(size)}
                   style={{
-                    width: 44, height: 44, borderRadius: 22, borderWidth: 2,
-                    borderColor: partySize === size ? '#000000' : '#000000',
+                    width: 44, height: 44, borderRadius: 22, borderWidth: 1,
+                    borderColor: '#fff',
                     alignItems: 'center', justifyContent: 'center', marginRight: 12,
-                    backgroundColor: partySize === size ? '#FF8C00' : '#000000',
+                    backgroundColor: partySize === size ? '#FF8C00' : '#202020',
                   }}
                 >
                   <Text style={{ color: '#fff', fontSize: 18, fontWeight: partySize === size ? 'bold' : 'normal' }}>{size}</Text>
@@ -1397,16 +1432,13 @@ export default function HomeScreen() {
             </View>
             <TouchableOpacity
               style={{ 
-                backgroundColor: '#000000', 
+                backgroundColor: '#202020', 
                 borderRadius: 12, 
                 paddingVertical: 16, 
                 alignItems: 'center', 
                 marginTop: 8,
-                shadowColor: '#666666',
-                shadowOpacity: 0.8,
-                shadowRadius: 25,
-                shadowOffset: { width: 0, height: 12 },
-                elevation: 25,
+                borderWidth: 0.5,
+                borderColor: '#fff',
               }}
               onPress={() => setShowBookingModal(false)}
             >
@@ -1427,23 +1459,45 @@ export default function HomeScreen() {
           <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
           <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={{ backgroundColor: '#f2be35', borderRadius: 24, width: '85%', padding: 0, overflow: 'hidden', maxHeight: '85%' }}>
+            <LinearGradient
+              colors={['#606060', '#202020', '#000000']}
+              style={{ 
+                borderRadius: 24, 
+                width: '85%', 
+                padding: 0,
+                shadowColor: '#000',
+                shadowOpacity: 0.9,
+                shadowRadius: 40,
+                shadowOffset: { width: 0, height: 20 },
+                elevation: 50,
+                borderWidth: 1,
+                borderColor: '#808080',
+              }}>
               {/* Logo at the top */}
-                <View style={{ alignItems: 'center', marginTop: 4, marginBottom: 4 }}>
-                  <Image source={require('../assets/images/nia.png')} style={{ width: 140, height: 140, resizeMode: 'contain' }} />
+              <View style={{ alignItems: 'center', marginTop: 0, marginBottom: 0, overflow: 'hidden' }}>
+                <Image source={require('../assets/images/jj.png')} style={{ width: 280, height: 280, resizeMode: 'cover' }} />
               </View>
+              {/* Close button in top right corner */}
+              <TouchableOpacity 
+                onPress={() => setShowRegisterModal(false)}
+                style={{ 
+                  position: 'absolute', 
+                  top: 20, 
+                  right: 20, 
+                  zIndex: 1000,
+                }}
+              >
+                <Ionicons name="close" size={24} color="#fff" />
+              </TouchableOpacity>
               {/* Top Bar */}
-              <View style={{ flexDirection: 'row', alignItems: 'center', padding: 12 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20, paddingHorizontal: 20, marginTop: -20 }}>
                 <View style={{ flex: 1, alignItems: 'center' }}>
-                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Enter your phone number</Text>
+                  <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Enter your phone number</Text>
                 </View>
               </View>
-              <TouchableOpacity onPress={() => setShowRegisterModal(false)} style={{ position: 'absolute', right: 12, top: 12 }}>
-                <Ionicons name="close" size={24} color="#000000" />
-              </TouchableOpacity>
-              <Text style={{ color: '#000', fontSize: 16, textAlign: 'center', marginHorizontal: 24, marginBottom: 8 }}>One quick text and you're in!</Text>
+              <Text style={{ color: '#b0b8c1', fontSize: 16, textAlign: 'center', marginBottom: 20, paddingHorizontal: 20 }}>One quick text and you're in!</Text>
               {/* Phone Input */}
-              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#000000', borderRadius: 12, marginHorizontal: 24, marginTop: 18, marginBottom: 8, paddingHorizontal: 12, height: 48 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#404040', borderRadius: 12, marginBottom: 20, paddingHorizontal: 12, height: 48, borderWidth: 1, borderColor: '#808080', marginHorizontal: 20 }}>
                 <TouchableOpacity onPress={() => setShowCountryPicker(true)} style={{ flexDirection: 'row', alignItems: 'center', marginRight: 8 }}>
                   <Text style={{ fontSize: 22 }}>{COUNTRIES.find(c => c.code === countryCode)?.flag || '🇬🇪'}</Text>
                   <Text style={{ color: '#fff', fontSize: 16, marginLeft: 4 }}>+{callingCode}</Text>
@@ -1462,12 +1516,12 @@ export default function HomeScreen() {
               {/* Simple Country Picker Modal */}
               <Modal visible={showCountryPicker} animationType="slide" transparent onRequestClose={() => setShowCountryPicker(false)}>
                 <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center' }}>
-                  <View style={{ backgroundColor: '#23283a', borderRadius: 16, width: '80%', maxHeight: '70%' }}>
+                  <View style={{ backgroundColor: '#202020', borderRadius: 16, width: '85%', maxHeight: '60%', borderWidth: 1, borderColor: '#808080' }}>
                     <ScrollView>
                       {COUNTRIES.map((country) => (
                         <TouchableOpacity
                           key={country.code}
-                          style={{ flexDirection: 'row', alignItems: 'center', padding: 14, borderBottomWidth: 1, borderBottomColor: '#222' }}
+                          style={{ flexDirection: 'row', alignItems: 'center', padding: 14, borderBottomWidth: 1, borderBottomColor: '#404040' }}
                           onPress={() => {
                             setCountryCode(country.code);
                             setCallingCode(country.callingCode);
@@ -1480,7 +1534,7 @@ export default function HomeScreen() {
                         </TouchableOpacity>
                       ))}
                     </ScrollView>
-                    <TouchableOpacity onPress={() => setShowCountryPicker(false)} style={{ alignItems: 'center', padding: 12 }}>
+                    <TouchableOpacity onPress={() => setShowCountryPicker(false)} style={{ alignItems: 'center', padding: 12, borderTopWidth: 1, borderTopColor: '#404040' }}>
                       <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Cancel</Text>
                     </TouchableOpacity>
                   </View>
@@ -1489,7 +1543,17 @@ export default function HomeScreen() {
 
               <Animated.View style={{ transform: [{ scale: continueAnim }] }}>
                 <TouchableOpacity
-                  style={{ backgroundColor: '#000000', borderRadius: 12, paddingVertical: 12, alignItems: 'center', marginHorizontal: 24, marginBottom: 12, height: 48 }}
+                  style={{ 
+                    backgroundColor: '#404040', 
+                    borderRadius: 12, 
+                    paddingVertical: 12, 
+                    alignItems: 'center', 
+                    marginBottom: 20, 
+                    height: 48,
+                    borderWidth: 1,
+                    borderColor: '#808080',
+                    marginHorizontal: 20,
+                  }}
                   onPress={() => {
                     Animated.sequence([
                       Animated.timing(continueAnim, { toValue: 0.95, duration: 80, useNativeDriver: true }),
@@ -1501,10 +1565,10 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </Animated.View>
 
-              <Text style={{ color: '#000', fontSize: 12, marginHorizontal: 24, marginBottom: 18, textAlign: 'center' }}>
+              <Text style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 18, textAlign: 'center' }}>
                 We respect your privacy. We only use your info to verify your account.
               </Text>
-            </View>
+            </LinearGradient>
           </View>
         </View>
       </Modal>
@@ -1525,6 +1589,186 @@ export default function HomeScreen() {
           setShowBookingModal(true);
         }}
       />
+      {/* Search Modal */}
+      <Modal
+        visible={showSearchModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowSearchModal(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <LinearGradient
+            colors={['#606060', '#202020', '#000000']}
+            style={{ 
+              borderRadius: 24, 
+              width: '95%', 
+              height: '85%',
+              padding: 20,
+              shadowColor: '#000',
+              shadowOpacity: 0.9,
+              shadowRadius: 40,
+              shadowOffset: { width: 0, height: 20 },
+              elevation: 50,
+              borderWidth: 1,
+              borderColor: '#808080',
+            }}>
+            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
+              <Text style={{ fontSize: 24, fontWeight: "700", color: "white", flex: 1 }}>
+                Search
+              </Text>
+              <TouchableOpacity onPress={() => setShowSearchModal(false)}>
+                <Ionicons name="close" size={28} color="#fff" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Search Bar */}
+            <View style={{ marginBottom: 20 }}>
+              <TextInput
+                style={{
+                  backgroundColor: '#404040',
+                  borderRadius: 12,
+                  paddingHorizontal: 16,
+                  paddingVertical: 12,
+                  color: '#fff',
+                  fontSize: 16,
+                  borderWidth: 1,
+                  borderColor: '#808080',
+                }}
+                placeholder="Search restaurants..."
+                placeholderTextColor="#b0b8c1"
+                value={searchQuery}
+                onChangeText={handleSearch}
+              />
+            </View>
+
+            {/* Default Location */}
+            <View style={{ marginBottom: 20, zIndex: 1000 }}>
+              <Text style={{ color: '#b0b8c1', fontSize: 14, marginBottom: 8 }}>Location</Text>
+              <View style={{ position: 'relative' }}>
+                <TextInput
+                  style={{
+                    backgroundColor: '#404040',
+                    borderRadius: 12,
+                    paddingHorizontal: 16,
+                    paddingVertical: 12,
+                    color: '#fff',
+                    fontSize: 16,
+                    borderWidth: 1,
+                    borderColor: '#808080',
+                    paddingLeft: 44,
+                  }}
+                  placeholder="Search location..."
+                  placeholderTextColor="#b0b8c1"
+                  value={locationQuery}
+                  onChangeText={handleLocationSearch}
+                  onFocus={() => setShowLocationSuggestions(true)}
+                />
+                <Ionicons 
+                  name="location-outline" 
+                  size={20} 
+                  color="#FF8C00" 
+                  style={{ 
+                    position: 'absolute', 
+                    left: 16, 
+                    top: 12 
+                  }} 
+                />
+              </View>
+              
+              {/* Location Suggestions */}
+              {showLocationSuggestions && locationSuggestions.length > 0 && (
+                <View style={{
+                  position: 'absolute',
+                  top: 60,
+                  left: 0,
+                  right: 0,
+                  backgroundColor: '#404040',
+                  borderRadius: 12,
+                  borderWidth: 1,
+                  borderColor: '#808080',
+                  zIndex: 1001,
+                  maxHeight: 150,
+                  elevation: 10,
+                }}>
+                  <ScrollView>
+                    {locationSuggestions.map((city, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        style={{
+                          paddingVertical: 12,
+                          paddingHorizontal: 16,
+                          borderBottomWidth: index < locationSuggestions.length - 1 ? 1 : 0,
+                          borderBottomColor: '#808080',
+                        }}
+                        onPress={() => {
+                          setLocationQuery(city);
+                          setShowLocationSuggestions(false);
+                        }}
+                      >
+                        <Text style={{ color: '#fff', fontSize: 16 }}>{city}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
+
+            {/* Search Suggestions */}
+            {searchSuggestions.length > 0 && (
+              <View style={{ marginBottom: 20, zIndex: 100 }}>
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 12 }}>Suggestions</Text>
+                <ScrollView style={{ maxHeight: 200 }}>
+                  {searchSuggestions.map((restaurant, index) => (
+                    <TouchableOpacity
+                      key={restaurant.id}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingVertical: 12,
+                        paddingHorizontal: 16,
+                        backgroundColor: 'rgba(255,255,255,0.05)',
+                        borderRadius: 8,
+                        marginBottom: 8,
+                      }}
+                      onPress={() => {
+                        setSelectedRestaurant(restaurant);
+                        setShowSearchModal(false);
+                        setShowRestaurantModal(true);
+                      }}
+                    >
+                      <Image source={restaurant.image} style={{ width: 40, height: 40, borderRadius: 8, marginRight: 12 }} />
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>{restaurant.name}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 14 }}>{restaurant.tags.join(' • ')}</Text>
+                      </View>
+                      <Ionicons name="chevron-forward" size={20} color="#b0b8c1" />
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
+            {/* Map Placeholder */}
+            <View style={{ marginTop: 20 }}>
+              <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 12 }}>Map</Text>
+              <View style={{
+                backgroundColor: '#404040',
+                borderRadius: 12,
+                height: 200,
+                borderWidth: 1,
+                borderColor: '#808080',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                <Ionicons name="map-outline" size={48} color="#b0b8c1" />
+                <Text style={{ color: '#b0b8c1', fontSize: 16, marginTop: 8 }}>Map placeholder</Text>
+              </View>
+            </View>
+          </LinearGradient>
+        </View>
+      </Modal>
       </LinearGradient>
     </>
   );

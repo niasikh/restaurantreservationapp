@@ -145,9 +145,12 @@ export default function CuisineResultsModal({
               }}
               onPress={() => setSortByRating(!sortByRating)}
             >
-              <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600', textAlign: 'center' }}>
-                Open Now
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <Ionicons name="time-outline" size={16} color="#FF8C00" style={{ marginRight: 6 }} />
+                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600' }}>
+                  Open Now
+                </Text>
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -162,9 +165,12 @@ export default function CuisineResultsModal({
               }}
               onPress={() => setSortByRating(!sortByRating)}
             >
-              <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600', textAlign: 'center' }}>
-                Top Rated
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <Ionicons name="star-outline" size={16} color="#FF8C00" style={{ marginRight: 6 }} />
+                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600' }}>
+                  Top Rated
+                </Text>
+              </View>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
@@ -178,9 +184,12 @@ export default function CuisineResultsModal({
               }}
               onPress={() => setShowHappyHour(!showHappyHour)}
             >
-              <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600', textAlign: 'center' }}>
-                Happy Hour
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                <Ionicons name="wine-outline" size={16} color="#FF8C00" style={{ marginRight: 6 }} />
+                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600' }}>
+                  Happy Hour
+                </Text>
+              </View>
             </TouchableOpacity>
           </View>
 
