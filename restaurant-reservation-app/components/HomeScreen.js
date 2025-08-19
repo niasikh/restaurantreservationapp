@@ -576,6 +576,10 @@ export default function HomeScreen() {
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [deliveryAddress, setDeliveryAddress] = useState('');
+  // Add state for cart feedback
+  const [showCartSuccess, setShowCartSuccess] = useState(false);
+  const [addedItemName, setAddedItemName] = useState('');
+  const [bookingFromLolita, setBookingFromLolita] = useState(false);
 
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
@@ -679,6 +683,13 @@ export default function HomeScreen() {
         return [...prevItems, { ...item, quantity: 1 }];
       }
     });
+    
+    // Show success feedback
+    setAddedItemName(item.name);
+    setShowCartSuccess(true);
+    setTimeout(() => {
+      setShowCartSuccess(false);
+    }, 2000);
   };
 
   const removeFromCart = (itemId) => {
@@ -726,7 +737,10 @@ export default function HomeScreen() {
           </View>
           {/* Selector Buttons */}
           <View style={styles.selectorsRow}>
-            <TouchableOpacity style={styles.selectorButton} onPress={() => setShowBookingModal(true)}>
+            <TouchableOpacity style={styles.selectorButton} onPress={() => {
+              setShowBookingModal(true);
+              setBookingFromLolita(false);
+            }}>
               <Ionicons name="people-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>{partySize} • {selectedTime} {selectedDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</Text>
             </TouchableOpacity>
@@ -1146,9 +1160,32 @@ export default function HomeScreen() {
                 {/* Booking button/modal (identical to header) */}
                 <TouchableOpacity
                   style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
-                  onPress={() => setShowBookingModal(true)}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(true);
+                  }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                {/* View Cart Button */}
+                <TouchableOpacity
+                  style={{ 
+                    backgroundColor: 'transparent', 
+                    borderRadius: 12, 
+                    paddingVertical: 16, 
+                    alignItems: 'center', 
+                    marginBottom: 18,
+                    borderWidth: 1,
+                    borderColor: '#FF8C00'
+                  }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowCartModal(true);
+                  }}
+                >
+                  <Text style={{ color: '#FF8C00', fontSize: 18, fontWeight: 'bold' }}>View Cart</Text>
                 </TouchableOpacity>
                 {/* Menu Section */}
                 <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
@@ -1210,7 +1247,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>27 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'bolognese-rigatoni', name: 'Bolognese Rigatoni', price: '27 GEL', description: 'Beef, Bacon, Tomato, Red Wine, Spicy Sour Cream' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1225,7 +1262,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'grilled-artichoke-salad', name: 'Grilled Artichoke Salad', price: '17 GEL', description: 'Artichoke, Frisée, Romano, Parmesan, Nuts, Parsley Dressing' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1240,7 +1277,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>13 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'nachos', name: 'Nachos', price: '13 GEL', description: 'Cheese Sauce, Guacamole, Tomato Salsa, Nachos, Jalapenos' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1255,7 +1292,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>33 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'roasted-chicken', name: 'Roasted Chicken', price: '33 GEL', description: 'Grilled Corn, Lemon, Herbs' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1270,7 +1307,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'chicken-wings', name: 'Chicken Wings', price: '17 GEL', description: 'Sweet Chili Sauce, White Sesame, Green Onion, Fresh Pepper Mix' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1285,7 +1322,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>21 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'mac-cheese', name: 'Mac & Cheese', price: '21 GEL', description: 'Cheddar, Gouda, Parmesan, Mozzarella, Panko' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1300,7 +1337,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>21 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'tom-yum', name: 'Tom Yum', price: '21 GEL', description: 'Shrimp, Rice Noodles, Ginger, Mushroom, Lemongrass, Potato, Coconut Cream' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1315,7 +1352,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>11 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'cauliflower-bites', name: 'Cauliflower Bites with Kimchi Mayo', price: '11 GEL', description: 'Cauliflower, Panko, Onion, Garlic, Kimchi, Egg, Lime, Parsley' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1330,7 +1367,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>15 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'chicken-bites', name: 'Chicken Bites', price: '15 GEL', description: 'Chicken, Panko, Tartar Sauce' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1345,7 +1382,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>25 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'chicken-focaccia-sandwich', name: 'Chicken Focaccia Sandwich', price: '25 GEL', description: 'Focaccia, Chicken, Avocado, Tomato, Bacon, Spinach, Sauce, Fries' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1360,7 +1397,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>27 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'cheeseburger', name: 'Cheeseburger', price: '27 GEL', description: 'Beef, Pickles, Onion, Cocktail Sauce, Fries' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1375,7 +1412,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>25 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'pita-caesar', name: 'Pita Caesar', price: '25 GEL', description: 'Chicken, Bacon, Parmesan Cheese, Caesar Sauce, Fries' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1390,7 +1427,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>19 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'gnocchi', name: 'Gnocchi', price: '19 GEL', description: 'Crispy Prosciutto, Cream, Permesan, Black Pepper' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1405,7 +1442,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>19 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'lolita-khatchapuri', name: 'Lolita Khatchapuri', price: '19 GEL', description: 'Sulguni Cheese, Mozzarella Cheese, Imeruli Cheese, Egg, Butter' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1420,7 +1457,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>13 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'apple-crumble', name: 'Apple Crumble', price: '13 GEL', description: 'Apple Pie, Vanilla Ice Cream' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1435,7 +1472,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>13 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'tiramisu', name: 'Tiramisu', price: '13 GEL', description: 'Mascarpone, Espresso, Cocoa, Port Wine' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1450,7 +1487,7 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>11 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }}>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'churros', name: 'Churros', price: '11 GEL', description: 'Chocolate Sauce' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
                         </View>
@@ -1464,6 +1501,35 @@ export default function HomeScreen() {
               <Text style={{ color: '#b0b8c1', fontSize: 16, marginBottom: 12 }}>
                 {selectedRestaurant?.tags?.join(' • ')}
               </Text>
+            )}
+            
+            {/* Cart Success Notification */}
+            {showCartSuccess && (
+              <View style={{
+                position: 'absolute',
+                top: 20,
+                left: 20,
+                right: 20,
+                backgroundColor: '#FF8C00',
+                borderRadius: 12,
+                padding: 16,
+                flexDirection: 'row',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOpacity: 0.3,
+                shadowRadius: 8,
+                shadowOffset: { width: 0, height: 4 },
+                elevation: 8,
+                zIndex: 1000
+              }}>
+                <Ionicons name="checkmark-circle" size={24} color="#000" style={{ marginRight: 12 }} />
+                <Text style={{ color: '#000', fontSize: 16, fontWeight: 'bold', flex: 1 }}>
+                  {addedItemName} added to cart!
+                </Text>
+                <TouchableOpacity onPress={() => setShowCartSuccess(false)}>
+                  <Ionicons name="close" size={20} color="#000" />
+                </TouchableOpacity>
+              </View>
             )}
           </LinearGradient>
         </View>
@@ -1500,7 +1566,7 @@ export default function HomeScreen() {
                   onPress={() => setPartySize(size)}
                   style={{
                     width: 44, height: 44, borderRadius: 22, borderWidth: 1,
-                    borderColor: '#fff',
+                    borderColor: '#808080',
                     alignItems: 'center', justifyContent: 'center', marginRight: 12,
                     backgroundColor: partySize === size ? '#FF8C00' : '#202020',
                   }}
@@ -1580,9 +1646,16 @@ export default function HomeScreen() {
                 alignItems: 'center', 
                 marginTop: 8,
                 borderWidth: 0.5,
-                borderColor: '#fff',
+                borderColor: '#808080',
               }}
-              onPress={() => setShowBookingModal(false)}
+              onPress={() => {
+                setShowBookingModal(false);
+                if (bookingFromLolita) {
+                  setSelectedRestaurant(restaurants.find(r => r.name === 'Lolita'));
+                  setShowRestaurantModal(true);
+                  setBookingFromLolita(false);
+                }
+              }}
             >
               <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold' }}>Done</Text>
             </TouchableOpacity>
