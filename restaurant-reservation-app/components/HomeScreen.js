@@ -569,6 +569,9 @@ export default function HomeScreen() {
   const [locationQuery, setLocationQuery] = useState('Tbilisi, Georgia');
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [showLocationSuggestions, setShowLocationSuggestions] = useState(false);
+  // Add state for cart functionality
+  const [cartItems, setCartItems] = useState([]);
+  const [showCartModal, setShowCartModal] = useState(false);
 
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
@@ -656,6 +659,49 @@ export default function HomeScreen() {
       setLocationSuggestions([]);
       setShowLocationSuggestions(false);
     }
+  };
+
+  // Cart functions
+  const addToCart = (item) => {
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(cartItem => cartItem.id === item.id);
+      if (existingItem) {
+        return prevItems.map(cartItem =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
+        );
+      } else {
+        return [...prevItems, { ...item, quantity: 1 }];
+      }
+    });
+  };
+
+  const removeFromCart = (itemId) => {
+    setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));
+  };
+
+  const updateQuantity = (itemId, newQuantity) => {
+    if (newQuantity <= 0) {
+      removeFromCart(itemId);
+    } else {
+      setCartItems(prevItems =>
+        prevItems.map(item =>
+          item.id === itemId ? { ...item, quantity: newQuantity } : item
+        )
+      );
+    }
+  };
+
+  const getCartTotal = () => {
+    return cartItems.reduce((total, item) => {
+      const price = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+      return total + (price * item.quantity);
+    }, 0);
+  };
+
+  const getCartItemCount = () => {
+    return cartItems.reduce((count, item) => count + item.quantity, 0);
   };
 
   return (
@@ -1005,13 +1051,17 @@ export default function HomeScreen() {
             <Ionicons name="search" size={26} color={activeTab === 'Search' ? '#FF8C00' : '#b0b8c1'} />
             <Text style={[styles.tabLabel, activeTab === 'Search' && styles.tabLabelActive]}>Search</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('Favorites')}>
-            <Ionicons name="bookmark-outline" size={26} color={activeTab === 'Favorites' ? '#FF8C00' : '#b0b8c1'} />
-            <Text style={[styles.tabLabel, activeTab === 'Favorites' && styles.tabLabelActive]}>Favorites</Text>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('Saved')}>
+            <Ionicons name="bookmark-outline" size={26} color={activeTab === 'Saved' ? '#FF8C00' : '#b0b8c1'} />
+            <Text style={[styles.tabLabel, activeTab === 'Saved' && styles.tabLabelActive]}>Saved</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('Bookings')}>
-            <Ionicons name="calendar-outline" size={26} color={activeTab === 'Bookings' ? '#FF8C00' : '#b0b8c1'} />
-            <Text style={[styles.tabLabel, activeTab === 'Bookings' && styles.tabLabelActive]}>Bookings</Text>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setShowCartModal(true)}>
+            <Ionicons name="cart-outline" size={26} color={activeTab === 'Cart' ? '#FF8C00' : '#b0b8c1'} />
+            <Text style={[styles.tabLabel, activeTab === 'Cart' && styles.tabLabelActive]}>Cart</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('Reservations')}>
+            <Ionicons name="calendar-outline" size={26} color={activeTab === 'Reservations' ? '#FF8C00' : '#b0b8c1'} />
+            <Text style={[styles.tabLabel, activeTab === 'Reservations' && styles.tabLabelActive]}>Reservations</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -1109,7 +1159,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Sweet Chili Sauce, Sulguni Cheese, Panko, Garlic, Egg</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Appetizer</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'cheese-sticks', name: 'Cheese Sticks', price: '17 GEL', description: 'Sweet Chili Sauce, Sulguni Cheese, Panko, Garlic, Egg' })}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 1 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1119,7 +1174,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Avocado, Red Onion, Garlic, Coriander, Olive Oil, Lime</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Appetizer</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'avocado-toast', name: 'Avocado Toast', price: '17 GEL', description: 'Avocado, Red Onion, Garlic, Coriander, Olive Oil, Lime' })}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 2 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1129,7 +1189,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Tomato sauce, Fresh Mozzarella</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pizzette</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>19 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>19 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'margherita-pizza', name: 'Margherita Pizza', price: '19 GEL', description: 'Tomato sauce, Fresh Mozzarella' })}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 3 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1139,7 +1204,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Beef, Bacon, Tomato, Red Wine, Spicy Sour Cream</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pasta</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>27 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>27 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 4 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1149,7 +1219,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Artichoke, Frisée, Romano, Parmesan, Nuts, Parsley Dressing</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Salad</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 5 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1159,7 +1234,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Cheese Sauce, Guacamole, Tomato Salsa, Nachos, Jalapenos</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Side</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>13 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>13 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 6 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1169,7 +1249,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Grilled Corn, Lemon, Herbs</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Large Plate</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>33 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>33 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 7 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1179,7 +1264,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Sweet Chili Sauce, White Sesame, Green Onion, Fresh Pepper Mix</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Small Plate</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>17 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 8 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1189,7 +1279,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Cheddar, Gouda, Parmesan, Mozzarella, Panko</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pasta</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>21 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>21 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 9 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1199,7 +1294,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Shrimp, Rice Noodles, Ginger, Mushroom, Lemongrass, Potato, Coconut Cream</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Soup</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>21 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>21 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 10 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1209,7 +1309,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Cauliflower, Panko, Onion, Garlic, Kimchi, Egg, Lime, Parsley</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Appetizer</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>11 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>11 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 11 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1219,7 +1324,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Chicken, Panko, Tartar Sauce</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Small Plate</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>15 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>15 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 12 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1229,7 +1339,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Focaccia, Chicken, Avocado, Tomato, Bacon, Spinach, Sauce, Fries</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Burger & Sandwich</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>25 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>25 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 13 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1239,7 +1354,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Beef, Pickles, Onion, Cocktail Sauce, Fries</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Burger & Sandwich</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>27 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>27 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 14 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1249,7 +1369,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Chicken, Bacon, Parmesan Cheese, Caesar Sauce, Fries</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Burger & Sandwich</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>25 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>25 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 15 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1259,7 +1384,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Crispy Prosciutto, Cream, Permesan, Black Pepper</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pasta</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>19 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>19 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 16 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1269,7 +1399,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Sulguni Cheese, Mozzarella Cheese, Imeruli Cheese, Egg, Butter</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Pizzette</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>19 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>19 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 17 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1279,7 +1414,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Apple Pie, Vanilla Ice Cream</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Dessert</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>13 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>13 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 18 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1289,7 +1429,12 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Mascarpone, Espresso, Cocoa, Port Wine</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Dessert</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>13 GEL</Text>
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>13 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     ) : i === 19 ? (
                       <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
@@ -1299,22 +1444,15 @@ export default function HomeScreen() {
                           <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Chocolate Sauce</Text>
                           <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Dessert</Text>
                         </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>11 GEL</Text>
-                      </View>
-                    ) : (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
-                        <View style={{ width: 64, height: 64, borderRadius: 16, backgroundColor: '#23283a', marginRight: 14, justifyContent: 'center', alignItems: 'center' }}>
-                          <Ionicons name="fast-food-outline" size={32} color="#fff" />
+                        <View style={{ alignItems: 'center' }}>
+                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>11 GEL</Text>
+                          <TouchableOpacity style={{ padding: 4 }}>
+                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
+                          </TouchableOpacity>
                         </View>
-                        <View style={{ flex: 1 }}>
-                          <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Sample Dish {i + 1}</Text>
-                          <Text style={{ color: '#b0b8c1', fontSize: 11 }}>A delicious sample dish description goes here.</Text>
-                        </View>
-                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8 }}>$15.00</Text>
                       </View>
-                    )
+                    ) : null
                   ))}
-
                 </ScrollView>
               </>
             ) : (
@@ -1766,6 +1904,181 @@ export default function HomeScreen() {
                 <Text style={{ color: '#b0b8c1', fontSize: 16, marginTop: 8 }}>Map placeholder</Text>
               </View>
             </View>
+          </LinearGradient>
+        </View>
+      </Modal>
+      {/* Cart Modal */}
+      <Modal
+        visible={showCartModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowCartModal(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <LinearGradient
+            colors={['#606060', '#202020', '#000000']}
+            style={{ 
+              borderRadius: 24, 
+              width: '90%', 
+              maxHeight: '80%',
+              padding: 24,
+              shadowColor: '#000',
+              shadowOpacity: 0.9,
+              shadowRadius: 40,
+              shadowOffset: { width: 0, height: 20 },
+              elevation: 50,
+              borderWidth: 1,
+              borderColor: '#808080',
+            }}>
+            {/* Header */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>Your Cart</Text>
+              <TouchableOpacity onPress={() => setShowCartModal(false)}>
+                <Ionicons name="close" size={24} color="#fff" />
+              </TouchableOpacity>
+            </View>
+
+            {/* Cart Items */}
+            {cartItems.length === 0 ? (
+              <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 40 }}>
+                <Ionicons name="cart-outline" size={64} color="#666" />
+                <Text style={{ color: '#666', fontSize: 18, marginTop: 16 }}>Your cart is empty</Text>
+                <Text style={{ color: '#666', fontSize: 14, marginTop: 8 }}>Add some delicious items from the menu!</Text>
+              </View>
+            ) : (
+              <>
+                <ScrollView style={{ maxHeight: 400, marginBottom: 20 }}>
+                  {cartItems.map((item, index) => (
+                    <View key={item.id} style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      backgroundColor: 'rgba(255,255,255,0.05)', 
+                      borderRadius: 12, 
+                      padding: 16, 
+                      marginBottom: 12 
+                    }}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>
+                          {item.name}
+                        </Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 8 }}>
+                          {item.description}
+                        </Text>
+                        <Text style={{ color: '#FF8C00', fontSize: 16, fontWeight: 'bold' }}>
+                          {item.price}
+                        </Text>
+                      </View>
+                      
+                      {/* Quantity Controls */}
+                      <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 16 }}>
+                        <TouchableOpacity 
+                          style={{ 
+                            width: 32, 
+                            height: 32, 
+                            borderRadius: 16, 
+                            backgroundColor: '#FF8C00', 
+                            alignItems: 'center', 
+                            justifyContent: 'center' 
+                          }}
+                          onPress={() => updateQuantity(item.id, item.quantity - 1)}
+                        >
+                          <Ionicons name="remove" size={20} color="#000" />
+                        </TouchableOpacity>
+                        
+                        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginHorizontal: 16 }}>
+                          {item.quantity}
+                        </Text>
+                        
+                        <TouchableOpacity 
+                          style={{ 
+                            width: 32, 
+                            height: 32, 
+                            borderRadius: 16, 
+                            backgroundColor: '#FF8C00', 
+                            alignItems: 'center', 
+                            justifyContent: 'center' 
+                          }}
+                          onPress={() => updateQuantity(item.id, item.quantity + 1)}
+                        >
+                          <Ionicons name="add" size={20} color="#000" />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+
+                {/* Total Section */}
+                <View style={{ 
+                  borderTopWidth: 1, 
+                  borderTopColor: '#404040', 
+                  paddingTop: 20, 
+                  marginBottom: 20 
+                }}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <Text style={{ color: '#b0b8c1', fontSize: 16 }}>Subtotal</Text>
+                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
+                      {getCartTotal().toFixed(2)} GEL
+                    </Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+                    <Text style={{ color: '#b0b8c1', fontSize: 16 }}>VAT (18%)</Text>
+                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>
+                      {(getCartTotal() * 0.18).toFixed(2)} GEL
+                    </Text>
+                  </View>
+                  <View style={{ 
+                    flexDirection: 'row', 
+                    justifyContent: 'space-between', 
+                    borderTopWidth: 1, 
+                    borderTopColor: '#404040', 
+                    paddingTop: 16 
+                  }}>
+                    <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>Total</Text>
+                    <Text style={{ color: '#FF8C00', fontSize: 20, fontWeight: 'bold' }}>
+                      {(getCartTotal() * 1.18).toFixed(2)} GEL
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Checkout Button */}
+                <TouchableOpacity
+                  style={{ 
+                    backgroundColor: '#FF8C00', 
+                    borderRadius: 12, 
+                    paddingVertical: 16, 
+                    alignItems: 'center',
+                    marginBottom: 10
+                  }}
+                  onPress={() => {
+                    // Handle checkout logic here
+                    alert('Checkout functionality coming soon!');
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+                    Proceed to Order
+                  </Text>
+                </TouchableOpacity>
+
+                {/* Continue Shopping Button */}
+                <TouchableOpacity
+                  style={{ 
+                    backgroundColor: 'transparent', 
+                    borderRadius: 12, 
+                    paddingVertical: 16, 
+                    alignItems: 'center',
+                    borderWidth: 1,
+                    borderColor: '#FF8C00'
+                  }}
+                  onPress={() => setShowCartModal(false)}
+                >
+                  <Text style={{ color: '#FF8C00', fontSize: 16, fontWeight: 'bold' }}>
+                    Continue to Menu
+                  </Text>
+                </TouchableOpacity>
+              </>
+            )}
           </LinearGradient>
         </View>
       </Modal>
