@@ -572,6 +572,10 @@ export default function HomeScreen() {
   // Add state for cart functionality
   const [cartItems, setCartItems] = useState([]);
   const [showCartModal, setShowCartModal] = useState(false);
+  // Add state for checkout functionality
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
 
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
@@ -2052,8 +2056,8 @@ export default function HomeScreen() {
                     marginBottom: 10
                   }}
                   onPress={() => {
-                    // Handle checkout logic here
-                    alert('Checkout functionality coming soon!');
+                    setShowCartModal(false);
+                    setShowCheckoutModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
@@ -2071,7 +2075,11 @@ export default function HomeScreen() {
                     borderWidth: 1,
                     borderColor: '#FF8C00'
                   }}
-                  onPress={() => setShowCartModal(false)}
+                  onPress={() => {
+                    setShowCartModal(false);
+                    setSelectedRestaurant(restaurants.find(r => r.name === 'Lolita'));
+                    setShowRestaurantModal(true);
+                  }}
                 >
                   <Text style={{ color: '#FF8C00', fontSize: 16, fontWeight: 'bold' }}>
                     Continue to Menu
@@ -2079,6 +2087,180 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               </>
             )}
+          </LinearGradient>
+        </View>
+      </Modal>
+      {/* Checkout Modal */}
+      <Modal
+        visible={showCheckoutModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowCheckoutModal(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <LinearGradient
+            colors={['#606060', '#202020', '#000000']}
+            style={{ 
+              borderRadius: 24, 
+              width: '90%', 
+              maxHeight: '85%',
+              padding: 24,
+              shadowColor: '#000',
+              shadowOpacity: 0.9,
+              shadowRadius: 40,
+              shadowOffset: { width: 0, height: 20 },
+              elevation: 50,
+              borderWidth: 1,
+              borderColor: '#808080',
+            }}>
+            {/* Header */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>Checkout</Text>
+              <TouchableOpacity onPress={() => setShowCheckoutModal(false)}>
+                <Ionicons name="close" size={24} color="#fff" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={{ maxHeight: 500 }}>
+              {/* Order Summary */}
+              <View style={{ marginBottom: 24 }}>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Order Summary</Text>
+                <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16 }}>
+                  {cartItems.map((item, index) => (
+                    <View key={item.id} style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
+                      <Text style={{ color: '#b0b8c1', fontSize: 14 }}>
+                        {item.name} x{item.quantity}
+                      </Text>
+                      <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
+                        {(parseFloat(item.price.replace(/[^0-9.]/g, '')) * item.quantity).toFixed(2)} GEL
+                      </Text>
+                    </View>
+                  ))}
+                  <View style={{ borderTopWidth: 1, borderTopColor: '#404040', paddingTop: 12, marginTop: 8 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+                      <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Subtotal</Text>
+                      <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
+                        {getCartTotal().toFixed(2)} GEL
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+                      <Text style={{ color: '#b0b8c1', fontSize: 14 }}>VAT (18%)</Text>
+                      <Text style={{ color: '#fff', fontSize: 14, fontWeight: 'bold' }}>
+                        {(getCartTotal() * 0.18).toFixed(2)} GEL
+                      </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <Text style={{ color: '#FF8C00', fontSize: 16, fontWeight: 'bold' }}>Total</Text>
+                      <Text style={{ color: '#FF8C00', fontSize: 16, fontWeight: 'bold' }}>
+                        {(getCartTotal() * 1.18).toFixed(2)} GEL
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+
+              {/* Order Details */}
+              <View style={{ marginBottom: 24 }}>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Order Details</Text>
+                <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                    <Ionicons name="restaurant" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Lolita Restaurant</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                    <Ionicons name="calendar" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Reservation Date: Today</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                    <Ionicons name="time" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Reservation Time: 7:00 PM</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                    <Ionicons name="people" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Table for: 2 people</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="fast-food" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Pre-ordered items:</Text>
+                  </View>
+                  <View style={{ marginLeft: 28 }}>
+                    {cartItems.map((item, index) => (
+                      <Text key={item.id} style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 2 }}>
+                        • {item.name} x{item.quantity}
+                      </Text>
+                    ))}
+                  </View>
+                </View>
+              </View>
+
+
+
+              {/* Payment Method */}
+              <View style={{ marginBottom: 24 }}>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Payment Method</Text>
+                <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16 }}>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingVertical: 12,
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#404040'
+                    }}
+                    onPress={() => setPaymentMethod('card')}
+                  >
+                    <Ionicons 
+                      name={paymentMethod === 'card' ? 'radio-button-on' : 'radio-button-off'} 
+                      size={24} 
+                      color={paymentMethod === 'card' ? '#FF8C00' : '#666'} 
+                    />
+                    <Ionicons name="card" size={20} color="#FF8C00" style={{ marginLeft: 12, marginRight: 8 }} />
+                    <Text style={{ color: '#fff', fontSize: 16 }}>Credit/Debit Card</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingVertical: 12
+                    }}
+                    onPress={() => setPaymentMethod('apple')}
+                  >
+                    <Ionicons 
+                      name={paymentMethod === 'apple' ? 'radio-button-on' : 'radio-button-off'} 
+                      size={24} 
+                      color={paymentMethod === 'apple' ? '#FF8C00' : '#666'} 
+                    />
+                    <Ionicons name="logo-apple" size={20} color="#FF8C00" style={{ marginLeft: 12, marginRight: 8 }} />
+                    <Text style={{ color: '#fff', fontSize: 16 }}>Apple Pay</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </ScrollView>
+
+            {/* Place Order Button */}
+            <TouchableOpacity
+              style={{ 
+                backgroundColor: '#FF8C00', 
+                borderRadius: 12, 
+                paddingVertical: 16, 
+                alignItems: 'center',
+                marginTop: 16
+              }}
+              onPress={() => {
+                // Handle order placement
+                alert('Order placed successfully! Your food will be ready when you arrive at 7:00 PM.');
+                setShowCheckoutModal(false);
+                setCartItems([]);
+                setDeliveryAddress('');
+                setPhoneNumber('');
+              }}
+            >
+              <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>
+                Place Order - {(getCartTotal() * 1.18).toFixed(2)} GEL
+              </Text>
+            </TouchableOpacity>
           </LinearGradient>
         </View>
       </Modal>
