@@ -1060,31 +1060,6 @@ export default function HomeScreen() {
           )}
         />
       </ScrollView>
-      {/* Bottom Navigation Bar */}
-      <SafeAreaView style={styles.tabBarContainer} edges={['bottom']}>
-        <View style={styles.tabBar}>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('Home')}>
-            <Ionicons name={activeTab === 'Home' ? 'ellipse' : 'ellipse-outline'} size={28} color={activeTab === 'Home' ? '#FF8C00' : '#b0b8c1'} />
-            <Text style={[styles.tabLabel, activeTab === 'Home' && styles.tabLabelActive]}>Home</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('Search')}>
-            <Ionicons name="search" size={26} color={activeTab === 'Search' ? '#FF8C00' : '#b0b8c1'} />
-            <Text style={[styles.tabLabel, activeTab === 'Search' && styles.tabLabelActive]}>Search</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setShowSavedModal(true)}>
-            <Ionicons name="bookmark-outline" size={26} color={activeTab === 'Saved' ? '#FF8C00' : '#b0b8c1'} />
-            <Text style={[styles.tabLabel, activeTab === 'Saved' && styles.tabLabelActive]}>Saved</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setShowCartModal(true)}>
-            <Ionicons name="cart-outline" size={26} color={activeTab === 'Cart' ? '#FF8C00' : '#b0b8c1'} />
-            <Text style={[styles.tabLabel, activeTab === 'Cart' && styles.tabLabelActive]}>Cart</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setShowReservationsModal(true)}>
-            <Ionicons name="calendar-outline" size={26} color={activeTab === 'Reservations' ? '#FF8C00' : '#b0b8c1'} />
-            <Text style={[styles.tabLabel, activeTab === 'Reservations' && styles.tabLabelActive]}>Reservations</Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
       {/* Restaurant Details Modal */}
       <Modal
         visible={showRestaurantModal}
@@ -1094,8 +1069,8 @@ export default function HomeScreen() {
       >
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           {/* Blurred background overlay */}
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <BlurView intensity={40} tint="dark" style={{ ...StyleSheet.absoluteFill, bottom: 80 }} />
+          <View style={{ ...StyleSheet.absoluteFillObject, bottom: 80, backgroundColor: 'rgba(0,0,0,0.7)' }} />
           <LinearGradient
             colors={['#606060', '#202020', '#000000']}
             style={{ borderRadius: 24, width: '92%', maxWidth: 420, padding: 24, alignSelf: 'center', justifyContent: 'center' }}>
@@ -1544,8 +1519,8 @@ export default function HomeScreen() {
         onRequestClose={() => setShowBookingModal(false)}
       >
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <BlurView intensity={40} tint="dark" style={{ ...StyleSheet.absoluteFill, bottom: 80 }} />
+          <View style={{ ...StyleSheet.absoluteFillObject, bottom: 80, backgroundColor: 'rgba(0,0,0,0.7)' }} />
           <LinearGradient
             colors={['#606060', '#202020', '#000000']}
             style={{ 
@@ -1994,8 +1969,8 @@ export default function HomeScreen() {
         onRequestClose={() => setShowCartModal(false)}
       >
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <BlurView intensity={40} tint="dark" style={{ ...StyleSheet.absoluteFill, bottom: 80 }} />
+          <View style={{ ...StyleSheet.absoluteFillObject, bottom: 80, backgroundColor: 'rgba(0,0,0,0.7)' }} />
           <LinearGradient
             colors={['#606060', '#202020', '#000000']}
             style={{ 
@@ -2192,8 +2167,8 @@ export default function HomeScreen() {
         onRequestClose={() => setShowCheckoutModal(false)}
       >
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <BlurView intensity={40} tint="dark" style={{ ...StyleSheet.absoluteFill, bottom: 80 }} />
+          <View style={{ ...StyleSheet.absoluteFillObject, bottom: 80, backgroundColor: 'rgba(0,0,0,0.7)' }} />
           <LinearGradient
             colors={['#606060', '#202020', '#000000']}
             style={{ 
@@ -2366,8 +2341,8 @@ export default function HomeScreen() {
         onRequestClose={() => setShowReservationsModal(false)}
       >
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <BlurView intensity={40} tint="dark" style={{ ...StyleSheet.absoluteFill, bottom: 80 }} />
+          <View style={{ ...StyleSheet.absoluteFillObject, bottom: 80, backgroundColor: 'rgba(0,0,0,0.7)' }} />
           <LinearGradient
             colors={['#606060', '#202020', '#000000']}
             style={{ 
@@ -2465,8 +2440,8 @@ export default function HomeScreen() {
         onRequestClose={() => setShowSavedModal(false)}
       >
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
-          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <BlurView intensity={40} tint="dark" style={{ ...StyleSheet.absoluteFill, bottom: 80 }} />
+          <View style={{ ...StyleSheet.absoluteFillObject, bottom: 80, backgroundColor: 'rgba(0,0,0,0.7)' }} />
           <LinearGradient
             colors={['#606060', '#202020', '#000000']}
             style={{ 
@@ -2557,6 +2532,45 @@ export default function HomeScreen() {
         </View>
       </Modal>
       </LinearGradient>
+      
+      {/* Bottom Navigation Bar - Always Visible */}
+      <SafeAreaView style={[styles.tabBarContainer, { position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 9999 }]} edges={['bottom']}>
+        <View style={styles.tabBar}>
+          <TouchableOpacity style={styles.tabItem} onPress={() => {
+            setActiveTab('Home');
+            setShowRestaurantModal(false);
+            setShowBookingModal(false);
+            setShowRegisterModal(false);
+            setShowCuisineModal(false);
+            setShowSearchModal(false);
+            setShowCartModal(false);
+            setShowCheckoutModal(false);
+            setShowReservationsModal(false);
+            setShowSavedModal(false);
+            setShowAllTrending(false);
+            setShowAllDateNight(false);
+          }}>
+            <Ionicons name={activeTab === 'Home' ? 'ellipse' : 'ellipse-outline'} size={28} color={activeTab === 'Home' ? '#FF8C00' : '#b0b8c1'} />
+            <Text style={[styles.tabLabel, activeTab === 'Home' && styles.tabLabelActive]}>Home</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setShowSearchModal(true)}>
+            <Ionicons name="search" size={26} color={activeTab === 'Search' ? '#FF8C00' : '#b0b8c1'} />
+            <Text style={[styles.tabLabel, activeTab === 'Search' && styles.tabLabelActive]}>Search</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setShowSavedModal(true)}>
+            <Ionicons name="bookmark-outline" size={26} color={activeTab === 'Saved' ? '#FF8C00' : '#b0b8c1'} />
+            <Text style={[styles.tabLabel, activeTab === 'Saved' && styles.tabLabelActive]}>Saved</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setShowCartModal(true)}>
+            <Ionicons name="cart-outline" size={26} color={activeTab === 'Cart' ? '#FF8C00' : '#b0b8c1'} />
+            <Text style={[styles.tabLabel, activeTab === 'Cart' && styles.tabLabelActive]}>Cart</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setShowReservationsModal(true)}>
+            <Ionicons name="calendar-outline" size={26} color={activeTab === 'Reservations' ? '#FF8C00' : '#b0b8c1'} />
+            <Text style={[styles.tabLabel, activeTab === 'Reservations' && styles.tabLabelActive]}>Reservations</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
     </>
   );
 }
@@ -3015,7 +3029,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   tabBarContainer: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#000000',
     borderTopWidth: 1,
     borderTopColor: '#232B3B',
   },
@@ -3024,7 +3038,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     height: 64,
-    backgroundColor: 'transparent',
+    backgroundColor: '#000000',
     paddingBottom: 0,
   },
   tabItem: {
