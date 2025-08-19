@@ -58,14 +58,6 @@ const restaurants = [
     times: ['6:00 PM', '6:45 PM', '7:15 PM'],
   },
   {
-    id: '7',
-    name: 'Tavaduri',
-    image: require('../assets/images/IMG_5354.jpg'),
-    tags: ['$$', 'Georgian', 'Traditional Georgian', 'Khinkali'],
-    rating: 4.8,
-    times: ['5:30 PM', '6:00 PM', '6:30 PM'],
-  },
-  {
     id: '8',
     name: 'Keto and Kote',
     image: require('../assets/images/IMG_5355.jpg'),
@@ -80,30 +72,6 @@ const restaurants = [
     tags: ['$$', 'Georgian', 'Fusion'],
     rating: 4.5,
     times: ['5:45 PM', '6:15 PM', '6:45 PM'],
-  },
-  {
-    id: '10',
-    name: 'Shemomechama',
-    image: require('../assets/images/IMG_5357.jpg'),
-    tags: ['$$', 'Georgian', 'Traditional', 'Home-style'],
-    rating: 4.9,
-    times: ['6:00 PM', '6:30 PM', '7:00 PM'],
-  },
-  {
-    id: '11',
-    name: 'Kakhelebi',
-    image: require('../assets/images/IMG_5358.jpg'),
-    tags: ['$$$', 'Georgian', 'Fine Dining', 'Authentic'],
-    rating: 4.8,
-    times: ['6:30 PM', '7:00 PM', '7:30 PM'],
-  },
-  {
-    id: '12',
-    name: 'Maspindzelo',
-    image: require('../assets/images/IMG_5360.jpg'),
-    tags: ['$$', 'Georgian', 'Rustic', 'Traditional'],
-    rating: 4.6,
-    times: ['5:30 PM', '6:00 PM', '6:30 PM'],
   },
 ];
 
@@ -757,7 +725,7 @@ export default function HomeScreen() {
       {/* Main Scrollable Content */}
       <ScrollView
         style={[styles.container]}
-        contentContainerStyle={{ paddingBottom: 16 }}
+        contentContainerStyle={{ paddingBottom: 120 }}
       >
         {/* Available Now */}
         <Text style={styles.sectionTitle}>Available now</Text>
@@ -777,26 +745,26 @@ export default function HomeScreen() {
               }}
               activeOpacity={0.85}
             >
-              <Image source={item.image} style={styles.restaurantImage} />
+              <Image source={item.name === 'Honoré' ? require('../assets/images/IMG_5583.jpg') : item.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : item.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : item.name === 'Khedi' ? require('../assets/images/IMG_5586.jpg') : item.name === 'Keto and Kote' ? require('../assets/images/IMG_4210.jpg') : item.name === 'Tsiskvili' ? require('../assets/images/nn.jpg') : item.image} style={styles.restaurantImage} />
               <Text style={styles.restaurantName}>{item.name}</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 0, marginLeft: 0 }}>
                 <View style={{ flex: 1 }}>
-                  <Text style={[styles.restaurantTags, { flex: 1 }]}> 
-                    {item.tags.map((tag, idx) => {
-                      return (
-                        <React.Fragment key={tag}>
-                          {tag}{idx < item.tags.length - 1 ? ' • ' : ''}
-                        </React.Fragment>
-                      );
-                    })}
+                <Text style={[styles.restaurantTags, { flex: 1 }]}> 
+                  {item.tags.map((tag, idx) => {
+                    return (
+                      <React.Fragment key={tag}>
+                        {tag}{idx < item.tags.length - 1 ? ' • ' : ''}
+                      </React.Fragment>
+                    );
+                  })}
                     {item.name !== 'Keto and Kote' && item.name !== 'Tsiskvili' && (
-                      <>
-                        {' '}
-                        <Ionicons name="star" size={14} color="#FFD700" />
-                        <Text style={styles.ratingText}>{item.rating}</Text>
-                      </>
-                    )}
-                  </Text>
+                    <>
+                      {' '}
+                      <Ionicons name="star" size={14} color="#FFD700" />
+                      <Text style={styles.ratingText}>{item.rating}</Text>
+                    </>
+                  )}
+                </Text>
                   {(item.name === 'Keto and Kote' || item.name === 'Tsiskvili') && (
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
                       <Ionicons name="star" size={14} color="#FFD700" />
@@ -854,7 +822,7 @@ export default function HomeScreen() {
         <View style={styles.trendingListSection}>
           {(showAllTrending ? trendingRestaurants : trendingRestaurants.slice(0, 5)).map((r) => (
             <View key={r.id} style={styles.trendingCard}>
-              <Image source={r.image} style={styles.trendingImage} />
+              <Image source={r.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : r.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : r.name === 'Coffee Shop Company' ? require('../assets/images/IMG_4193.jpg') : r.name === 'Monday Greens' ? require('../assets/images/IMG_5587.jpg') : r.name === 'Strada' ? require('../assets/images/IMG_5588.jpg') : r.image} style={styles.trendingImage} />
               <View style={styles.trendingInfo}>
                 <Text style={styles.trendingName}>{r.name}</Text>
                 <Text style={styles.trendingLocation}>{r.location}</Text>
@@ -908,7 +876,7 @@ export default function HomeScreen() {
               <ScrollView style={{ flex: 1 }}>
                 {(trendingRestaurants.map((r) => (
                   <View key={r.id} style={styles.trendingCard}>
-                    <Image source={r.image} style={styles.trendingImage} />
+                    <Image source={r.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : r.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : r.name === 'Coffee Shop Company' ? require('../assets/images/IMG_4193.jpg') : r.name === 'Monday Greens' ? require('../assets/images/IMG_5587.jpg') : r.name === 'Strada' ? require('../assets/images/IMG_5588.jpg') : r.image} style={styles.trendingImage} />
                     <View style={styles.trendingInfo}>
                       <Text style={styles.trendingName}>{r.name}</Text>
                       <Text style={styles.trendingLocation}>{r.location}</Text>
@@ -1467,8 +1435,8 @@ export default function HomeScreen() {
                           <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'churros', name: 'Churros', price: '11 GEL', description: 'Chocolate Sauce' })}>
                             <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
                           </TouchableOpacity>
-                        </View>
                       </View>
+                        </View>
                     ) : null
                   ))}
                 </ScrollView>
@@ -1958,7 +1926,7 @@ export default function HomeScreen() {
                 <Text style={{ color: '#b0b8c1', fontSize: 16, marginTop: 8 }}>Map placeholder</Text>
               </View>
             </View>
-          </LinearGradient>
+      </LinearGradient>
         </View>
       </Modal>
       {/* Cart Modal */}
