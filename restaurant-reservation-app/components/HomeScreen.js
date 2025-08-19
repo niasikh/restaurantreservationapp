@@ -134,7 +134,7 @@ const cuisines = [
 // Add trending restaurants sample data
 const trendingRestaurants = [
   {
-    id: '1',
+    id: 'trending_1',
     name: 'Alubali',
     image: require('../assets/images/alubali.jpg'),
     location: 'Tbilisi',
@@ -146,7 +146,7 @@ const trendingRestaurants = [
     favorite: false,
   },
   {
-    id: '2',
+    id: 'trending_2',
     name: 'Orangery',
     image: require('../assets/images/lolita.jpg'),
     location: 'Tbilisi',
@@ -158,7 +158,7 @@ const trendingRestaurants = [
     favorite: true,
   },
   {
-    id: '3',
+    id: 'trending_3',
     name: 'Coffee Shop Company',
     image: require('../assets/images/lolita.jpg'),
     location: 'Tbilisi',
@@ -170,7 +170,7 @@ const trendingRestaurants = [
     favorite: false,
   },
   {
-    id: '4',
+    id: 'trending_4',
     name: 'Monday Greens',
     image: require('../assets/images/lolita.jpg'),
     location: 'Tbilisi',
@@ -182,7 +182,7 @@ const trendingRestaurants = [
     favorite: false,
   },
   {
-    id: '5',
+    id: 'trending_5',
     name: 'Strada',
     image: require('../assets/images/lolita.jpg'),
     location: 'Tbilisi',
@@ -194,7 +194,7 @@ const trendingRestaurants = [
     favorite: false,
   },
   {
-    id: '6',
+    id: 'trending_6',
     name: '8000 Vintages',
     image: { uri: 'https://images.unsplash.com/photo-1514361892635-cebb9b6b9d49?auto=format&fit=crop&w=80&q=80' },
     location: 'Tbilisi',
@@ -206,7 +206,7 @@ const trendingRestaurants = [
     favorite: true,
   },
   {
-    id: '7',
+    id: 'trending_7',
     name: 'Canape',
     image: { uri: 'https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=80&q=80' },
     location: 'Tbilisi',
@@ -282,7 +282,7 @@ const trendingRestaurants = [
 // Update wine tasting venues sample data to include times, price, distance, rating, favorite
 const wineTastingVenues = [
   {
-    id: '1',
+    id: 'wine_1',
     name: '8000 Vintages',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Wine Bar'],
@@ -293,7 +293,7 @@ const wineTastingVenues = [
     favorite: false,
   },
   {
-    id: '2',
+    id: 'wine_2',
     name: 'Sadzvele',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Wine Hub'],
@@ -304,7 +304,7 @@ const wineTastingVenues = [
     favorite: true,
   },
   {
-    id: '3',
+    id: 'wine_3',
     name: 'Wine Merchants',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Wine Bar'],
@@ -315,7 +315,7 @@ const wineTastingVenues = [
     favorite: false,
   },
   {
-    id: '4',
+    id: 'wine_4',
     name: 'Wine Not',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Wine Bar'],
@@ -326,7 +326,7 @@ const wineTastingVenues = [
     favorite: false,
   },
   {
-    id: '5',
+    id: 'wine_5',
     name: 'Apotheka Bar',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Wine Bar'],
@@ -340,35 +340,35 @@ const wineTastingVenues = [
 
 const outdoorDiningRestaurants = [
   {
-    id: '1',
+    id: 'outdoor_1',
     name: 'Bachata Gardens',
     image: require('../assets/images/lolita.jpg'),
     tags: ['European', 'Outdoor'],
     favorite: false,
   },
   {
-    id: '2',
+    id: 'outdoor_2',
     name: 'Miti Taverna',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Greek', 'Outdoor'],
     favorite: true,
   },
   {
-    id: '3',
+    id: 'outdoor_3',
     name: 'Keto & Kote',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Georgian', 'Outdoor'],
     favorite: false,
   },
   {
-    id: '4',
+    id: 'outdoor_4',
     name: 'Tsiskvili',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Georgian', 'Outdoor'],
     favorite: false,
   },
   {
-    id: '5',
+    id: 'outdoor_5',
     name: 'Mova Maisi',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Georgian', 'Outdoor'],
@@ -399,7 +399,7 @@ const outdoorDiningRestaurants = [
 
 const rooftopRestaurants = [
   {
-    id: '1',
+    id: 'rooftop_1',
     name: 'Republic Tbilisi',
     image: require('../assets/images/lolita.jpg'),
     tags: ['European', '$$$', 'Downtown'],
@@ -409,7 +409,7 @@ const rooftopRestaurants = [
     favorite: false,
   },
   {
-    id: '2',
+    id: 'rooftop_2',
     name: 'Filini Terrace',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Italian', '$$', 'Midtown'],
@@ -419,7 +419,7 @@ const rooftopRestaurants = [
     favorite: true,
   },
   {
-    id: '3',
+    id: 'rooftop_3',
     name: 'Monograph Terrace',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Bar & Restaurant', '$$', 'Uptown'],
@@ -429,7 +429,7 @@ const rooftopRestaurants = [
     favorite: false,
   },
   {
-    id: '4',
+    id: 'rooftop_4',
     name: 'Xeme Biltmore',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Mediterranean', '$$$', 'Old Town'],
@@ -439,7 +439,7 @@ const rooftopRestaurants = [
     favorite: false,
   },
   {
-    id: '5',
+    id: 'rooftop_5',
     name: 'Paragraph',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Seafood', '$$$', 'Seaside'],
@@ -449,7 +449,7 @@ const rooftopRestaurants = [
     favorite: true,
   },
   {
-    id: '6',
+    id: 'rooftop_6',
     name: 'Tiflis Veranda',
     image: require('../assets/images/lolita.jpg'),
     tags: ['International cuisine', '$$$', 'Financial District'],
@@ -459,7 +459,7 @@ const rooftopRestaurants = [
     favorite: false,
   },
   {
-    id: '7',
+    id: 'rooftop_7',
     name: 'Sofiko',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Georgian casual dining', '$$', 'Downtown'],
@@ -469,7 +469,7 @@ const rooftopRestaurants = [
     favorite: false,
   },
   {
-    id: '8',
+    id: 'rooftop_8',
     name: 'Atmosphere Bar',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Asian Fusion Restaurant', '$$', 'Midtown'],
@@ -479,7 +479,7 @@ const rooftopRestaurants = [
     favorite: false,
   },
   {
-    id: '9',
+    id: 'rooftop_9',
     name: 'Weather Report Bar',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Tapas', '$$', 'City Center'],
@@ -502,35 +502,35 @@ const rooftopRestaurants = [
 
 const dateNightRestaurants = [
   {
-    id: '1',
+    id: 'date_1',
     name: 'Barbarestan',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Modern Georgian fine dining', 'Romantic'],
     favorite: true,
   },
   {
-    id: '2',
+    id: 'date_2',
     name: 'Casa Fiori',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Modern Italian Restaurant & Cocktail Bar', 'Intimate'],
     favorite: false,
   },
   {
-    id: '3',
+    id: 'date_3',
     name: 'Ambrosiano',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Italy\'s finest artisan dishes', 'Romantic'],
     favorite: false,
   },
   {
-    id: '4',
+    id: 'date_4',
     name: 'Madre',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Spanish', 'Date Night'],
     favorite: true,
   },
   {
-    id: '5',
+    id: 'date_5',
     name: 'Littera',
     image: require('../assets/images/lolita.jpg'),
     tags: ['Modern Georgian cuisine', 'Romantic'],
@@ -580,6 +580,8 @@ export default function HomeScreen() {
   const [showCartSuccess, setShowCartSuccess] = useState(false);
   const [addedItemName, setAddedItemName] = useState('');
   const [bookingFromLolita, setBookingFromLolita] = useState(false);
+  const [showReservationsModal, setShowReservationsModal] = useState(false);
+  const [showSavedModal, setShowSavedModal] = useState(false);
 
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
@@ -1069,7 +1071,7 @@ export default function HomeScreen() {
             <Ionicons name="search" size={26} color={activeTab === 'Search' ? '#FF8C00' : '#b0b8c1'} />
             <Text style={[styles.tabLabel, activeTab === 'Search' && styles.tabLabelActive]}>Search</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('Saved')}>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setShowSavedModal(true)}>
             <Ionicons name="bookmark-outline" size={26} color={activeTab === 'Saved' ? '#FF8C00' : '#b0b8c1'} />
             <Text style={[styles.tabLabel, activeTab === 'Saved' && styles.tabLabelActive]}>Saved</Text>
           </TouchableOpacity>
@@ -1077,7 +1079,7 @@ export default function HomeScreen() {
             <Ionicons name="cart-outline" size={26} color={activeTab === 'Cart' ? '#FF8C00' : '#b0b8c1'} />
             <Text style={[styles.tabLabel, activeTab === 'Cart' && styles.tabLabelActive]}>Cart</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setActiveTab('Reservations')}>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setShowReservationsModal(true)}>
             <Ionicons name="calendar-outline" size={26} color={activeTab === 'Reservations' ? '#FF8C00' : '#b0b8c1'} />
             <Text style={[styles.tabLabel, activeTab === 'Reservations' && styles.tabLabelActive]}>Reservations</Text>
           </TouchableOpacity>
@@ -2023,6 +2025,25 @@ export default function HomeScreen() {
                 <Ionicons name="cart-outline" size={64} color="#666" />
                 <Text style={{ color: '#666', fontSize: 18, marginTop: 16 }}>Your cart is empty</Text>
                 <Text style={{ color: '#666', fontSize: 14, marginTop: 8 }}>Add some delicious items from the menu!</Text>
+                <Text style={{ color: '#b0b8c1', fontSize: 16, textAlign: 'center', marginTop: 24, paddingHorizontal: 20, lineHeight: 22 }}>
+                  Book a table first to pre-order food and have it ready when you arrive.
+                </Text>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#FF8C00',
+                    borderRadius: 12,
+                    paddingVertical: 14,
+                    paddingHorizontal: 24,
+                    marginTop: 20,
+                  }}
+                  onPress={() => {
+                    setShowCartModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 16, fontWeight: '600', textAlign: 'center' }}>Book a Table</Text>
+                </TouchableOpacity>
               </View>
             ) : (
               <>
@@ -2334,6 +2355,204 @@ export default function HomeScreen() {
                 Place Order - {(getCartTotal() * 1.18).toFixed(2)} GEL
               </Text>
             </TouchableOpacity>
+          </LinearGradient>
+        </View>
+      </Modal>
+      {/* Reservations Modal */}
+      <Modal
+        visible={showReservationsModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowReservationsModal(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <LinearGradient
+            colors={['#606060', '#202020', '#000000']}
+            style={{ 
+              borderRadius: 24, 
+              width: '90%', 
+              maxHeight: '85%',
+              padding: 24,
+              shadowColor: '#000',
+              shadowOpacity: 0.9,
+              shadowRadius: 40,
+              shadowOffset: { width: 0, height: 20 },
+              elevation: 50,
+              borderWidth: 1,
+              borderColor: '#808080',
+            }}>
+            {/* Header */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>My Reservations</Text>
+              <TouchableOpacity onPress={() => setShowReservationsModal(false)}>
+                <Ionicons name="close" size={24} color="#fff" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={{ maxHeight: 500 }}>
+              {/* Current Reservations */}
+              <View style={{ marginBottom: 24 }}>
+                <Text style={{ color: '#FF8C00', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Current Reservations</Text>
+                <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                    <Ionicons name="restaurant" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Lolita Restaurant</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="calendar" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Today, 7:00 PM</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="people" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Table for 2 people</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="fast-food" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Pre-ordered items:</Text>
+                  </View>
+                  <View style={{ marginLeft: 28 }}>
+                    <Text style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 2 }}>• Cheesesticks x1</Text>
+                    <Text style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 2 }}>• Avocado Toast x2</Text>
+                    <Text style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 2 }}>• Truffle Fries x1</Text>
+                  </View>
+                </View>
+              </View>
+
+              {/* Previous Reservations */}
+              <View style={{ marginBottom: 24 }}>
+                <Text style={{ color: '#b0b8c1', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Previous Reservations</Text>
+                <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                    <Ionicons name="restaurant" size={20} color="#666" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#666', fontSize: 16, fontWeight: 'bold' }}>Honoré Restaurant</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="calendar" size={20} color="#666" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#666', fontSize: 14 }}>Yesterday, 6:30 PM</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="people" size={20} color="#666" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#666', fontSize: 14 }}>Table for 4 people</Text>
+                  </View>
+                </View>
+                
+                <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16, marginTop: 12 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                    <Ionicons name="restaurant" size={20} color="#666" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#666', fontSize: 16, fontWeight: 'bold' }}>Rooms Tbilisi</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="calendar" size={20} color="#666" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#666', fontSize: 14 }}>Last Week, 8:00 PM</Text>
+                  </View>
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="people" size={20} color="#666" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#666', fontSize: 14 }}>Table for 2 people</Text>
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+          </LinearGradient>
+        </View>
+      </Modal>
+      {/* Saved Modal */}
+      <Modal
+        visible={showSavedModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowSavedModal(false)}
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <LinearGradient
+            colors={['#606060', '#202020', '#000000']}
+            style={{ 
+              borderRadius: 24, 
+              width: '90%', 
+              maxHeight: '85%',
+              padding: 24,
+              shadowColor: '#000',
+              shadowOpacity: 0.9,
+              shadowRadius: 40,
+              shadowOffset: { width: 0, height: 20 },
+              elevation: 50,
+              borderWidth: 1,
+              borderColor: '#808080',
+            }}>
+            {/* Header */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>Saved Restaurants</Text>
+              <TouchableOpacity onPress={() => setShowSavedModal(false)}>
+                <Ionicons name="close" size={24} color="#fff" />
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={{ maxHeight: 500 }}>
+              {Object.keys(favorites).filter(id => favorites[id]).length === 0 ? (
+                <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 40 }}>
+                  <Ionicons name="bookmark-outline" size={64} color="#FF8C00" />
+                  <Text style={{ color: '#666', fontSize: 18, marginTop: 16, textAlign: 'center' }}>No saved restaurants</Text>
+                  <Text style={{ color: '#666', fontSize: 14, marginTop: 8, textAlign: 'center' }}>Tap the bookmark icon to save your favorite restaurants!</Text>
+                </View>
+              ) : (
+                [
+                  ...restaurants,
+                  ...trendingRestaurants,
+                  ...wineTastingVenues,
+                  ...outdoorDiningRestaurants,
+                  ...rooftopRestaurants,
+                  ...dateNightRestaurants
+                ]
+                  .filter(restaurant => favorites[restaurant.id])
+                  .map(restaurant => (
+                    <TouchableOpacity 
+                      key={restaurant.id} 
+                      style={{ 
+                        backgroundColor: 'rgba(255,255,255,0.05)', 
+                        borderRadius: 12, 
+                        padding: 16, 
+                        marginBottom: 12,
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                      }}
+                      onPress={() => {
+                        setSelectedRestaurant(restaurant);
+                        setShowSavedModal(false);
+                        setShowRestaurantModal(true);
+                      }}
+                    >
+                      <Image source={restaurant.image} style={{ width: 60, height: 60, borderRadius: 8, marginRight: 12 }} />
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>
+                          {restaurant.name}
+                        </Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 4 }}>
+                          {restaurant.tags ? restaurant.tags.join(' • ') : restaurant.cuisine || ''}
+                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Ionicons name="star" size={14} color="#FFD700" style={{ marginRight: 4 }} />
+                          <Text style={{ color: '#FFD700', fontSize: 12, fontWeight: 'bold' }}>{restaurant.rating || 'N/A'}</Text>
+                        </View>
+                      </View>
+                      <TouchableOpacity
+                        style={{ 
+                          padding: 8, 
+                          backgroundColor: 'rgba(255,140,0,0.2)', 
+                          borderRadius: 20,
+                          borderWidth: 1,
+                          borderColor: '#FF8C00'
+                        }}
+                        onPress={() => setFavorites(favs => ({ ...favs, [restaurant.id]: false }))}
+                      >
+                        <Ionicons name="bookmark" size={20} color="#FF8C00" />
+                      </TouchableOpacity>
+                    </TouchableOpacity>
+                  ))
+              )}
+            </ScrollView>
           </LinearGradient>
         </View>
       </Modal>
