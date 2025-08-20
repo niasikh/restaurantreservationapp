@@ -551,6 +551,7 @@ export default function HomeScreen() {
   const [showReservationsModal, setShowReservationsModal] = useState(false);
   const [showSavedModal, setShowSavedModal] = useState(false);
 
+  const [showMapModal, setShowMapModal] = useState(false);
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
 
@@ -1886,7 +1887,7 @@ export default function HomeScreen() {
             {/* Cart Items */}
             {cartItems.length === 0 ? (
               <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 40 }}>
-                <Ionicons name="cart-outline" size={64} color="#666" />
+                <Ionicons name="map-outline" size={64} color="#666" />
                 <Text style={{ color: '#666', fontSize: 18, marginTop: 16 }}>Your cart is empty</Text>
                 <Text style={{ color: '#666', fontSize: 14, marginTop: 8 }}>Add some delicious items from the menu!</Text>
                 <Text style={{ color: '#b0b8c1', fontSize: 16, textAlign: 'center', marginTop: 24, paddingHorizontal: 20, lineHeight: 22 }}>
@@ -2422,6 +2423,70 @@ export default function HomeScreen() {
       </Modal>
       </LinearGradient>
       
+      {/* Map Modal */}
+      <Modal visible={showMapModal} animationType="slide" onRequestClose={() => setShowMapModal(false)} transparent={true}>
+        <BlurView intensity={20} style={{ ...StyleSheet.absoluteFill, bottom: 80 }}>
+          <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
+            <LinearGradient colors={["rgba(0, 0, 0, 0.9)", "rgba(0, 0, 0, 0.8)", "rgba(0, 0, 0, 0.9)"]} style={{ flex: 1, paddingTop: 60, paddingHorizontal: 16 }}>
+              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+                <Text style={{ color: "#fff", fontSize: 28, fontWeight: "bold" }}>Restaurant Map</Text>
+                <TouchableOpacity onPress={() => setShowMapModal(false)}>
+                  <Ionicons name="close" size={28} color="#fff" />
+                </TouchableOpacity>
+              </View>
+              
+              {/* Search Bar */}
+              <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#1a1a1a", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, marginBottom: 20 }}>
+                <Ionicons name="search" size={20} color="#b0b8c1" style={{ marginRight: 12 }} />
+                <TextInput
+                  style={{ flex: 1, color: "#fff", fontSize: 16 }}
+                  placeholder="Search restaurants..."
+                  placeholderTextColor="#b0b8c1"
+                />
+              </View>
+              
+              {/* Filter Buttons */}
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 20 }}>
+                <TouchableOpacity style={{ backgroundColor: "#FF8C00", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12 }}>
+                  <Text style={{ color: "#000", fontSize: 14, fontWeight: "600" }}>All</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12, borderWidth: 1, borderColor: "#333" }}>
+                  <Text style={{ color: "#fff", fontSize: 14 }}>Georgian</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12, borderWidth: 1, borderColor: "#333" }}>
+                  <Text style={{ color: "#fff", fontSize: 14 }}>Italian</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12, borderWidth: 1, borderColor: "#333" }}>
+                  <Text style={{ color: "#fff", fontSize: 14 }}>Fine Dining</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12, borderWidth: 1, borderColor: "#333" }}>
+                  <Text style={{ color: "#fff", fontSize: 14 }}>Outdoor</Text>
+                </TouchableOpacity>
+              </ScrollView>
+              
+              {/* Map Placeholder */}
+              <View style={{ flex: 1, backgroundColor: "#1a1a1a", borderRadius: 16, marginBottom: 20, justifyContent: "center", alignItems: "center" }}>
+                <Ionicons name="map" size={64} color="#404040" />
+                <Text style={{ color: "#666", fontSize: 18, marginTop: 16, textAlign: "center" }}>Map Integration Coming Soon</Text>
+                <Text style={{ color: "#666", fontSize: 14, marginTop: 8, textAlign: "center" }}>Interactive restaurant map will be displayed here</Text>
+              </View>
+              
+              {/* Quick Actions */}
+              <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 20 }}>
+                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 12, padding: 16, flex: 1, marginRight: 8, borderWidth: 1, borderColor: "#333" }}>
+                  <Ionicons name="location" size={24} color="#FF8C00" style={{ marginBottom: 8 }} />
+                  <Text style={{ color: "#fff", fontSize: 14, fontWeight: "600" }}>My Location</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 12, padding: 16, flex: 1, marginLeft: 8, borderWidth: 1, borderColor: "#333" }}>
+                  <Ionicons name="star" size={24} color="#FF8C00" style={{ marginBottom: 8 }} />
+                  <Text style={{ color: "#fff", fontSize: 14, fontWeight: "600" }}>Favorites</Text>
+                </TouchableOpacity>
+              </View>
+            </LinearGradient>
+          </View>
+        </BlurView>
+      </Modal>
+      
       {/* Bottom Navigation Bar - Always Visible */}
       <SafeAreaView style={[styles.tabBarContainer, { position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 9999 }]} edges={['bottom']}>
         <View style={styles.tabBar}>
@@ -2450,9 +2515,9 @@ export default function HomeScreen() {
             <Ionicons name="bookmark-outline" size={26} color={activeTab === 'Saved' ? '#FF8C00' : '#b0b8c1'} />
             <Text style={[styles.tabLabel, activeTab === 'Saved' && styles.tabLabelActive]}>Saved</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.tabItem} onPress={() => setShowCartModal(true)}>
-            <Ionicons name="cart-outline" size={26} color={activeTab === 'Cart' ? '#FF8C00' : '#b0b8c1'} />
-            <Text style={[styles.tabLabel, activeTab === 'Cart' && styles.tabLabelActive]}>Cart</Text>
+          <TouchableOpacity style={styles.tabItem} onPress={() => setShowMapModal(true)}>
+            <Ionicons name="map-outline" size={26} color={activeTab === 'Map' ? '#FF8C00' : '#b0b8c1'} />
+            <Text style={[styles.tabLabel, activeTab === 'Map' && styles.tabLabelActive]}>Map</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.tabItem} onPress={() => setShowReservationsModal(true)}>
             <Ionicons name="calendar-outline" size={26} color={activeTab === 'Reservations' ? '#FF8C00' : '#b0b8c1'} />
