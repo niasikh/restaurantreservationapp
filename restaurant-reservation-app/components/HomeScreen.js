@@ -714,7 +714,7 @@ export default function HomeScreen() {
               <Ionicons name="people-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>{partySize} • {selectedTime} {selectedDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.selectorButton} onPress={() => setShowSearchModal(true)}>
+            <TouchableOpacity style={[styles.selectorButton, { minWidth: 200 }]} onPress={() => setShowSearchModal(true)}>
               <Ionicons name="search-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>Search</Text>
             </TouchableOpacity>
@@ -796,7 +796,7 @@ export default function HomeScreen() {
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.cuisineSectionTitle}>Find by cuisine</Text>
           <TouchableOpacity>
-            <Text style={styles.cuisineViewAll}>View all</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}><Text style={styles.cuisineViewAll}>View all</Text><Ionicons name="chevron-forward" size={16} color="#FF8C00" style={{ marginLeft: 4 }} /></View>
           </TouchableOpacity>
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.cuisineCarousel} contentContainerStyle={{ paddingLeft: 8, paddingRight: 8 }}>
@@ -914,7 +914,7 @@ export default function HomeScreen() {
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.wineTastingTitle}>Wine tasting</Text>
           <TouchableOpacity>
-            <Text style={styles.cuisineViewAll}>View all</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}><Text style={styles.cuisineViewAll}>View all</Text><Ionicons name="chevron-forward" size={16} color="#FF8C00" style={{ marginLeft: 4 }} /></View>
           </TouchableOpacity>
         </View>
         <FlatList
@@ -954,7 +954,7 @@ export default function HomeScreen() {
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.outdoorDiningTitle}>Fun outdoor dining</Text>
           <TouchableOpacity>
-            <Text style={styles.cuisineViewAll}>View all</Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}><Text style={styles.cuisineViewAll}>View all</Text><Ionicons name="chevron-forward" size={16} color="#FF8C00" style={{ marginLeft: 4 }} /></View>
           </TouchableOpacity>
         </View>
         <FlatList
