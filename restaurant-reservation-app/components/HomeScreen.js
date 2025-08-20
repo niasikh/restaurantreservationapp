@@ -1114,31 +1114,12 @@ export default function HomeScreen() {
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
                 </TouchableOpacity>
                 
-                {/* View Cart Button */}
-                <TouchableOpacity
-                  style={{ 
-                    backgroundColor: 'transparent', 
-                    borderRadius: 12, 
-                    paddingVertical: 16, 
-                    alignItems: 'center', 
-                    marginBottom: 18,
-                    borderWidth: 1,
-                    borderColor: '#FF8C00'
-                  }}
-                  onPress={() => {
-                    setShowRestaurantModal(false);
-                    setShowCartModal(true);
-                  }}
-                >
-                  <Text style={{ color: '#FF8C00', fontSize: 18, fontWeight: 'bold' }}>View Cart</Text>
-                </TouchableOpacity>
-                {/* Menu Section */}
                 <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
                 <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
                   {/* 20 sample dishes */}
                   {[...Array(20)].map((_, i) => (
                     i === 0 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/ko.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Cheese Sticks</Text>
@@ -1147,13 +1128,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'cheese-sticks', name: 'Cheese Sticks', price: '17 GEL', description: 'Sweet Chili Sauce, Sulguni Cheese, Panko, Garlic, Egg' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 1 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/nnn.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Avocado Toast</Text>
@@ -1162,13 +1140,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'avocado-toast', name: 'Avocado Toast', price: '17 GEL', description: 'Avocado, Red Onion, Garlic, Coriander, Olive Oil, Lime' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 2 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/jj.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Margherita Pizza</Text>
@@ -1177,13 +1152,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>19 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'margherita-pizza', name: 'Margherita Pizza', price: '19 GEL', description: 'Tomato sauce, Fresh Mozzarella' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 3 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/k.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Bolognese Rigatoni</Text>
@@ -1192,13 +1164,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>27 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'bolognese-rigatoni', name: 'Bolognese Rigatoni', price: '27 GEL', description: 'Beef, Bacon, Tomato, Red Wine, Spicy Sour Cream' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 4 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5253.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Grilled Artichoke Salad</Text>
@@ -1207,13 +1176,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'grilled-artichoke-salad', name: 'Grilled Artichoke Salad', price: '17 GEL', description: 'Artichoke, Frisée, Romano, Parmesan, Nuts, Parsley Dressing' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 5 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5254.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Nachos</Text>
@@ -1222,13 +1188,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>13 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'nachos', name: 'Nachos', price: '13 GEL', description: 'Cheese Sauce, Guacamole, Tomato Salsa, Nachos, Jalapenos' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 6 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5255.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Roasted Chicken</Text>
@@ -1237,13 +1200,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>33 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'roasted-chicken', name: 'Roasted Chicken', price: '33 GEL', description: 'Grilled Corn, Lemon, Herbs' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 7 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/88.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Chicken Wings</Text>
@@ -1252,13 +1212,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>17 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'chicken-wings', name: 'Chicken Wings', price: '17 GEL', description: 'Sweet Chili Sauce, White Sesame, Green Onion, Fresh Pepper Mix' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 8 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5258.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Mac & Cheese</Text>
@@ -1267,13 +1224,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>21 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'mac-cheese', name: 'Mac & Cheese', price: '21 GEL', description: 'Cheddar, Gouda, Parmesan, Mozzarella, Panko' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 9 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5259.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Tom Yum</Text>
@@ -1282,13 +1236,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>21 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'tom-yum', name: 'Tom Yum', price: '21 GEL', description: 'Shrimp, Rice Noodles, Ginger, Mushroom, Lemongrass, Potato, Coconut Cream' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 10 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5260.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Cauliflower Bites with Kimchi Mayo</Text>
@@ -1297,13 +1248,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>11 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'cauliflower-bites', name: 'Cauliflower Bites with Kimchi Mayo', price: '11 GEL', description: 'Cauliflower, Panko, Onion, Garlic, Kimchi, Egg, Lime, Parsley' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 11 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5261.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Chicken Bites</Text>
@@ -1312,13 +1260,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>15 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'chicken-bites', name: 'Chicken Bites', price: '15 GEL', description: 'Chicken, Panko, Tartar Sauce' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 12 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5262.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Chicken Focaccia Sandwich</Text>
@@ -1327,13 +1272,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>25 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'chicken-focaccia-sandwich', name: 'Chicken Focaccia Sandwich', price: '25 GEL', description: 'Focaccia, Chicken, Avocado, Tomato, Bacon, Spinach, Sauce, Fries' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 13 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5263.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Cheeseburger</Text>
@@ -1342,13 +1284,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>27 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'cheeseburger', name: 'Cheeseburger', price: '27 GEL', description: 'Beef, Pickles, Onion, Cocktail Sauce, Fries' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 14 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5264.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Pita Caesar</Text>
@@ -1357,13 +1296,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>25 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'pita-caesar', name: 'Pita Caesar', price: '25 GEL', description: 'Chicken, Bacon, Parmesan Cheese, Caesar Sauce, Fries' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 15 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5265.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Gnocchi</Text>
@@ -1372,13 +1308,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>19 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'gnocchi', name: 'Gnocchi', price: '19 GEL', description: 'Crispy Prosciutto, Cream, Permesan, Black Pepper' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 16 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5266.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Lolita Khatchapuri</Text>
@@ -1387,13 +1320,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>19 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'lolita-khatchapuri', name: 'Lolita Khatchapuri', price: '19 GEL', description: 'Sulguni Cheese, Mozzarella Cheese, Imeruli Cheese, Egg, Butter' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 17 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5267.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Apple Crumble</Text>
@@ -1402,13 +1332,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>13 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'apple-crumble', name: 'Apple Crumble', price: '13 GEL', description: 'Apple Pie, Vanilla Ice Cream' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 18 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5268.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Tiramisu</Text>
@@ -1417,13 +1344,10 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>13 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'tiramisu', name: 'Tiramisu', price: '13 GEL', description: 'Mascarpone, Espresso, Cocoa, Port Wine' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                         </View>
                       </View>
                     ) : i === 19 ? (
-                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12 }}>
+                      <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
                         <Image source={require("../assets/images/IMG_5269.jpg")} style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, resizeMode: 'cover' }} />
                         <View style={{ flex: 1 }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Churros</Text>
@@ -1432,9 +1356,6 @@ export default function HomeScreen() {
                         </View>
                         <View style={{ alignItems: 'center' }}>
                           <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>11 GEL</Text>
-                          <TouchableOpacity style={{ padding: 4 }} onPress={() => addToCart({ id: 'churros', name: 'Churros', price: '11 GEL', description: 'Chocolate Sauce' })}>
-                            <Ionicons name="add-circle-outline" size={20} color="#FF8C00" />
-                          </TouchableOpacity>
                       </View>
                         </View>
                     ) : null
@@ -1669,7 +1590,7 @@ export default function HomeScreen() {
                   placeholderTextColor="#b0b8c1"
                   value={phoneNumber}
                   onChangeText={setPhoneNumber}
-                  keyboardType="phone-pad"
+                  keyboardType="phone-pad" returnKeyType="done" onSubmitEditing={() => {}}
                   maxLength={15}
                 />
               </View>
