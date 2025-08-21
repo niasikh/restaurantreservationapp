@@ -161,30 +161,7 @@ const trendingRestaurants = [
     price: 2,
     favorite: false,
   },
-  {
-    id: 'trending_6',
-    name: '8000 Vintages',
-    image: { uri: 'https://images.unsplash.com/photo-1514361892635-cebb9b6b9d49?auto=format&fit=crop&w=80&q=80' },
-    location: 'Tbilisi',
-    cuisine: 'Wine Bar',
-    rating: 4.8,
-    reviews: 80,
-    distance: 2.7,
-    price: 3,
-    favorite: true,
-  },
-  {
-    id: 'trending_7',
-    name: 'Canape',
-    image: { uri: 'https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=80&q=80' },
-    location: 'Tbilisi',
-    cuisine: 'European',
-    rating: 4.4,
-    reviews: 35,
-    distance: 1.9,
-    price: 2,
-    favorite: false,
-  },
+
   {
     id: '8',
     name: 'Khedi',
@@ -242,6 +219,30 @@ const trendingRestaurants = [
     rating: 4.6,
     reviews: 33,
     distance: 2.6,
+    price: 2,
+    favorite: false,
+  },
+  {
+    id: 'trending_6',
+    name: '8000 Vintages',
+    image: { uri: 'https://images.unsplash.com/photo-1514361892635-cebb9b6b9d49?auto=format&fit=crop&w=80&q=80' },
+    location: 'Tbilisi',
+    cuisine: 'Wine Bar',
+    rating: 4.8,
+    reviews: 80,
+    distance: 2.7,
+    price: 3,
+    favorite: true,
+  },
+  {
+    id: 'trending_7',
+    name: 'Canape',
+    image: { uri: 'https://images.unsplash.com/photo-1464306076886-debca5e8a6b0?auto=format&fit=crop&w=80&q=80' },
+    location: 'Tbilisi',
+    cuisine: 'European',
+    rating: 4.4,
+    reviews: 35,
+    distance: 1.9,
     price: 2,
     favorite: false,
   },
@@ -506,6 +507,130 @@ const dateNightRestaurants = [
   },
 ];
 
+  // Additional restaurants for trending modal (10 restaurants from outdoor dining and date night)
+  const additionalTrendingRestaurants = [
+  {
+    id: 'add_1',
+    name: 'Bachata Gardens',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Vake District',
+    cuisine: 'Latin & Georgian',
+    rating: 4.4,
+    reviews: 128,
+    distance: 2.1,
+    price: 2,
+    favorite: false,
+  },
+  {
+    id: 'add_2',
+    name: 'Miti Taverna',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Old Town',
+    cuisine: 'Greek',
+    rating: 4.6,
+    reviews: 95,
+    distance: 1.8,
+    price: 2,
+    favorite: true,
+  },
+  {
+    id: 'add_3',
+    name: 'Barbarestan',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Downtown',
+    cuisine: 'Modern Georgian',
+    rating: 4.8,
+    reviews: 156,
+    distance: 0.9,
+    price: 3,
+    favorite: true,
+  },
+  {
+    id: 'add_4',
+    name: 'Casa Fiori',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Midtown',
+    cuisine: 'Modern Italian',
+    rating: 4.7,
+    reviews: 112,
+    distance: 1.5,
+    price: 3,
+    favorite: false,
+  },
+  {
+    id: 'add_5',
+    name: 'Ninia\'s Garden',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Saburtalo',
+    cuisine: 'European',
+    rating: 4.5,
+    reviews: 89,
+    distance: 3.2,
+    price: 2,
+    favorite: false,
+  },
+  {
+    id: 'add_6',
+    name: 'Ambrosiano',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Vera',
+    cuisine: 'Artisan Italian',
+    rating: 4.9,
+    reviews: 203,
+    distance: 1.2,
+    price: 3,
+    favorite: false,
+  },
+  {
+    id: 'add_7',
+    name: 'Cafe Stamba',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Mtatsminda',
+    cuisine: 'Mixed',
+    rating: 4.3,
+    reviews: 76,
+    distance: 2.8,
+    price: 2,
+    favorite: false,
+  },
+  {
+    id: 'add_8',
+    name: 'Madre',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Chugureti',
+    cuisine: 'Spanish',
+    rating: 4.6,
+    reviews: 134,
+    distance: 1.7,
+    price: 2,
+    favorite: true,
+  },
+  {
+    id: 'add_9',
+    name: 'Iakobi\'s Ezo',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Sololaki',
+    cuisine: 'Neo Bistro',
+    rating: 4.4,
+    reviews: 67,
+    distance: 0.8,
+    price: 2,
+    favorite: true,
+  },
+  {
+    id: 'add_10',
+    name: 'Littera',
+    image: require('../assets/images/lolita.jpg'),
+    location: 'Avlabari',
+    cuisine: 'Modern Georgian',
+    rating: 4.7,
+    reviews: 98,
+    distance: 2.3,
+    price: 2,
+    favorite: false,
+  },
+];
+
 export default function HomeScreen() {
   const [showAllTrending, setShowAllTrending] = useState(false);
   const [showAllDateNight, setShowAllDateNight] = useState(false);
@@ -557,9 +682,30 @@ export default function HomeScreen() {
   const [showAllRestaurantsModal, setShowAllRestaurantsModal] = useState(false);
   const [selectedCuisineFilter, setSelectedCuisineFilter] = useState('All');
   const [selectedPopularityFilter, setSelectedPopularityFilter] = useState('All');
+  const [trendingFilter, setTrendingFilter] = useState('all'); // 'all', 'open', 'happy', 'rated'
   const [allRestaurantsSearchQuery, setAllRestaurantsSearchQuery] = useState('');
   const [allRestaurantsSearchSuggestions, setAllRestaurantsSearchSuggestions] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
+  
+  // Filter trending restaurants based on selected filter
+  const getFilteredTrendingRestaurants = () => {
+    const allTrending = [...trendingRestaurants, ...additionalTrendingRestaurants];
+    
+    switch (trendingFilter) {
+      case 'open':
+        // Filter for restaurants that are likely open now (placeholder logic)
+        return allTrending.filter(r => r.name === 'Alubali' || r.name === 'Orangery' || r.name === 'Coffee Shop Company' || r.name === 'Monday Greens' || r.name === 'Strada');
+      case 'happy':
+        // Filter for happy hour restaurants (placeholder logic)
+        return allTrending.filter(r => r.name === 'Honoré' || r.name === 'Orangery' || r.name === 'Bachata Gardens' || r.name === 'Cafe Stamba');
+      case 'rated':
+        // Filter for top rated restaurants (rating 4.5+)
+        return allTrending.filter(r => r.rating >= 4.5);
+      default:
+        return allTrending;
+    }
+  };
+  
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
 
@@ -824,6 +970,7 @@ export default function HomeScreen() {
       <ScrollView
         style={[styles.container]}
         contentContainerStyle={{ paddingBottom: 120 }}
+        showsVerticalScrollIndicator={false}
       >
         {/* Available Now */}
         <Text style={styles.sectionTitle}>Available now</Text>
@@ -855,20 +1002,10 @@ export default function HomeScreen() {
                       </React.Fragment>
                     );
                   })}
-                    {item.name !== 'Keto and Kote' && item.name !== 'Tsiskvili' && (
-                    <>
-                      {' '}
-                      <Ionicons name="star" size={14} color="#FFD700" />
-                      <Text style={styles.ratingText}>{item.rating}</Text>
-                    </>
-                  )}
+                  {' '}
+                  <Ionicons name="star" size={14} color="#FFD700" />
+                  <Text style={styles.ratingText}>{item.rating}</Text>
                 </Text>
-                  {(item.name === 'Keto and Kote' || item.name === 'Tsiskvili') && (
-                    <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
-                      <Ionicons name="star" size={14} color="#FFD700" />
-                      <Text style={styles.ratingText}>{item.rating}</Text>
-                    </View>
-                  )}
                 </View>
                 {/* Favourites icon inside card, right side, never overflowing */}
                 <TouchableOpacity
@@ -973,64 +1110,165 @@ export default function HomeScreen() {
           visible={showAllTrending}
           animationType="slide"
           onRequestClose={() => setShowAllTrending(false)}
-          transparent={true}
+          transparent={false}
         >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-                <Text style={[styles.trendingTitle, { marginLeft: 0 }]}>All Trending Restaurants</Text>
-                <Pressable onPress={() => setShowAllTrending(false)}>
-                  <Ionicons name="close" size={28} color="#fff" />
-                </Pressable>
-              </View>
-              <ScrollView style={{ flex: 1 }}>
-                {(trendingRestaurants.map((r) => (
-                  <TouchableOpacity key={r.id} style={styles.trendingCard} onPress={() => {
-                    // Find the restaurant in the main restaurants array or create a compatible object
-                    const restaurant = restaurants.find(rest => rest.name === r.name) || {
-                      id: r.id,
-                      name: r.name,
-                      image: r.image,
-                      tags: [r.cuisine],
-                      rating: r.rating,
-                      times: ['6:00 PM', '6:30 PM', '7:00 PM'],
-                    };
-                    setSelectedRestaurant(restaurant);
-                    setShowAllTrending(false);
-                    setShowRestaurantModal(true);
-                  }}>
-                    <Image source={r.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : r.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : r.name === 'Coffee Shop Company' ? require('../assets/images/IMG_4193.jpg') : r.name === 'Monday Greens' ? require('../assets/images/IMG_5587.jpg') : r.name === 'Strada' ? require('../assets/images/IMG_5588.jpg') : r.image} style={styles.trendingImage} />
-                    <View style={styles.trendingInfo}>
-                      <Text style={styles.trendingName}>{r.name}</Text>
-                      <Text style={styles.trendingLocation}>{r.location}</Text>
-                      <Text style={styles.trendingCuisine}>{r.cuisine}</Text>
-                      <View style={styles.trendingRatingRow}>
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Ionicons
-                            key={i}
-                            name={i < Math.round(r.rating) ? 'star' : 'star-outline'}
-                            size={16}
-                            color="#FFD700"
-                            style={{ marginRight: 2 }}
-                          />
-                        ))}
-                        <Text style={styles.trendingReviews}>({r.reviews} Reviews)</Text>
-                      </View>
-                    </View>
-                    <View style={styles.trendingMeta}>
-                      <TouchableOpacity onPress={() => setFavorites(favs => ({ ...favs, [r.id]: !favs[r.id] }))}>
-                        <Ionicons name={favorites[r.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
-                      </TouchableOpacity>
-                      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 12 }}>
-                        <Ionicons name="location-outline" size={16} color="#fff" style={{ marginRight: 2 }} />
-                        <Text style={styles.trendingMetaText}>{r.distance} km</Text>
-                      </View>
-                      <Text style={styles.trendingMetaText}>{'$'.repeat(r.price)}</Text>
-                    </View>
+          <View style={{ flex: 1, backgroundColor: '#000' }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
+              <LinearGradient
+                colors={['#000000', '#1a1a1a', '#000000']}
+                style={{ flex: 1 }}
+              >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 8 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Ionicons name="restaurant" size={24} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>Trending Restaurants</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => setShowAllTrending(false)}>
+                    <Ionicons name="close" size={24} color="#666666" />
                   </TouchableOpacity>
-                )))}
-              </ScrollView>
-            </View>
+                </View>
+                <View style={{ paddingHorizontal: 20, paddingBottom: 20 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#FF8C00', marginRight: 8 }} />
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Updated weekly with the most popular restaurants</Text>
+                  </View>
+                </View>
+                
+                {/* Filter buttons */}
+                <View style={{ flexDirection: 'row', marginBottom: 20, justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 16 }}>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: trendingFilter === 'open' ? '#FF8C00' : '#404040',
+                      borderRadius: 24,
+                      paddingHorizontal: 14,
+                      paddingVertical: 8,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: trendingFilter === 'open' ? '#FF8C00' : '#fff',
+                      flex: 1,
+                    }}
+                    onPress={() => setTrendingFilter(trendingFilter === 'open' ? 'all' : 'open')}
+                  >
+                    <Ionicons name="time-outline" size={16} color={trendingFilter === 'open' ? '#fff' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: '#fff', fontSize: 14 }}>
+                      Open Now
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: trendingFilter === 'happy' ? '#FF8C00' : '#404040',
+                      borderRadius: 24,
+                      paddingHorizontal: 14,
+                      paddingVertical: 8,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: trendingFilter === 'happy' ? '#FF8C00' : '#fff',
+                      flex: 1,
+                    }}
+                    onPress={() => setTrendingFilter(trendingFilter === 'happy' ? 'all' : 'happy')}
+                  >
+                    <Ionicons name="wine-outline" size={16} color={trendingFilter === 'happy' ? '#fff' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: '#fff', fontSize: 14 }}>
+                      Happy Hour
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: trendingFilter === 'rated' ? '#FF8C00' : '#404040',
+                      borderRadius: 24,
+                      paddingHorizontal: 14,
+                      paddingVertical: 8,
+                      borderWidth: 1,
+                      borderColor: trendingFilter === 'rated' ? '#FF8C00' : '#fff',
+                      flex: 1,
+                    }}
+                    onPress={() => setTrendingFilter(trendingFilter === 'rated' ? 'all' : 'rated')}
+                  >
+                    <Ionicons name="star-outline" size={16} color={trendingFilter === 'rated' ? '#fff' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: '#fff', fontSize: 14 }}>
+                      Top Rated
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                
+                <ScrollView style={{ flex: 1, paddingHorizontal: 4, paddingTop: 8 }} showsVerticalScrollIndicator={true} indicatorStyle="white" scrollIndicatorInsets={{right: 0}} scrollEventThrottle={16}>
+                  {/* Filtered trending restaurants */}
+                  {(getFilteredTrendingRestaurants().map((r) => (
+                    <TouchableOpacity key={r.id} style={[styles.trendingCard, { marginBottom: 10, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: 10, borderWidth: 1, borderColor: '#404040', maxWidth: '90%', alignSelf: 'flex-start', marginLeft: 16 }]} onPress={() => {
+                      // Find the restaurant in the main restaurants array or create a compatible object
+                      const restaurant = restaurants.find(rest => rest.name === r.name) || {
+                        id: r.id,
+                        name: r.name,
+                        image: r.image,
+                        tags: [r.cuisine],
+                        rating: r.rating,
+                        times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+                      };
+                      setSelectedRestaurant(restaurant);
+                      setShowAllTrending(false);
+                      setShowRestaurantModal(true);
+                    }}>
+                                             <Image source={r.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : r.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : r.name === 'Coffee Shop Company' ? require('../assets/images/IMG_4193.jpg') : r.name === 'Monday Greens' ? require('../assets/images/IMG_5587.jpg') : r.name === 'Strada' ? require('../assets/images/IMG_5588.jpg') : r.image} style={[styles.trendingImage, { borderRadius: 6, width: 70, height: 70 }]} />
+                      <View style={styles.trendingInfo}>
+                        <Text style={styles.trendingName}>{r.name}</Text>
+                        <Text style={styles.trendingLocation}>{r.location}</Text>
+                        <Text style={styles.trendingCuisine}>{r.cuisine}</Text>
+                        <View style={styles.trendingRatingRow}>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Ionicons
+                              key={i}
+                              name={i < Math.round(r.rating) ? 'star' : 'star-outline'}
+                              size={16}
+                              color="#FFD700"
+                              style={{ marginRight: 2 }}
+                            />
+                          ))}
+                          <Text style={styles.trendingReviews}>({r.reviews} Reviews)</Text>
+                        </View>
+                      </View>
+                      <View style={styles.trendingMeta}>
+                        <TouchableOpacity style={{ marginTop: 8 }} onPress={() => setFavorites(favs => ({ ...favs, [r.id]: !favs[r.id] }))}>
+                          <Ionicons name={favorites[r.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
+                        </TouchableOpacity>
+
+                        <View style={{ width: 22, height: 1, backgroundColor: '#404040', marginTop: 8, marginBottom: 8 }} />
+
+                        <TouchableOpacity
+                          style={{ marginBottom: 8 }}
+                          onPress={() => {
+                            const restaurant = restaurants.find(rest => rest.name === r.name) || {
+                              id: r.id,
+                              name: r.name,
+                              image: r.image,
+                              tags: [r.cuisine],
+                              rating: r.rating,
+                              times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+                            };
+                            setSelectedRestaurant(restaurant);
+                            setShowAllTrending(false);
+                            setShowRestaurantModal(true);
+                          }}
+                        >
+                          <Ionicons 
+                            name="calendar-outline" 
+                            size={22} 
+                            color="#FF8C00" 
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+                  )))}
+                  
+
+                </ScrollView>
+              </LinearGradient>
+            </SafeAreaView>
           </View>
         </Modal>
         {/* Wine Tasting Section */}
