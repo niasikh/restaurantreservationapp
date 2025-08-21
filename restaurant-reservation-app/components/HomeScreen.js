@@ -513,6 +513,7 @@ export default function HomeScreen() {
   // Booking modal state
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [partySize, setPartySize] = useState(2);
+  const [hasChildren, setHasChildren] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState('Now');
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -552,6 +553,7 @@ export default function HomeScreen() {
   const [showSavedModal, setShowSavedModal] = useState(false);
 
   const [showMapModal, setShowMapModal] = useState(false);
+  const [showReservationConfirmation, setShowReservationConfirmation] = useState(false);
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
 
@@ -1425,7 +1427,7 @@ export default function HomeScreen() {
               borderWidth: 1,
               borderColor: '#808080',
             }}>
-            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 18 }}>Party size</Text>
+            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 18 }}>Total guests</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 24 }}>
               {partySizes.map(size => (
                 <TouchableOpacity
@@ -1442,6 +1444,41 @@ export default function HomeScreen() {
                 </TouchableOpacity>
               ))}
             </ScrollView>
+            <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Kids</Text>
+            <View style={{ flexDirection: 'row', marginBottom: 24 }}>
+              <TouchableOpacity
+                onPress={() => setHasChildren(true)}
+                style={{
+                  flex: 1,
+                  height: 44,
+                  borderRadius: 22,
+                  borderWidth: 1,
+                  borderColor: '#808080',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 8,
+                  backgroundColor: hasChildren ? '#FF8C00' : '#202020',
+                }}
+              >
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: hasChildren ? 'bold' : 'normal' }}>Kids</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setHasChildren(false)}
+                style={{
+                  flex: 1,
+                  height: 44,
+                  borderRadius: 22,
+                  borderWidth: 1,
+                  borderColor: '#808080',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: 8,
+                  backgroundColor: !hasChildren ? '#FF8C00' : '#202020',
+                }}
+              >
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: !hasChildren ? 'bold' : 'normal' }}>No Kids</Text>
+              </TouchableOpacity>
+            </View>
             <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Date and time</Text>
             <View style={{ flexDirection: 'row', marginBottom: 24, position: 'relative', height: 190, justifyContent: 'center', alignItems: 'center' }}>
               {/* Date Picker */}
@@ -1518,8 +1555,7 @@ export default function HomeScreen() {
               onPress={() => {
                 setShowBookingModal(false);
                 if (bookingFromLolita) {
-                  setSelectedRestaurant(restaurants.find(r => r.name === 'Lolita'));
-                  setShowRestaurantModal(true);
+                  setShowReservationConfirmation(true);
                   setBookingFromLolita(false);
                 }
               }}
@@ -2485,6 +2521,79 @@ export default function HomeScreen() {
             </LinearGradient>
           </View>
         </BlurView>
+      </Modal>
+      
+      {/* Reservation Confirmation Modal */}
+      <Modal visible={showReservationConfirmation} animationType="slide" transparent={true} onRequestClose={() => setShowReservationConfirmation(false)}>
+        <View style={{ flex: 1 }}>
+          <BlurView intensity={40} tint="dark" style={StyleSheet.absoluteFill} />
+          <View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.7)' }} />
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <LinearGradient
+              colors={['#606060', '#202020', '#000000']}
+              style={{ 
+                borderRadius: 24, 
+                width: '85%', 
+                padding: 24,
+                shadowColor: '#000',
+                shadowOpacity: 0.9,
+                shadowRadius: 40,
+                shadowOffset: { width: 0, height: 20 },
+                elevation: 50,
+                borderWidth: 1,
+                borderColor: '#808080',
+              }}>
+              <View style={{ alignItems: 'center', marginBottom: 24 }}>
+                <Ionicons name="checkmark-circle" size={64} color="#FF8C00" style={{ marginBottom: 16 }} />
+                <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 8 }}>Reservation Confirmed!</Text>
+                <Text style={{ color: '#b0b8c1', fontSize: 16, textAlign: 'center', marginBottom: 24 }}>Your table has been successfully booked</Text>
+              </View>
+              
+              <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 16, padding: 20, marginBottom: 24, borderWidth: 1, borderColor: '#404040' }}>
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>Reservation Details</Text>
+                <View style={{ marginBottom: 12 }}>
+                  <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Restaurant</Text>
+                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Lolita</Text>
+                </View>
+                <View style={{ marginBottom: 12 }}>
+                  <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Number of Guests</Text>
+                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>{partySize} {partySize === 1 ? 'guest' : 'guests'}</Text>
+                </View>
+                <View style={{ marginBottom: 12 }}>
+                  <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Date</Text>
+                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>{selectedDate.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</Text>
+                </View>
+                <View style={{ marginBottom: 12 }}>
+                  <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Time</Text>
+                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>{selectedTime}</Text>
+                </View>
+                {hasChildren && (
+                  <View>
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Special Note</Text>
+                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Children included in party</Text>
+                  </View>
+                )}
+              </View>
+              
+              <View style={{ alignItems: 'center' }}>
+                <Text style={{ color: '#b0b8c1', fontSize: 16, textAlign: 'center', marginBottom: 20 }}>Thank you for choosing Lolita! We look forward to serving you.</Text>
+                <TouchableOpacity
+                  style={{ 
+                    backgroundColor: '#FF8C00', 
+                    borderRadius: 12, 
+                    paddingVertical: 16, 
+                    paddingHorizontal: 32,
+                    alignItems: 'center',
+                    width: '100%',
+                  }}
+                  onPress={() => setShowReservationConfirmation(false)}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Done</Text>
+                </TouchableOpacity>
+              </View>
+            </LinearGradient>
+          </View>
+        </View>
       </Modal>
       
       {/* Bottom Navigation Bar - Always Visible */}
