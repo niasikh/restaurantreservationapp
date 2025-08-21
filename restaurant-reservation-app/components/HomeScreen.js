@@ -5688,20 +5688,41 @@ export default function HomeScreen() {
       </Modal>
       
       {/* All Restaurants Modal */}
-      <Modal visible={showAllRestaurantsModal} animationType="slide" onRequestClose={() => setShowAllRestaurantsModal(false)} transparent={true}>
-        <BlurView intensity={20} style={{ ...StyleSheet.absoluteFill, bottom: 80 }}>
-          <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
-            <LinearGradient colors={["rgba(0, 0, 0, 0.9)", "rgba(0, 0, 0, 0.8)", "rgba(0, 0, 0, 0.9)"]} style={{ flex: 1, paddingTop: 60, paddingHorizontal: 16 }}>
-              {/* Header */}
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>All Restaurants</Text>
-                <TouchableOpacity onPress={() => setShowAllRestaurantsModal(false)}>
-                  <Ionicons name="close" size={24} color="#b0b8c1" />
-                </TouchableOpacity>
+      <Modal visible={showAllRestaurantsModal} animationType="slide" onRequestClose={() => setShowAllRestaurantsModal(false)} transparent={false}>
+        <View style={{ flex: 1, backgroundColor: '#000' }}>
+          <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
+            <LinearGradient
+              colors={['#000000', '#1a1a1a', '#000000']}
+              style={{ flex: 1 }}
+            >
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 16 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="restaurant" size={24} color="#FF8C00" style={{ marginRight: 8 }} />
+                  <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>All Restaurants</Text>
+                </View>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <TouchableOpacity
+                    onPress={() => setShowMapModal(true)}
+                    style={{
+                      padding: 8,
+                      borderRadius: 20,
+                      borderWidth: 1,
+                      borderColor: '#808080',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginRight: 12,
+                    }}
+                  >
+                    <Ionicons name="map-outline" size={20} color="#FF8C00" />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => setShowAllRestaurantsModal(false)}>
+                    <Ionicons name="close" size={24} color="#666666" />
+                  </TouchableOpacity>
+                </View>
               </View>
               
               {/* Search Bar */}
-              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#404040', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, marginBottom: 20, borderWidth: 1, borderColor: '#808080' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#404040', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, marginBottom: 20, borderWidth: 1, borderColor: '#808080', marginHorizontal: 20 }}>
                 <Ionicons name="search" size={20} color="#b0b8c1" style={{ marginRight: 12 }} />
                 <TextInput
                   style={{ flex: 1, color: '#fff', fontSize: 16 }}
@@ -5714,7 +5735,7 @@ export default function HomeScreen() {
               
               {/* Search Suggestions */}
               {allRestaurantsSearchSuggestions.length > 0 && (
-                <View style={{ backgroundColor: '#1a1a1a', borderRadius: 12, marginBottom: 20, borderWidth: 1, borderColor: '#404040' }}>
+                <View style={{ backgroundColor: '#1a1a1a', borderRadius: 12, marginBottom: 20, borderWidth: 1, borderColor: '#404040', marginHorizontal: 20 }}>
                   {allRestaurantsSearchSuggestions.map((restaurant, index) => (
                     <TouchableOpacity
                       key={`search_${restaurant.id}_${index}`}
@@ -5757,11 +5778,10 @@ export default function HomeScreen() {
               )}
               
               {/* Filters */}
-              <View style={{ marginBottom: 20 }}>
-                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 12 }}>Filters</Text>
+              <View style={{ marginBottom: 20, marginHorizontal: 20 }}>
+
                 
                 {/* Cuisine Filter */}
-                <Text style={{ color: '#b0b8c1', fontSize: 14, marginBottom: 8 }}>Cuisine</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
                   {['All', ...cuisines.map(c => c.name)].map(cuisine => (
                     <TouchableOpacity
@@ -5782,66 +5802,27 @@ export default function HomeScreen() {
                   ))}
                 </ScrollView>
                 
-                {/* Popularity Filter */}
-                <Text style={{ color: '#b0b8c1', fontSize: 14, marginBottom: 8 }}>Popularity</Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
-                  {['All', 'Top booked', 'Top saved'].map(popularity => (
-                    <TouchableOpacity
-                      key={popularity}
-                      onPress={() => setSelectedPopularityFilter(popularity)}
-                      style={{
-                        backgroundColor: selectedPopularityFilter === popularity ? '#FF8C00' : '#404040',
-                        borderRadius: 20,
-                        paddingHorizontal: 16,
-                        paddingVertical: 8,
-                        marginRight: 12,
-                        borderWidth: 1,
-                        borderColor: '#808080',
-                      }}
-                    >
-                      <Text style={{ color: selectedPopularityFilter === popularity ? '#000' : '#fff', fontSize: 14, fontWeight: selectedPopularityFilter === popularity ? 'bold' : 'normal' }}>{popularity}</Text>
-                    </TouchableOpacity>
-                  ))}
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity
-                      onPress={() => setShowMapModal(true)}
-                      style={{
-                        marginRight: 8,
-                        marginLeft: 8,
-                        padding: 8,
-                        borderRadius: 20,
-                        borderWidth: 1,
-                        borderColor: '#808080',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Ionicons name="map-outline" size={20} color="#FF8C00" />
-                    </TouchableOpacity>
-                    <Ionicons name="chevron-forward" size={14} color="#FF8C00" />
-                  </View>
-                </ScrollView>
+
               </View>
               
               {/* Restaurant List */}
-              <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Restaurants</Text>
-                  <Ionicons name="restaurant" size={18} color="#FF8C00" style={{ marginLeft: 8 }} />
-                </View>
-                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+              <View style={{ flex: 1, marginHorizontal: 10, paddingLeft: 0 }}>
+
+                <ScrollView showsVerticalScrollIndicator={true} indicatorStyle="white" style={{ flex: 1, paddingHorizontal: 0, paddingTop: 8 }}>
                   {getFilteredRestaurants().map((restaurant, index) => (
                     <TouchableOpacity
                       key={`${restaurant.id}_${index}`}
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        backgroundColor: '#2a2a2a',
-                        borderRadius: 16,
-                        padding: 16,
-                        marginBottom: 12,
+                        backgroundColor: 'rgba(255,255,255,0.03)',
+                        borderRadius: 10,
+                        padding: 12,
+                        marginBottom: 10,
                         borderWidth: 1,
                         borderColor: '#404040',
+                        maxWidth: '90%',
+                        alignSelf: 'center',
                       }}
                       onPress={() => {
                         setSelectedRestaurant(restaurant);
@@ -5857,46 +5838,61 @@ export default function HomeScreen() {
                                restaurant.name === 'Keto and Kote' ? require('../assets/images/IMG_4210.jpg') : 
                                restaurant.name === 'Tsiskvili' ? require('../assets/images/nn.jpg') : 
                                restaurant.image} 
-                        style={{ width: 60, height: 60, borderRadius: 12, marginRight: 16 }}
+                        style={{ width: 75, height: 75, borderRadius: 6, marginRight: 12 }}
                       />
-                      <View style={{ flex: 1 }}>
-                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>{restaurant.name}</Text>
-                        <Text style={{ color: '#b0b8c1', fontSize: 14, marginBottom: 4 }}>
+                      <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16, marginBottom: 2 }}>{restaurant.name}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 1 }}>
                           {restaurant.tags ? restaurant.tags.join(' • ') : 
                            restaurant.cuisine ? restaurant.cuisine : 
                            'Restaurant'}
                         </Text>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 4 }} />
-                          <Text style={{ color: '#FFD700', fontSize: 14, fontWeight: 'bold', marginRight: 8 }}>
-                            {restaurant.rating || 'N/A'}
-                          </Text>
-                          <Text style={{ color: '#b0b8c1', fontSize: 14 }}>
-                            {restaurant.times ? `• ${restaurant.times.length} time slots available` : 
-                             restaurant.reviews ? `• ${restaurant.reviews} reviews` : 
-                             restaurant.people ? `• ${restaurant.people} people` : ''}
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Ionicons
+                              key={i}
+                              name={i < Math.round(restaurant.rating || 0) ? 'star' : 'star-outline'}
+                              size={14}
+                              color="#FFD700"
+                              style={{ marginRight: 2 }}
+                            />
+                          ))}
+                          <Text style={{ color: '#b0b8c1', fontSize: 13, marginLeft: 4 }}>
+                            ({restaurant.reviews || Math.floor(Math.random() * 50) + 10} Reviews)
                           </Text>
                         </View>
                       </View>
-                      <View style={{ alignItems: 'flex-end' }}>
-                        <TouchableOpacity
-                          onPress={() => setFavorites(favs => ({ ...favs, [restaurant.id]: !favs[restaurant.id] }))}
-                          style={{ padding: 8, marginBottom: 8 }}
-                        >
-                          <Ionicons name={favorites[restaurant.id] ? 'bookmark' : 'bookmark-outline'} size={24} color="#FF8C00" />
+                      <View style={{ alignItems: 'flex-end', justifyContent: 'space-between', marginLeft: 12, minWidth: 60 }}>
+                        <TouchableOpacity style={{ marginTop: 8 }} onPress={() => setFavorites(favs => ({ ...favs, [restaurant.id]: !favs[restaurant.id] }))}>
+                          <Ionicons name={favorites[restaurant.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
                         </TouchableOpacity>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                          <Ionicons name="location-outline" size={16} color="#fff" style={{ marginRight: 2 }} />
-                          <Text style={{ color: '#fff', fontSize: 14 }}>{getRestaurantDistance(restaurant)} km</Text>
-                        </View>
+
+                        <View style={{ width: 22, height: 1, backgroundColor: '#404040', marginTop: 8, marginBottom: 8 }} />
+
+                        <TouchableOpacity
+                          style={{ marginBottom: 8 }}
+                          onPress={(e) => {
+                            e.stopPropagation();
+                            setBookingFromRestaurantModal(true);
+                            setBookingRestaurantName(restaurant.name);
+                            setShowAllRestaurantsModal(false);
+                            setShowBookingModal(true);
+                          }}
+                        >
+                          <Ionicons 
+                            name="calendar-outline" 
+                            size={22} 
+                            color="#FF8C00" 
+                          />
+                        </TouchableOpacity>
                       </View>
                     </TouchableOpacity>
                   ))}
                                  </ScrollView>
                </View>
             </LinearGradient>
-          </View>
-        </BlurView>
+          </SafeAreaView>
+        </View>
       </Modal>
       
       {/* Bottom Navigation Bar - Always Visible */}
