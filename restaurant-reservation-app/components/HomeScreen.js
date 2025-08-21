@@ -674,6 +674,9 @@ export default function HomeScreen() {
   const [showCartSuccess, setShowCartSuccess] = useState(false);
   const [addedItemName, setAddedItemName] = useState('');
   const [bookingFromLolita, setBookingFromLolita] = useState(false);
+  const [bookingFromGeorgian, setBookingFromGeorgian] = useState(false);
+  const [bookingFromRestaurantModal, setBookingFromRestaurantModal] = useState(false);
+  const [bookingRestaurantName, setBookingRestaurantName] = useState('');
   const [showReservationsModal, setShowReservationsModal] = useState(false);
   const [showSavedModal, setShowSavedModal] = useState(false);
 
@@ -1200,7 +1203,7 @@ export default function HomeScreen() {
                 <ScrollView style={{ flex: 1, paddingHorizontal: 4, paddingTop: 8 }} showsVerticalScrollIndicator={true} indicatorStyle="white" scrollIndicatorInsets={{right: 0}} scrollEventThrottle={16}>
                   {/* Filtered trending restaurants */}
                   {(getFilteredTrendingRestaurants().map((r) => (
-                    <TouchableOpacity key={r.id} style={[styles.trendingCard, { marginBottom: 10, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: 10, borderWidth: 1, borderColor: '#404040', maxWidth: '90%', alignSelf: 'flex-start', marginLeft: 16 }]} onPress={() => {
+                    <TouchableOpacity key={r.id} style={[styles.trendingCard, { marginBottom: 10, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: 10, borderWidth: 1, borderColor: '#404040', maxWidth: '90%', alignSelf: 'flex-start', marginLeft: 16, alignItems: 'center' }]} onPress={() => {
                       // Find the restaurant in the main restaurants array or create a compatible object
                       const restaurant = restaurants.find(rest => rest.name === r.name) || {
                         id: r.id,
@@ -1241,18 +1244,12 @@ export default function HomeScreen() {
 
                         <TouchableOpacity
                           style={{ marginBottom: 8 }}
-                          onPress={() => {
-                            const restaurant = restaurants.find(rest => rest.name === r.name) || {
-                              id: r.id,
-                              name: r.name,
-                              image: r.image,
-                              tags: [r.cuisine],
-                              rating: r.rating,
-                              times: ['6:00 PM', '6:30 PM', '7:00 PM'],
-                            };
-                            setSelectedRestaurant(restaurant);
+                          onPress={(e) => {
+                            e.stopPropagation();
+                            setBookingFromGeorgian(true);
+                            setBookingRestaurantName(r.name);
                             setShowAllTrending(false);
-                            setShowRestaurantModal(true);
+                            setShowBookingModal(true);
                           }}
                         >
                           <Ionicons 
@@ -2444,6 +2441,7 @@ export default function HomeScreen() {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
                     setBookingFromLolita(true);
+                    setBookingRestaurantName(selectedRestaurant?.name || 'Lolita');
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -2717,7 +2715,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4634,9 +4632,15 @@ export default function HomeScreen() {
               }}
               onPress={() => {
                 setShowBookingModal(false);
-                if (bookingFromLolita) {
+                if (bookingFromLolita || bookingFromGeorgian || bookingFromRestaurantModal) {
+                  // Set restaurant name if not already set
+                  if (!bookingRestaurantName && selectedRestaurant?.name) {
+                    setBookingRestaurantName(selectedRestaurant.name);
+                  }
                   setShowReservationConfirmation(true);
                   setBookingFromLolita(false);
+                  setBookingFromGeorgian(false);
+                  setBookingFromRestaurantModal(false);
                 }
               }}
             >
@@ -4777,6 +4781,8 @@ export default function HomeScreen() {
         onClose={() => setShowCuisineModal(false)}
         restaurants={restaurants}
         loading={false}
+        favorites={favorites}
+        setFavorites={setFavorites}
         onRestaurantPress={(restaurant) => {
           setSelectedRestaurant(restaurant);
           setShowCuisineModal(false);
@@ -4784,6 +4790,8 @@ export default function HomeScreen() {
         }}
         onBookRestaurant={(restaurant) => {
           setShowCuisineModal(false);
+          setBookingFromGeorgian(true);
+          setBookingRestaurantName(restaurant.name);
           setShowBookingModal(true);
         }}
       />
@@ -5636,7 +5644,7 @@ export default function HomeScreen() {
                 <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>Reservation Details</Text>
                 <View style={{ marginBottom: 12 }}>
                   <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Restaurant</Text>
-                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Lolita</Text>
+                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>{bookingRestaurantName || selectedRestaurant?.name || 'Lolita'}</Text>
                 </View>
                 <View style={{ marginBottom: 12 }}>
                   <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Number of Guests</Text>
@@ -5659,7 +5667,7 @@ export default function HomeScreen() {
               </View>
               
               <View style={{ alignItems: 'center' }}>
-                <Text style={{ color: '#b0b8c1', fontSize: 16, textAlign: 'center', marginBottom: 20 }}>Thank you for choosing Lolita! We look forward to serving you.</Text>
+                <Text style={{ color: '#b0b8c1', fontSize: 16, textAlign: 'center', marginBottom: 20 }}>Thank you for choosing {bookingRestaurantName || selectedRestaurant?.name || 'Lolita'}! We look forward to serving you.</Text>
                 <TouchableOpacity
                   style={{ 
                     backgroundColor: '#FF8C00', 

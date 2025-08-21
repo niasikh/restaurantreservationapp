@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Modal, View, Text, Pressable, FlatList, ActivityIndicator, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Modal, View, Text, Pressable, FlatList, ActivityIndicator, TouchableOpacity, Image, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -11,6 +11,8 @@ export default function CuisineResultsModal({
   onClose,
   restaurants,
   loading = false,
+  favorites,
+  setFavorites,
   onRestaurantPress,
   onBookRestaurant,
 }) {
@@ -33,6 +35,26 @@ export default function CuisineResultsModal({
       return haystack.includes(q);
     });
 
+    // Add 5 random restaurants from other sections
+    const nonGeorgianRestaurants = restaurants.filter((r) => {
+      const haystack = [
+        r.name,
+        ...(r.cuisines || []),
+        ...(r.tags || []),
+        r.description || "",
+      ]
+        .map(normalize)
+        .join(" • ");
+      return !haystack.includes(q);
+    });
+
+    // Get 5 random restaurants from other sections
+    const randomRestaurants = nonGeorgianRestaurants
+      .slice(0, 5);
+
+    // Combine Georgian restaurants with random ones
+    filtered = [...filtered, ...randomRestaurants];
+
     // Filter for Happy Hour restaurants
     if (showHappyHour) {
       filtered = filtered.filter((r) => r.name === 'Honoré' || r.name === 'Orangery');
@@ -51,55 +73,75 @@ export default function CuisineResultsModal({
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 12,
-        backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 12,
+        backgroundColor: 'rgba(255,255,255,0.03)',
+        borderRadius: 10,
+        marginBottom: 10,
         padding: 8,
         borderWidth: 1,
         borderColor: '#404040',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 3,
-        maxWidth: '100%',
+        maxWidth: '90%',
         alignSelf: 'center',
-        width: '95%',
-        marginRight: 8,
       }}
       onPress={() => onRestaurantPress(item)}
     >
       <Image 
         source={item.image} 
-        style={{ width: 60, height: 60, borderRadius: 8, marginRight: 10 }}
+        style={{ width: 75, height: 75, borderRadius: 6, marginRight: 12 }}
         resizeMode="cover"
         fadeDuration={0}
         loading="eager"
       />
-      <View style={{ flex: 1 }}>
-        <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 4 }}>
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14, marginBottom: 2 }}>
           {item.name}
         </Text>
-        <Text style={{ color: '#b0b8c1', fontSize: 14, marginBottom: 4 }}>
-          {item.tags.join(' • ')}
+        <Text style={{ color: '#b0b8c1', fontSize: 11, marginBottom: 1 }}>
+          {item.location || 'Tbilisi'}
         </Text>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Ionicons name="star" size={16} color="#FFD700" />
-          <Text style={{ color: '#FFD700', fontSize: 14, fontWeight: 'bold', marginLeft: 4 }}>
-            {item.rating}
+        <Text style={{ color: '#b0b8c1', fontSize: 11, marginBottom: 2 }}>
+          {Array.isArray(item.tags) ? item.tags.join(' • ') : item.cuisine || 'Restaurant'}
+        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Ionicons
+              key={i}
+              name={i < Math.round(item.rating) ? 'star' : 'star-outline'}
+              size={14}
+              color="#FFD700"
+              style={{ marginRight: 2 }}
+            />
+          ))}
+          <Text style={{ color: '#b0b8c1', fontSize: 11, marginLeft: 4 }}>
+            ({item.reviews || Math.floor(Math.random() * 50) + 10} Reviews)
           </Text>
         </View>
       </View>
-      <TouchableOpacity
-        style={{ padding: 4, backgroundColor: 'rgba(42,42,42,0.85)', borderRadius: 16 }}
-        onPress={() => onBookRestaurant(item)}
-      >
-        <Ionicons 
-          name="calendar-outline" 
-          size={22} 
-          color="#FF8C00" 
-        />
-      </TouchableOpacity>
+      <View style={{ alignItems: 'flex-end', justifyContent: 'space-between', marginLeft: 12, minWidth: 60 }}>
+        <TouchableOpacity style={{ marginTop: 8 }} onPress={(e) => {
+          e.stopPropagation();
+          if (setFavorites && item.id) {
+            setFavorites(favs => ({ ...favs, [item.id]: !favs[item.id] }));
+          }
+        }}>
+          <Ionicons name={favorites && favorites[item.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
+        </TouchableOpacity>
+
+        <View style={{ width: 22, height: 1, backgroundColor: '#404040', marginTop: 8, marginBottom: 8 }} />
+
+        <TouchableOpacity
+          style={{ marginBottom: 8 }}
+          onPress={(e) => {
+            e.stopPropagation();
+            onBookRestaurant(item);
+          }}
+        >
+          <Ionicons 
+            name="calendar-outline" 
+            size={22} 
+            color="#FF8C00" 
+          />
+        </TouchableOpacity>
+      </View>
     </TouchableOpacity>
   );
 
@@ -107,27 +149,33 @@ export default function CuisineResultsModal({
     <Modal
       visible={visible}
       animationType="slide"
-      transparent={true}
+      transparent={false}
       onRequestClose={onClose}
     >
-      <View style={{
-        flex: 1,
-        backgroundColor: "rgba(0,0,0,0.8)",
-      }}>
-        <BlurView intensity={20} style={{ ...StyleSheet.absoluteFill, bottom: 80 }}>
-          <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
-            <LinearGradient colors={["rgba(0, 0, 0, 0.9)", "rgba(0, 0, 0, 0.8)", "rgba(0, 0, 0, 0.9)"]} style={{ flex: 1, paddingTop: 60, paddingHorizontal: 16 }}>
-          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
-            <Text style={{ fontSize: 24, fontWeight: "700", color: "white", flex: 1 }}>
-              {cuisine || ""}
-            </Text>
-            <TouchableOpacity onPress={onClose}>
-              <Ionicons name="close" size={24} color="#b0b8c1" />
-            </TouchableOpacity>
-          </View>
+      <View style={{ flex: 1, backgroundColor: '#000' }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
+          <LinearGradient
+            colors={['#000000', '#1a1a1a', '#000000']}
+            style={{ flex: 1 }}
+          >
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 16 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Ionicons name="restaurant" size={24} color="#FF8C00" style={{ marginRight: 8 }} />
+                <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>{cuisine || ""}</Text>
+              </View>
+              <TouchableOpacity onPress={onClose}>
+                <Ionicons name="close" size={24} color="#666666" />
+              </TouchableOpacity>
+            </View>
+            <View style={{ paddingHorizontal: 20, paddingBottom: 20 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#FF8C00', marginRight: 8 }} />
+                <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Don't miss out on these bold traditional dishes</Text>
+              </View>
+            </View>
 
           {/* Filter Buttons */}
-          <View style={{ flexDirection: 'row', marginBottom: 20, justifyContent: 'space-between' }}>
+          <View style={{ flexDirection: 'row', marginBottom: 20, justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 16 }}>
             <TouchableOpacity
               style={{
                 flexDirection: 'row',
@@ -200,27 +248,18 @@ export default function CuisineResultsModal({
             </View>
           ) : (
             <>
-              <FlatList
-                data={results}
-                keyExtractor={(item) => item.id}
-                renderItem={renderRestaurant}
-                showsVerticalScrollIndicator={true}
-                indicatorStyle="white"
-                scrollIndicatorInsets={{ right: 2 }}
-                style={{ scrollIndicatorSize: 4, height: 500 }}
-              />
-              <View style={{ alignItems: 'center', paddingVertical: 20, paddingHorizontal: 20 }}>
-                <Ionicons name="chevron-down" size={24} color="#b0b8c1" />
-                <Text style={{ color: '#b0b8c1', fontSize: 14, marginTop: 8, textAlign: 'center' }}>
-                  Scroll to see more {cuisine} restaurants
-                </Text>
-              </View>
+              <ScrollView style={{ flex: 1, paddingHorizontal: 4, paddingTop: 8 }} showsVerticalScrollIndicator={true} indicatorStyle="white" scrollIndicatorInsets={{right: 0}} scrollEventThrottle={16}>
+                {results.map((item, index) => (
+                  <View key={`${item.id || item.name}_${index}`}>
+                    {renderRestaurant({ item })}
+                  </View>
+                ))}
+              </ScrollView>
             </>
           )}
             </LinearGradient>
-          </View>
-        </BlurView>
-      </View>
-    </Modal>
-  );
+          </SafeAreaView>
+        </View>
+      </Modal>
+    );
 } 
