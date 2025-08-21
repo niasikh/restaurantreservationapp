@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Modal, View, Text, Pressable, FlatList, ActivityIndicator, TouchableOpacity, Image } from "react-native";
+import { Modal, View, Text, Pressable, FlatList, ActivityIndicator, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -51,10 +51,10 @@ export default function CuisineResultsModal({
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
+        marginBottom: 12,
         backgroundColor: 'rgba(255,255,255,0.1)',
-        borderRadius: 16,
-        padding: 12,
+        borderRadius: 12,
+        padding: 8,
         borderWidth: 1,
         borderColor: '#404040',
         shadowColor: '#000',
@@ -62,12 +62,16 @@ export default function CuisineResultsModal({
         shadowOpacity: 0.3,
         shadowRadius: 4,
         elevation: 3,
+        maxWidth: '100%',
+        alignSelf: 'center',
+        width: '95%',
+        marginRight: 8,
       }}
       onPress={() => onRestaurantPress(item)}
     >
       <Image 
         source={item.image} 
-        style={{ width: 80, height: 80, borderRadius: 12, marginRight: 12 }}
+        style={{ width: 60, height: 60, borderRadius: 8, marginRight: 10 }}
         resizeMode="cover"
         fadeDuration={0}
         loading="eager"
@@ -109,24 +113,16 @@ export default function CuisineResultsModal({
       <View style={{
         flex: 1,
         backgroundColor: "rgba(0,0,0,0.8)",
-        justifyContent: "center",
-        alignItems: "center",
       }}>
-        <BlurView intensity={15} tint="dark" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-        <LinearGradient
-          colors={['#606060', '#202020', '#000000']}
-          style={{
-            borderRadius: 16,
-            padding: 20,
-            width: '95%',
-            maxHeight: '90%',
-          }}>
+        <BlurView intensity={20} style={{ ...StyleSheet.absoluteFill, bottom: 80 }}>
+          <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
+            <LinearGradient colors={["rgba(0, 0, 0, 0.9)", "rgba(0, 0, 0, 0.8)", "rgba(0, 0, 0, 0.9)"]} style={{ flex: 1, paddingTop: 60, paddingHorizontal: 16 }}>
           <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
             <Text style={{ fontSize: 24, fontWeight: "700", color: "white", flex: 1 }}>
               {cuisine || ""}
             </Text>
             <TouchableOpacity onPress={onClose}>
-              <Ionicons name="close" size={28} color="#fff" />
+              <Ionicons name="close" size={24} color="#b0b8c1" />
             </TouchableOpacity>
           </View>
 
@@ -134,62 +130,62 @@ export default function CuisineResultsModal({
           <View style={{ flexDirection: 'row', marginBottom: 20, justifyContent: 'space-between' }}>
             <TouchableOpacity
               style={{
-                backgroundColor: '#202020',
-                borderRadius: 12,
-                paddingVertical: 10,
-                paddingHorizontal: 16,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#404040',
+                borderRadius: 24,
+                paddingHorizontal: 14,
+                paddingVertical: 8,
+                marginRight: 8,
                 borderWidth: 1,
                 borderColor: '#fff',
                 flex: 1,
-                marginRight: 8,
               }}
               onPress={() => setSortByRating(!sortByRating)}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                <Ionicons name="time-outline" size={16} color="#FF8C00" style={{ marginRight: 6 }} />
-                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600' }}>
-                  Open Now
-                </Text>
-              </View>
+              <Ionicons name="time-outline" size={16} color="#FF8C00" style={{ marginRight: 6 }} />
+              <Text style={{ color: '#fff', fontSize: 14 }}>
+                Open Now
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={{
-                backgroundColor: '#202020',
-                borderRadius: 12,
-                paddingVertical: 10,
-                paddingHorizontal: 16,
-                borderWidth: 1,
-                borderColor: '#fff',
-                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#404040',
+                borderRadius: 24,
+                paddingHorizontal: 14,
+                paddingVertical: 8,
                 marginRight: 8,
-              }}
-              onPress={() => setSortByRating(!sortByRating)}
-            >
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                <Ionicons name="star-outline" size={16} color="#FF8C00" style={{ marginRight: 6 }} />
-                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600' }}>
-                  Top Rated
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#202020',
-                borderRadius: 12,
-                paddingVertical: 10,
-                paddingHorizontal: 16,
                 borderWidth: 1,
                 borderColor: '#fff',
                 flex: 1,
               }}
               onPress={() => setShowHappyHour(!showHappyHour)}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                <Ionicons name="wine-outline" size={16} color="#FF8C00" style={{ marginRight: 6 }} />
-                <Text style={{ color: '#fff', fontSize: 14, fontWeight: '600' }}>
-                  Happy Hour
-                </Text>
-              </View>
+              <Ionicons name="wine-outline" size={16} color="#FF8C00" style={{ marginRight: 6 }} />
+              <Text style={{ color: '#fff', fontSize: 14 }}>
+                Happy Hour
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#404040',
+                borderRadius: 24,
+                paddingHorizontal: 14,
+                paddingVertical: 8,
+                borderWidth: 1,
+                borderColor: '#fff',
+                flex: 1,
+              }}
+              onPress={() => setSortByRating(!sortByRating)}
+            >
+              <Ionicons name="star-outline" size={16} color="#FF8C00" style={{ marginRight: 6 }} />
+              <Text style={{ color: '#fff', fontSize: 14 }}>
+                Top Rated
+              </Text>
             </TouchableOpacity>
           </View>
 
@@ -211,31 +207,19 @@ export default function CuisineResultsModal({
                 showsVerticalScrollIndicator={true}
                 indicatorStyle="white"
                 scrollIndicatorInsets={{ right: 2 }}
-                style={{ scrollIndicatorSize: 8, height: 600 }}
+                style={{ scrollIndicatorSize: 4, height: 500 }}
               />
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#202020',
-                  borderRadius: 12,
-                  paddingVertical: 12,
-                  paddingHorizontal: 20,
-                  marginTop: 16,
-                  borderWidth: 1,
-                  borderColor: '#fff',
-                  alignItems: 'center',
-                }}
-                onPress={() => {
-                  // Handle view all action
-                  onClose();
-                }}
-              >
-                <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
-                  View All
+              <View style={{ alignItems: 'center', paddingVertical: 20, paddingHorizontal: 20 }}>
+                <Ionicons name="chevron-down" size={24} color="#b0b8c1" />
+                <Text style={{ color: '#b0b8c1', fontSize: 14, marginTop: 8, textAlign: 'center' }}>
+                  Scroll to see more {cuisine} restaurants
                 </Text>
-              </TouchableOpacity>
+              </View>
             </>
           )}
-        </LinearGradient>
+            </LinearGradient>
+          </View>
+        </BlurView>
       </View>
     </Modal>
   );

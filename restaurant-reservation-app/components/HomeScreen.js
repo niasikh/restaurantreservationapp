@@ -37,7 +37,7 @@ const restaurants = [
     id: '4',
     name: 'Alubali',
     image: require('../assets/images/IMG_5351.jpg'),
-    tags: ['$$$', 'Georgian', 'Authentic Georgian'],
+    tags: ['$$$', 'Georgian', 'Authentic Georgian', 'Drinks'],
     rating: 4.7,
     times: ['6:00 PM', '6:30 PM', '7:00 PM'],
   },
@@ -53,7 +53,7 @@ const restaurants = [
     id: '6',
     name: 'Khedi',
     image: require('../assets/images/IMG_5353.jpg'),
-    tags: ['$$', 'Georgian', 'Traditional Georgian'],
+    tags: ['$$', 'Georgian', 'Traditional Georgian', 'Drinks'],
     rating: 4.6,
     times: ['6:00 PM', '6:45 PM', '7:15 PM'],
   },
@@ -61,7 +61,7 @@ const restaurants = [
     id: '8',
     name: 'Keto and Kote',
     image: require('../assets/images/IMG_5355.jpg'),
-    tags: ['$', 'Georgian', 'Khachapuri'],
+    tags: ['$', 'Georgian', 'Khachapuri', 'Wine', 'Drinks'],
     rating: 4.7,
     times: ['6:00 PM', '6:30 PM', '7:00 PM'],
   },
@@ -69,7 +69,7 @@ const restaurants = [
     id: '9',
     name: 'Tsiskvili',
     image: require('../assets/images/IMG_5356.jpg'),
-    tags: ['$$', 'Georgian', 'Fusion'],
+    tags: ['$$', 'Georgian', 'Fusion', 'Authentic', 'Drinks'],
     rating: 4.5,
     times: ['5:45 PM', '6:15 PM', '6:45 PM'],
   },
@@ -554,6 +554,12 @@ export default function HomeScreen() {
 
   const [showMapModal, setShowMapModal] = useState(false);
   const [showReservationConfirmation, setShowReservationConfirmation] = useState(false);
+  const [showAllRestaurantsModal, setShowAllRestaurantsModal] = useState(false);
+  const [selectedCuisineFilter, setSelectedCuisineFilter] = useState('All');
+  const [selectedPopularityFilter, setSelectedPopularityFilter] = useState('All');
+  const [allRestaurantsSearchQuery, setAllRestaurantsSearchQuery] = useState('');
+  const [allRestaurantsSearchSuggestions, setAllRestaurantsSearchSuggestions] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
   // Generate party size options
   const partySizes = Array.from({ length: 20 }, (_, i) => i + 1);
 
@@ -639,6 +645,95 @@ export default function HomeScreen() {
     } else {
       setLocationSuggestions([]);
       setShowLocationSuggestions(false);
+    }
+  };
+
+  // Get all unique restaurants with filtering
+  const getAllUniqueRestaurants = () => {
+    const allRestaurants = [...restaurants, ...trendingRestaurants, ...wineTastingVenues, ...outdoorDiningRestaurants, ...rooftopRestaurants, ...dateNightRestaurants];
+    const uniqueRestaurants = [];
+    const seenNames = new Set();
+    
+    allRestaurants.forEach(restaurant => {
+      if (!seenNames.has(restaurant.name)) {
+        seenNames.add(restaurant.name);
+        uniqueRestaurants.push(restaurant);
+      }
+    });
+    
+    return uniqueRestaurants;
+  };
+
+  // Get filtered restaurants based on selected filters
+  const getFilteredRestaurants = () => {
+    const allRestaurants = getAllUniqueRestaurants();
+    
+    return allRestaurants.filter(restaurant => {
+      // Cuisine filter
+      if (selectedCuisineFilter !== 'All') {
+        const hasCuisine = (restaurant.tags && restaurant.tags.some(tag => 
+          tag.toLowerCase().includes(selectedCuisineFilter.toLowerCase())
+        )) || 
+        (restaurant.cuisine && restaurant.cuisine.toLowerCase().includes(selectedCuisineFilter.toLowerCase()));
+        
+        if (!hasCuisine) return false;
+      }
+      
+      // Popularity filter
+      if (selectedPopularityFilter !== 'All') {
+        if (selectedPopularityFilter === 'Top booked') {
+          // Filter for restaurants with high booking activity (using reviews as proxy for now)
+          if (!restaurant.reviews || restaurant.reviews < 50) {
+            return false;
+          }
+        } else if (selectedPopularityFilter === 'Top saved') {
+          // Filter for restaurants that are frequently saved/favorited
+          if (!restaurant.favorite && !favorites[restaurant.id]) {
+            return false;
+          }
+        }
+      }
+      
+      return true;
+    });
+  };
+
+  // Calculate distance between two coordinates (Haversine formula)
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  };
+
+  // Get restaurant distance (placeholder until addresses are added)
+  const getRestaurantDistance = (restaurant) => {
+    // For now, return the distance from the restaurant data if available
+    // Later this will be calculated from actual coordinates
+    if (restaurant.distance) {
+      return restaurant.distance;
+    }
+    // Generate a random distance between 0.5 and 5 km for restaurants without distance data
+    return (Math.random() * 4.5 + 0.5).toFixed(1);
+  };
+
+  // All Restaurants search functionality
+  const handleAllRestaurantsSearch = (query) => {
+    setAllRestaurantsSearchQuery(query);
+    if (query.length > 0) {
+      const filteredRestaurants = getFilteredRestaurants();
+      const suggestions = filteredRestaurants.filter(restaurant =>
+        restaurant.name.toLowerCase().includes(query.toLowerCase()) ||
+        (restaurant.tags && restaurant.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))) ||
+        (restaurant.cuisine && restaurant.cuisine.toLowerCase().includes(query.toLowerCase()))
+      );
+      setAllRestaurantsSearchSuggestions(suggestions);
+    } else {
+      setAllRestaurantsSearchSuggestions([]);
     }
   };
 
@@ -798,7 +893,7 @@ export default function HomeScreen() {
         {/* Cuisine/Category Scroll */}
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.cuisineSectionTitle}>Find by cuisine</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowAllRestaurantsModal(true)}>
             <View style={{ flexDirection: "row", alignItems: "center" }}><Text style={styles.cuisineViewAll}>View all</Text><Ionicons name="chevron-forward" size={16} color="#FF8C00" style={{ marginLeft: 4 }} /></View>
           </TouchableOpacity>
         </View>
@@ -1859,7 +1954,10 @@ export default function HomeScreen() {
                       <Image source={restaurant.image} style={{ width: 40, height: 40, borderRadius: 8, marginRight: 12 }} />
                       <View style={{ flex: 1 }}>
                         <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>{restaurant.name}</Text>
-                        <Text style={{ color: '#b0b8c1', fontSize: 14 }}>{restaurant.tags.join(' • ')}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 14 }}>
+                          {Array.isArray(restaurant.tags) ? restaurant.tags.join(' • ') : 
+                           restaurant.cuisine || 'Restaurant'}
+                        </Text>
                       </View>
                       <Ionicons name="chevron-forward" size={20} color="#b0b8c1" />
                     </TouchableOpacity>
@@ -2594,6 +2692,218 @@ export default function HomeScreen() {
             </LinearGradient>
           </View>
         </View>
+      </Modal>
+      
+      {/* All Restaurants Modal */}
+      <Modal visible={showAllRestaurantsModal} animationType="slide" onRequestClose={() => setShowAllRestaurantsModal(false)} transparent={true}>
+        <BlurView intensity={20} style={{ ...StyleSheet.absoluteFill, bottom: 80 }}>
+          <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
+            <LinearGradient colors={["rgba(0, 0, 0, 0.9)", "rgba(0, 0, 0, 0.8)", "rgba(0, 0, 0, 0.9)"]} style={{ flex: 1, paddingTop: 60, paddingHorizontal: 16 }}>
+              {/* Header */}
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>All Restaurants</Text>
+                <TouchableOpacity onPress={() => setShowAllRestaurantsModal(false)}>
+                  <Ionicons name="close" size={24} color="#b0b8c1" />
+                </TouchableOpacity>
+              </View>
+              
+              {/* Search Bar */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#404040', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, marginBottom: 20, borderWidth: 1, borderColor: '#808080' }}>
+                <Ionicons name="search" size={20} color="#b0b8c1" style={{ marginRight: 12 }} />
+                <TextInput
+                  style={{ flex: 1, color: '#fff', fontSize: 16 }}
+                  placeholder="Search restaurants..."
+                  placeholderTextColor="#b0b8c1"
+                  value={allRestaurantsSearchQuery}
+                  onChangeText={handleAllRestaurantsSearch}
+                />
+              </View>
+              
+              {/* Search Suggestions */}
+              {allRestaurantsSearchSuggestions.length > 0 && (
+                <View style={{ backgroundColor: '#1a1a1a', borderRadius: 12, marginBottom: 20, borderWidth: 1, borderColor: '#404040' }}>
+                  {allRestaurantsSearchSuggestions.map((restaurant, index) => (
+                    <TouchableOpacity
+                      key={`search_${restaurant.id}_${index}`}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        padding: 16,
+                        borderBottomWidth: index < allRestaurantsSearchSuggestions.length - 1 ? 1 : 0,
+                        borderBottomColor: '#404040',
+                      }}
+                      onPress={() => {
+                        setSelectedRestaurant(restaurant);
+                        setShowAllRestaurantsModal(false);
+                        setShowRestaurantModal(true);
+                        setAllRestaurantsSearchQuery('');
+                        setAllRestaurantsSearchSuggestions([]);
+                      }}
+                    >
+                      <Image 
+                        source={restaurant.name === 'Honoré' ? require('../assets/images/IMG_5583.jpg') : 
+                               restaurant.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : 
+                               restaurant.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : 
+                               restaurant.name === 'Khedi' ? require('../assets/images/IMG_5586.jpg') : 
+                               restaurant.name === 'Keto and Kote' ? require('../assets/images/IMG_4210.jpg') : 
+                               restaurant.name === 'Tsiskvili' ? require('../assets/images/nn.jpg') : 
+                               restaurant.image} 
+                        style={{ width: 40, height: 40, borderRadius: 8, marginRight: 12 }}
+                      />
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>{restaurant.name}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 14 }}>
+                          {Array.isArray(restaurant.tags) ? restaurant.tags.join(' • ') : 
+                           restaurant.cuisine || 'Restaurant'}
+                        </Text>
+                      </View>
+                      <Ionicons name="chevron-forward" size={20} color="#b0b8c1" />
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+              
+              {/* Filters */}
+              <View style={{ marginBottom: 20 }}>
+                <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 12 }}>Filters</Text>
+                
+                {/* Cuisine Filter */}
+                <Text style={{ color: '#b0b8c1', fontSize: 14, marginBottom: 8 }}>Cuisine</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
+                  {['All', ...cuisines.map(c => c.name)].map(cuisine => (
+                    <TouchableOpacity
+                      key={cuisine}
+                      onPress={() => setSelectedCuisineFilter(cuisine)}
+                      style={{
+                        backgroundColor: selectedCuisineFilter === cuisine ? '#FF8C00' : '#404040',
+                        borderRadius: 20,
+                        paddingHorizontal: 16,
+                        paddingVertical: 8,
+                        marginRight: 12,
+                        borderWidth: 1,
+                        borderColor: '#808080',
+                      }}
+                    >
+                      <Text style={{ color: selectedCuisineFilter === cuisine ? '#000' : '#fff', fontSize: 14, fontWeight: selectedCuisineFilter === cuisine ? 'bold' : 'normal' }}>{cuisine}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+                
+                {/* Popularity Filter */}
+                <Text style={{ color: '#b0b8c1', fontSize: 14, marginBottom: 8 }}>Popularity</Text>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 16 }}>
+                  {['All', 'Top booked', 'Top saved'].map(popularity => (
+                    <TouchableOpacity
+                      key={popularity}
+                      onPress={() => setSelectedPopularityFilter(popularity)}
+                      style={{
+                        backgroundColor: selectedPopularityFilter === popularity ? '#FF8C00' : '#404040',
+                        borderRadius: 20,
+                        paddingHorizontal: 16,
+                        paddingVertical: 8,
+                        marginRight: 12,
+                        borderWidth: 1,
+                        borderColor: '#808080',
+                      }}
+                    >
+                      <Text style={{ color: selectedPopularityFilter === popularity ? '#000' : '#fff', fontSize: 14, fontWeight: selectedPopularityFilter === popularity ? 'bold' : 'normal' }}>{popularity}</Text>
+                    </TouchableOpacity>
+                  ))}
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity
+                      onPress={() => setShowMapModal(true)}
+                      style={{
+                        marginRight: 8,
+                        marginLeft: 8,
+                        padding: 8,
+                        borderRadius: 20,
+                        borderWidth: 1,
+                        borderColor: '#808080',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Ionicons name="map-outline" size={20} color="#FF8C00" />
+                    </TouchableOpacity>
+                    <Ionicons name="chevron-forward" size={14} color="#FF8C00" />
+                  </View>
+                </ScrollView>
+              </View>
+              
+              {/* Restaurant List */}
+              <View style={{ flex: 1 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                  <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Restaurants</Text>
+                  <Ionicons name="restaurant" size={18} color="#FF8C00" style={{ marginLeft: 8 }} />
+                </View>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+                  {getFilteredRestaurants().map((restaurant, index) => (
+                    <TouchableOpacity
+                      key={`${restaurant.id}_${index}`}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        backgroundColor: '#2a2a2a',
+                        borderRadius: 16,
+                        padding: 16,
+                        marginBottom: 12,
+                        borderWidth: 1,
+                        borderColor: '#404040',
+                      }}
+                      onPress={() => {
+                        setSelectedRestaurant(restaurant);
+                        setShowAllRestaurantsModal(false);
+                        setShowRestaurantModal(true);
+                      }}
+                    >
+                      <Image 
+                        source={restaurant.name === 'Honoré' ? require('../assets/images/IMG_5583.jpg') : 
+                               restaurant.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : 
+                               restaurant.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : 
+                               restaurant.name === 'Khedi' ? require('../assets/images/IMG_5586.jpg') : 
+                               restaurant.name === 'Keto and Kote' ? require('../assets/images/IMG_4210.jpg') : 
+                               restaurant.name === 'Tsiskvili' ? require('../assets/images/nn.jpg') : 
+                               restaurant.image} 
+                        style={{ width: 60, height: 60, borderRadius: 12, marginRight: 16 }}
+                      />
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 4 }}>{restaurant.name}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 14, marginBottom: 4 }}>
+                          {restaurant.tags ? restaurant.tags.join(' • ') : 
+                           restaurant.cuisine ? restaurant.cuisine : 
+                           'Restaurant'}
+                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 4 }} />
+                          <Text style={{ color: '#FFD700', fontSize: 14, fontWeight: 'bold', marginRight: 8 }}>
+                            {restaurant.rating || 'N/A'}
+                          </Text>
+                          <Text style={{ color: '#b0b8c1', fontSize: 14 }}>
+                            {restaurant.times ? `• ${restaurant.times.length} time slots available` : 
+                             restaurant.reviews ? `• ${restaurant.reviews} reviews` : 
+                             restaurant.people ? `• ${restaurant.people} people` : ''}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={{ alignItems: 'flex-end' }}>
+                        <TouchableOpacity
+                          onPress={() => setFavorites(favs => ({ ...favs, [restaurant.id]: !favs[restaurant.id] }))}
+                          style={{ padding: 8, marginBottom: 8 }}
+                        >
+                          <Ionicons name={favorites[restaurant.id] ? 'bookmark' : 'bookmark-outline'} size={24} color="#FF8C00" />
+                        </TouchableOpacity>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Ionicons name="location-outline" size={16} color="#fff" style={{ marginRight: 2 }} />
+                          <Text style={{ color: '#fff', fontSize: 14 }}>{getRestaurantDistance(restaurant)} km</Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                                 </ScrollView>
+               </View>
+            </LinearGradient>
+          </View>
+        </BlurView>
       </Modal>
       
       {/* Bottom Navigation Bar - Always Visible */}
