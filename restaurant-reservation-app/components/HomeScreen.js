@@ -919,7 +919,19 @@ export default function HomeScreen() {
         {/* Trending Restaurants Section */}
         <View style={styles.trendingListSection}>
           {(showAllTrending ? trendingRestaurants : trendingRestaurants.slice(0, 5)).map((r) => (
-            <View key={r.id} style={styles.trendingCard}>
+            <TouchableOpacity key={r.id} style={styles.trendingCard} onPress={() => {
+              // Find the restaurant in the main restaurants array or create a compatible object
+              const restaurant = restaurants.find(rest => rest.name === r.name) || {
+                id: r.id,
+                name: r.name,
+                image: r.image,
+                tags: [r.cuisine],
+                rating: r.rating,
+                times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+              };
+              setSelectedRestaurant(restaurant);
+              setShowRestaurantModal(true);
+            }}>
               <Image source={r.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : r.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : r.name === 'Coffee Shop Company' ? require('../assets/images/IMG_4193.jpg') : r.name === 'Monday Greens' ? require('../assets/images/IMG_5587.jpg') : r.name === 'Strada' ? require('../assets/images/IMG_5588.jpg') : r.image} style={styles.trendingImage} />
               <View style={styles.trendingInfo}>
                 <Text style={styles.trendingName}>{r.name}</Text>
@@ -948,7 +960,7 @@ export default function HomeScreen() {
                 </View>
                 <Text style={styles.trendingMetaText}>{'$'.repeat(r.price)}</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
           {!showAllTrending && (
             <TouchableOpacity style={styles.seeAllButton} onPress={() => setShowAllTrending(true)}>
@@ -973,7 +985,20 @@ export default function HomeScreen() {
               </View>
               <ScrollView style={{ flex: 1 }}>
                 {(trendingRestaurants.map((r) => (
-                  <View key={r.id} style={styles.trendingCard}>
+                  <TouchableOpacity key={r.id} style={styles.trendingCard} onPress={() => {
+                    // Find the restaurant in the main restaurants array or create a compatible object
+                    const restaurant = restaurants.find(rest => rest.name === r.name) || {
+                      id: r.id,
+                      name: r.name,
+                      image: r.image,
+                      tags: [r.cuisine],
+                      rating: r.rating,
+                      times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+                    };
+                    setSelectedRestaurant(restaurant);
+                    setShowAllTrending(false);
+                    setShowRestaurantModal(true);
+                  }}>
                     <Image source={r.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : r.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : r.name === 'Coffee Shop Company' ? require('../assets/images/IMG_4193.jpg') : r.name === 'Monday Greens' ? require('../assets/images/IMG_5587.jpg') : r.name === 'Strada' ? require('../assets/images/IMG_5588.jpg') : r.image} style={styles.trendingImage} />
                     <View style={styles.trendingInfo}>
                       <Text style={styles.trendingName}>{r.name}</Text>
@@ -1002,7 +1027,7 @@ export default function HomeScreen() {
                       </View>
                       <Text style={styles.trendingMetaText}>{'$'.repeat(r.price)}</Text>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 )))}
               </ScrollView>
             </View>
@@ -1023,7 +1048,19 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingLeft: 8, paddingRight: 8 }}
           style={styles.wineCarousel}
           renderItem={({ item }) => (
-            <View style={styles.wineCard}>
+            <TouchableOpacity style={styles.wineCard} onPress={() => {
+              // Find the restaurant in the main restaurants array or create a compatible object
+              const restaurant = restaurants.find(rest => rest.name === item.name) || {
+                id: item.id,
+                name: item.name,
+                image: item.image,
+                tags: item.tags,
+                rating: item.rating,
+                times: item.times,
+              };
+              setSelectedRestaurant(restaurant);
+              setShowRestaurantModal(true);
+            }}>
               <Image source={item.image} style={styles.wineImage} />
               <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
                 <View style={{ flex: 1 }}>
@@ -1034,18 +1071,23 @@ export default function HomeScreen() {
                     <Text style={styles.wineTags}>{item.distance} km</Text>
                   </View>
                 </View>
-                <TouchableOpacity onPress={() => setFavorites(favs => ({ ...favs, [item.id]: !favs[item.id] }))}>
+                <TouchableOpacity onPress={(e) => {
+                  e.stopPropagation();
+                  setFavorites(favs => ({ ...favs, [item.id]: !favs[item.id] }));
+                }}>
                   <Ionicons name={favorites[item.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
                 </TouchableOpacity>
               </View>
               <View style={styles.wineTimesRow}>
                 {item.times.slice(0, 2).map((time, idx) => (
-                  <TouchableOpacity key={idx} style={styles.timeButton}>
+                  <TouchableOpacity key={idx} style={styles.timeButton} onPress={(e) => {
+                    e.stopPropagation();
+                  }}>
                     <Text style={styles.timeButtonText}>{time}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
         {/* Fun Outdoor Dining Section */}
@@ -1063,26 +1105,56 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingLeft: 8, paddingRight: 8 }}
           style={styles.outdoorCarousel}
           renderItem={({ item }) => (
-            <View style={styles.outdoorCard}>
+            <TouchableOpacity style={styles.outdoorCard} onPress={() => {
+              // Find the restaurant in the main restaurants array or create a compatible object
+              const restaurant = restaurants.find(rest => rest.name === item.name) || {
+                id: item.id,
+                name: item.name,
+                image: item.image,
+                tags: [item.cuisine],
+                rating: item.rating,
+                times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+              };
+              setSelectedRestaurant(restaurant);
+              setShowRestaurantModal(true);
+            }}>
               <Image source={item.image} style={styles.outdoorImage} />
               <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginTop: 8 }}>
                 <Text style={styles.outdoorName}>{item.name}</Text>
-                <TouchableOpacity style={{ marginLeft: 'auto' }} onPress={() => setFavorites(favs => ({ ...favs, [item.id]: !favs[item.id] }))}>
+                <TouchableOpacity style={{ marginLeft: 'auto' }} onPress={(e) => {
+                  e.stopPropagation();
+                  setFavorites(favs => ({ ...favs, [item.id]: !favs[item.id] }));
+                }}>
                   <Ionicons name={favorites[item.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
                 </TouchableOpacity>
               </View>
               <Text style={styles.outdoorTags}>{item.tags.join(' • ')}</Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
         {/* Rooftop Views Section */}
         <Text style={styles.rooftopTitle}>Rooftop Views</Text>
         <View style={styles.rooftopListSection}>
           {rooftopRestaurants.map((r) => (
-            <View key={r.id} style={styles.rooftopCard}>
+            <TouchableOpacity key={r.id} style={styles.rooftopCard} onPress={() => {
+              // Find the restaurant in the main restaurants array or create a compatible object
+              const restaurant = restaurants.find(rest => rest.name === r.name) || {
+                id: r.id,
+                name: r.name,
+                image: r.image,
+                tags: r.tags,
+                rating: r.rating,
+                times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+              };
+              setSelectedRestaurant(restaurant);
+              setShowRestaurantModal(true);
+            }}>
               <View style={{ position: 'relative' }}>
                 <Image source={r.image} style={styles.rooftopImage} />
-                <TouchableOpacity style={styles.rooftopBookmark} onPress={() => setFavorites(favs => ({ ...favs, [r.id]: !favs[r.id] }))}>
+                <TouchableOpacity style={styles.rooftopBookmark} onPress={(e) => {
+                  e.stopPropagation();
+                  setFavorites(favs => ({ ...favs, [r.id]: !favs[r.id] }));
+                }}>
                   <Ionicons name={favorites[r.id] ? 'bookmark' : 'bookmark-outline'} size={28} color="#fff" />
                 </TouchableOpacity>
               </View>
@@ -1095,7 +1167,7 @@ export default function HomeScreen() {
                 <Text style={styles.rooftopPeople}>Up to {r.people} people</Text>
               </View>
               <Text style={styles.rooftopDesc} numberOfLines={2}>{r.description}</Text>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
         {/* Date Night Section */}
@@ -1113,16 +1185,31 @@ export default function HomeScreen() {
           contentContainerStyle={{ paddingLeft: 8, paddingRight: 8 }}
           style={styles.outdoorCarousel}
           renderItem={({ item }) => (
-            <View style={styles.outdoorCard}>
+            <TouchableOpacity style={styles.outdoorCard} onPress={() => {
+              // Find the restaurant in the main restaurants array or create a compatible object
+              const restaurant = restaurants.find(rest => rest.name === item.name) || {
+                id: item.id,
+                name: item.name,
+                image: item.image,
+                tags: [item.cuisine],
+                rating: item.rating,
+                times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+              };
+              setSelectedRestaurant(restaurant);
+              setShowRestaurantModal(true);
+            }}>
               <Image source={item.image} style={styles.outdoorImage} />
               <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginTop: 8 }}>
                 <Text style={styles.outdoorName}>{item.name}</Text>
-                <TouchableOpacity style={{ marginLeft: 'auto' }} onPress={() => setFavorites(favs => ({ ...favs, [item.id]: !favs[item.id] }))}>
+                <TouchableOpacity style={{ marginLeft: 'auto' }} onPress={(e) => {
+                  e.stopPropagation();
+                  setFavorites(favs => ({ ...favs, [item.id]: !favs[item.id] }));
+                }}>
                   <Ionicons name={favorites[item.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
                 </TouchableOpacity>
               </View>
               <Text style={styles.outdoorTags}>{item.tags.join(' • ')}</Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
       </ScrollView>
@@ -1173,6 +1260,918 @@ export default function HomeScreen() {
                   <Image source={require("../assets/images/IMG_5243.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
                   <Image source={require("../assets/images/nia3.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
                   <Image source={require("../assets/images/IMG_4142.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Alubali' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5584.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5584.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5584.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5584.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5584.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Orangery' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Coffee Shop Company' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_4193.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4193.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4193.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4193.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4193.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Monday Greens' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5587.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5587.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5587.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5587.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5587.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Strada' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Rooms Tbilisi' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/rooms-tbilisi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/rooms-tbilisi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/rooms-tbilisi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/rooms-tbilisi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/rooms-tbilisi.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Honoré' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/honore.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/honore.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/honore.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/honore.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/honore.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Khedi' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5353.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5353.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5353.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5353.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5353.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Keto and Kote' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Tsiskvili' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Bachata Gardens' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Miti Taverna' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Keto & Kote' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Tsiskvil' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Mova Maisi' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Ninia\'s Garden' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Cafe Stamba' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Iakobi\'s Ezo' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === '8000 Vintages' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Sadzvele' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Wine Merchants' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Wine Not' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Apotheka Bar' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Republic Tbilisi' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Filini Terrace' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Monograph Terrace' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Xeme Biltmore' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Paragraph' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Tiflis Veranda' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Sofiko' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Atmosphere Bar' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Weather Report Bar' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Golden Tulip' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Barbarestan' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Casa Fiori' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Ambrosiano' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Madre' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                </ScrollView>
+                {/* Pagination dots */}
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#fff', marginHorizontal: 4 }} />
+                </View>
+              </View>
+            ) : selectedRestaurant?.name === 'Littera' ? (
+              <View style={{ width: '100%', height: 180, marginBottom: 16 }}>
+                <ScrollView
+                  horizontal
+                  pagingEnabled
+                  showsHorizontalScrollIndicator={false}
+                  style={{ width: '100%', height: 180 }}
+                  contentContainerStyle={{ alignItems: 'center' }}
+                >
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1457,6 +2456,1754 @@ export default function HomeScreen() {
                       </View>
                         </View>
                     ) : null
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Alubali' ? (
+              <>
+                {/* Description row with $$$ Authentic Georgian, Drinks and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Authentic Georgian, Drinks
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Authentic Georgian restaurant offering traditional dishes in a warm, welcoming atmosphere. Experience the rich flavors and hospitality of Georgia!
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Alubali */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Traditional Georgian dish with authentic flavors</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Georgian Cuisine</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 5} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Orangery' ? (
+              <>
+                {/* Description row with $$ Georgian & European and 4.5 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Georgian & European
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.5</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Elegant fusion of Georgian and European cuisine in a sophisticated setting. Perfect blend of traditional flavors with modern culinary techniques.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Orangery */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Georgian-European fusion dish with unique flavors</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Fusion Cuisine</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Coffee Shop Company' ? (
+              <>
+                {/* Description row with $ Coffee & Brunch and 4.3 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $ Coffee & Brunch
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.3</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Cozy coffee shop serving delicious brunch and specialty coffee. Perfect spot for morning meetings or casual dining with friends.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Coffee Shop Company */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Delicious coffee and brunch item</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Coffee & Brunch</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 3} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Monday Greens' ? (
+              <>
+                {/* Description row with $$ Healthy & Vegan and 4.6 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Healthy & Vegan
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.6</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Fresh and healthy vegan restaurant offering nutritious meals made with organic ingredients. Perfect for health-conscious diners.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Monday Greens */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Healthy vegan dish with organic ingredients</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Vegan Cuisine</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Strada' ? (
+              <>
+                {/* Description row with $$ Italian & Pizza and 4.4 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Italian & Pizza
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.4</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Authentic Italian restaurant specializing in wood-fired pizzas and traditional pasta dishes. Experience the taste of Italy in Tbilisi.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Strada */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Authentic Italian dish with traditional flavors</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Italian Cuisine</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Rooms Tbilisi' ? (
+              <>
+                {/* Description row with $$$ Fine Dining and 4.8 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Fine Dining
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.8</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Upscale fine dining restaurant offering exquisite cuisine in an elegant atmosphere. Perfect for special occasions and romantic dinners.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Rooms Tbilisi */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Exquisite fine dining dish with premium ingredients</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Fine Dining</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 6} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Honoré' ? (
+              <>
+                {/* Description row with $$$ Georgian, European, Barbecue, Cocktail Bar and 4.8 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Georgian, European, Barbecue, Cocktail Bar
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.8</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Sophisticated restaurant offering a unique blend of Georgian and European cuisine with excellent barbecue and craft cocktails.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Honoré */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Georgian-European fusion with barbecue and cocktails</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Fusion Cuisine</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 5} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Khedi' ? (
+              <>
+                {/* Description row with $$ Georgian, Traditional Georgian, Drinks and 4.6 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Georgian, Traditional Georgian, Drinks
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.6</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Traditional Georgian restaurant serving authentic dishes in a warm, family-friendly atmosphere. Experience the true taste of Georgia.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Khedi */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Traditional Georgian dish with authentic flavors</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Traditional Georgian</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Keto and Kote' ? (
+              <>
+                {/* Description row with $ Georgian, Khachapuri, Wine, Drinks and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $ Georgian, Khachapuri, Wine, Drinks
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Cozy Georgian restaurant famous for its delicious khachapuri and excellent wine selection. Perfect for casual dining and wine tasting.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Keto and Kote */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Delicious khachapuri and Georgian wine</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Georgian Cuisine</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 3} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Tsiskvili' ? (
+              <>
+                {/* Description row with $$ Georgian, Fusion, Authentic, Drinks and 4.5 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Georgian, Fusion, Authentic, Drinks
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.5</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Modern Georgian fusion restaurant combining traditional recipes with contemporary culinary techniques. Innovative dishes in a stylish setting.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Tsiskvili */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Modern Georgian fusion dish with innovative flavors</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Georgian Fusion</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Bachata Gardens' ? (
+              <>
+                {/* Description row with $$ Outdoor Dining, Latin & Georgian and 4.4 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Outdoor Dining, Latin & Georgian
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.4</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Beautiful outdoor garden restaurant offering a unique fusion of Latin and Georgian cuisine. Perfect for romantic dinners under the stars.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Bachata Gardens */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Latin-Georgian fusion dish for outdoor dining</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Latin-Georgian Fusion</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Miti Taverna' ? (
+              <>
+                {/* Description row with $$ Greek, Mediterranean, Outdoor and 4.6 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Greek, Mediterranean, Outdoor
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.6</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Authentic Greek taverna serving traditional Mediterranean cuisine in a charming outdoor setting. Experience the flavors of Greece in Tbilisi.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Miti Taverna */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Traditional Greek and Mediterranean dish</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Greek Cuisine</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Keto & Kote' ? (
+              <>
+                {/* Description row with $ Georgian, Khachapuri, Wine, Drinks and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $ Georgian, Khachapuri, Wine, Drinks
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Cozy Georgian restaurant famous for its delicious khachapuri and excellent wine selection. Perfect for casual dining and wine tasting.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Keto & Kote */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Delicious khachapuri and Georgian wine</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Georgian Cuisine</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 3} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Tsiskvil' ? (
+              <>
+                {/* Description row with $$ Georgian, Fusion, Authentic, Drinks and 4.5 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Georgian, Fusion, Authentic, Drinks
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.5</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Modern Georgian fusion restaurant combining traditional recipes with contemporary culinary techniques. Innovative dishes in a stylish setting.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Tsiskvil */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Modern Georgian fusion dish with innovative flavors</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Georgian Fusion</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Mova Maisi' ? (
+              <>
+                {/* Description row with $$ Georgian, Traditional, Outdoor and 4.3 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Georgian, Traditional, Outdoor
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.3</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Traditional Georgian restaurant with beautiful outdoor seating. Enjoy authentic Georgian dishes in a peaceful garden atmosphere.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Mova Maisi */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Traditional Georgian dish for outdoor dining</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Traditional Georgian</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Ninia\'s Garden' ? (
+              <>
+                {/* Description row with $$ Garden Dining, European & Georgian and 4.6 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Garden Dining, European & Georgian
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.6</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Charming garden restaurant offering a delightful blend of European and Georgian cuisine. Perfect for romantic outdoor dining experiences.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Ninia's Garden */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>European-Georgian fusion for garden dining</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>European-Georgian Fusion</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Cafe Stamba' ? (
+              <>
+                {/* Description row with $$ Cafe, European, Outdoor and 4.4 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Cafe, European, Outdoor
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.4</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Elegant European cafe with beautiful outdoor seating. Perfect for brunch, coffee, and light meals in a sophisticated atmosphere.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Cafe Stamba */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>European cafe dish with outdoor dining</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>European Cafe</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Iakobi\'s Ezo' ? (
+              <>
+                {/* Description row with $$ Georgian, Traditional, Outdoor and 4.5 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Georgian, Traditional, Outdoor
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.5</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Traditional Georgian restaurant with lovely outdoor seating. Experience authentic Georgian hospitality and cuisine in a beautiful garden setting.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Iakobi's Ezo */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Traditional Georgian dish for outdoor dining</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Traditional Georgian</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === '8000 Vintages' ? (
+              <>
+                {/* Description row with $$$ Wine Bar and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Wine Bar
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Premium wine bar offering an extensive collection of fine wines from around the world. Perfect for wine enthusiasts and sophisticated gatherings.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for 8000 Vintages */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Premium wine and gourmet food pairing</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Wine & Food</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 6} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Sadzvele' ? (
+              <>
+                {/* Description row with $$ Wine Hub and 4.6 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Wine Hub
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.6</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Cozy wine hub featuring local and international wines in a relaxed atmosphere. Great for casual wine tasting and social gatherings.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Sadzvele */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Local and international wine selection</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Wine Selection</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Wine Merchants' ? (
+              <>
+                {/* Description row with $$$ Wine Bar and 4.9 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Wine Bar
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.9</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Exclusive wine merchants offering rare and premium wines from renowned vineyards. Experience the finest wine tasting in an elegant setting.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Wine Merchants */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Rare and premium wine selection</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Premium Wines</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 7} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Wine Not' ? (
+              <>
+                {/* Description row with $$ Wine Bar and 4.8 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Wine Bar
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.8</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Charming wine bar with a playful atmosphere and excellent wine selection. Perfect for casual wine lovers and fun evenings with friends.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Wine Not */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Fun and casual wine selection</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Casual Wines</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Apotheka Bar' ? (
+              <>
+                {/* Description row with $$ Wine Bar and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Wine Bar
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Unique apotheka-style wine bar with a vintage atmosphere and curated wine collection. Experience wine tasting in a historical setting.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Apotheka Bar */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Curated wine collection in vintage setting</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Vintage Wines</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Republic Tbilisi' ? (
+              <>
+                {/* Description row with $$$ European, Downtown and 4.8 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ European, Downtown
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.8</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Enjoy city views and modern European cuisine in the center of Tbilisi. Perfect rooftop dining experience with stunning panoramic views.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Republic Tbilisi */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Modern European cuisine with rooftop dining</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>European Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 6} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Filini Terrace' ? (
+              <>
+                {/* Description row with $$ Italian, Midtown and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Italian, Midtown
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Italian classics and cocktails with a skyline backdrop. Authentic Italian cuisine served in an elegant rooftop setting with breathtaking views.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Filini Terrace */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Authentic Italian cuisine with skyline views</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Italian Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Monograph Terrace' ? (
+              <>
+                {/* Description row with $$ Bar & Restaurant, Uptown and 4.6 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Bar & Restaurant, Uptown
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.6</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Trendy rooftop bar with creative drinks and city lights. Modern atmosphere with innovative cocktails and contemporary cuisine.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Monograph Terrace */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Creative drinks and contemporary cuisine</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Trendy Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Xeme Biltmore' ? (
+              <>
+                {/* Description row with $$$ Mediterranean, Old Town and 4.9 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Mediterranean, Old Town
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.9</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Mediterranean flavors and open-air dining with a view. Exquisite Mediterranean cuisine in a sophisticated rooftop setting.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Xeme Biltmore */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Mediterranean cuisine with open-air dining</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Mediterranean Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 6} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Paragraph' ? (
+              <>
+                {/* Description row with $$$ Seafood, Seaside and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Seafood, Seaside
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi. Premium seafood and fine dining with elegant rooftop atmosphere.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Paragraph */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Premium seafood in luxury rooftop setting</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Seafood Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 7} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Tiflis Veranda' ? (
+              <>
+                {/* Description row with $$$ International cuisine, Financial District and 4.8 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ International cuisine, Financial District
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.8</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Enjoy exquisite dishes, live music, and mesmerizing views with local wines. International cuisine in a sophisticated rooftop environment.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Tiflis Veranda */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>International cuisine with live music</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>International Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 6} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Sofiko' ? (
+              <>
+                {/* Description row with $$ Georgian casual dining, Downtown and 4.5 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Georgian casual dining, Downtown
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.5</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Enjoy outstanding views with dishes inspired by the timeless culture of Tbilisi city. Casual Georgian dining with rooftop atmosphere.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Sofiko */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Georgian dishes with rooftop views</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Georgian Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Atmosphere Bar' ? (
+              <>
+                {/* Description row with $$ Asian Fusion Restaurant, Midtown and 4.6 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Asian Fusion Restaurant, Midtown
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.6</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Fusion cuisine, crafted drinks, and city views. Asian fusion dining with innovative cocktails in a rooftop setting.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Atmosphere Bar */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Asian fusion cuisine with crafted drinks</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Asian Fusion Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Weather Report Bar' ? (
+              <>
+                {/* Description row with $$ Tapas, City Center and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Tapas, City Center
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Offering a variety of exclusive signature cocktails and tapas. Spanish-inspired rooftop dining with creative cocktails and city views.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Weather Report Bar */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Signature cocktails and tapas</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Tapas Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Golden Tulip' ? (
+              <>
+                {/* Description row with $$ Restaurant, Grill, Uptown and 4.5 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Restaurant, Grill, Uptown
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.5</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Grilled favorites and open-air seating under the sky. Perfect rooftop grill experience with fresh ingredients and outdoor atmosphere.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Golden Tulip */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Grilled favorites with open-air dining</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Grill Rooftop</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Barbarestan' ? (
+              <>
+                {/* Description row with $$$ Modern Georgian fine dining, Romantic and 4.8 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Modern Georgian fine dining, Romantic
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.8</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Elegant modern Georgian fine dining restaurant perfect for romantic date nights. Sophisticated atmosphere with contemporary Georgian cuisine.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Barbarestan */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Modern Georgian fine dining for romantic evenings</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Modern Georgian Fine Dining</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 6} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Casa Fiori' ? (
+              <>
+                {/* Description row with $$$ Modern Italian Restaurant & Cocktail Bar, Intimate and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Modern Italian Restaurant & Cocktail Bar, Intimate
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Intimate modern Italian restaurant with an exceptional cocktail bar. Perfect for romantic date nights with authentic Italian flavors.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Casa Fiori */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Modern Italian cuisine with crafted cocktails</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Modern Italian</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 5} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Ambrosiano' ? (
+              <>
+                {/* Description row with $$$ Italy's finest artisan dishes, Romantic and 4.9 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$$ Italy's finest artisan dishes, Romantic
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.9</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Italy's finest artisan dishes in a romantic setting. Authentic Italian craftsmanship meets elegant dining for perfect date nights.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Ambrosiano */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Italy's finest artisan dishes for romantic dining</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Artisan Italian</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 7} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Madre' ? (
+              <>
+                {/* Description row with $$ Spanish, Date Night and 4.6 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Spanish, Date Night
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.6</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Authentic Spanish cuisine perfect for romantic date nights. Warm atmosphere with traditional Spanish flavors and intimate dining experience.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Madre */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Authentic Spanish cuisine for date nights</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Spanish Date Night</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
+                  ))}
+                </ScrollView>
+              </>
+            ) : selectedRestaurant?.name === 'Littera' ? (
+              <>
+                {/* Description row with $$ Modern Georgian cuisine, Romantic and 4.7 stars */}
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
+                  <Text style={{ color: '#666666', fontSize: 15, marginRight: 8 }}>
+                    $$ Modern Georgian cuisine, Romantic
+                  </Text>
+                  <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
+                  <Text style={{ color: '#FFD700', fontSize: 15, fontWeight: 'bold', marginRight: 2 }}>4.7</Text>
+                </View>
+                {/* Second description, smaller */}
+                <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 18 }}>
+                  Modern Georgian cuisine in a romantic atmosphere. Contemporary take on traditional Georgian dishes perfect for intimate date nights.
+                </Text>
+                {/* Booking button/modal (identical to header) */}
+                <TouchableOpacity
+                  style={{ backgroundColor: '#FF8C00', borderRadius: 12, paddingVertical: 16, alignItems: 'center', marginBottom: 18 }}
+                  onPress={() => {
+                    setShowRestaurantModal(false);
+                    setShowBookingModal(true);
+                    setBookingFromLolita(false);
+                  }}
+                >
+                  <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
+                </TouchableOpacity>
+                
+                <Text style={{ color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Menu</Text>
+                <ScrollView style={{ maxHeight: 220, marginBottom: 8 }} indicatorStyle="white">
+                  {/* 20 placeholder menu items for Littera */}
+                  {[...Array(20)].map((_, i) => (
+                    <View key={i} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 14, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 16, padding: 12, borderWidth: 1, borderColor: '#404040' }}>
+                      <View style={{ width: 64, height: 64, borderRadius: 16, marginRight: 14, backgroundColor: '#404040', justifyContent: 'center', alignItems: 'center' }}>
+                        <Ionicons name="restaurant-outline" size={24} color="#b0b8c1" />
+                      </View>
+                      <View style={{ flex: 1 }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold' }}>Menu Item {i + 1}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 11 }}>Modern Georgian cuisine for romantic evenings</Text>
+                        <Text style={{ color: '#b0b8c1', fontWeight: 'bold', fontSize: 13 }}>Modern Georgian</Text>
+                      </View>
+                      <View style={{ alignItems: 'center' }}>
+                        <Text style={{ color: '#DAA520', fontSize: 16, fontWeight: 'bold', marginLeft: 8, marginBottom: 4 }}>{(i + 1) * 4} GEL</Text>
+                      </View>
+                    </View>
                   ))}
                 </ScrollView>
               </>
