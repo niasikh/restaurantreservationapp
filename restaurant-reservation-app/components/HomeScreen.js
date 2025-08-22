@@ -44,7 +44,7 @@ const restaurants = [
   {
     id: '5',
     name: 'Orangery',
-    image: require('../assets/images/IMG_5352.jpg'),
+    image: require('../assets/images/IMG_0992.jpg'),
     tags: ['$$', 'Georgian', 'European', 'Georgian & European'],
     rating: 4.5,
     times: ['5:30 PM', '6:00 PM', '6:30 PM'],
@@ -116,7 +116,7 @@ const trendingRestaurants = [
   {
     id: 'trending_2',
     name: 'Orangery',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_0992.jpg'),
     location: 'Tbilisi',
     cuisine: 'Georgian & European',
     rating: 4.5,
@@ -201,7 +201,7 @@ const trendingRestaurants = [
   {
     id: '11',
     name: 'Bachata Gardens',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4208.jpg'),
     location: 'Tbilisi',
     cuisine: 'European',
     rating: 4.5,
@@ -213,7 +213,7 @@ const trendingRestaurants = [
   {
     id: '12',
     name: 'Miti Taverna',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4209.jpg'),
     location: 'Tbilisi',
     cuisine: 'Greek',
     rating: 4.6,
@@ -225,7 +225,7 @@ const trendingRestaurants = [
   {
     id: 'trending_6',
     name: '8000 Vintages',
-    image: { uri: 'https://images.unsplash.com/photo-1514361892635-cebb9b6b9d49?auto=format&fit=crop&w=80&q=80' },
+    image: require('../assets/images/IMG_4197.jpg'),
     location: 'Tbilisi',
     cuisine: 'Wine Bar',
     rating: 4.8,
@@ -253,7 +253,7 @@ const wineTastingVenues = [
   {
     id: 'wine_1',
     name: '8000 Vintages',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4197.jpg'),
     tags: ['Wine Bar'],
     price: 3,
     rating: 4.7,
@@ -264,7 +264,7 @@ const wineTastingVenues = [
   {
     id: 'wine_2',
     name: 'Sadzvele',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4198.jpg'),
     tags: ['Wine Hub'],
     price: 2,
     rating: 4.6,
@@ -275,7 +275,7 @@ const wineTastingVenues = [
   {
     id: 'wine_3',
     name: 'Wine Merchants',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4205.jpg'),
     tags: ['Wine Bar'],
     price: 3,
     rating: 4.9,
@@ -286,7 +286,7 @@ const wineTastingVenues = [
   {
     id: 'wine_4',
     name: 'Wine Not',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_5678.jpg'),
     tags: ['Wine Bar'],
     price: 2,
     rating: 4.8,
@@ -297,7 +297,7 @@ const wineTastingVenues = [
   {
     id: 'wine_5',
     name: 'Apotheka Bar',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4207.jpg'),
     tags: ['Wine Bar'],
     price: 2,
     rating: 4.7,
@@ -311,56 +311,56 @@ const outdoorDiningRestaurants = [
   {
     id: 'outdoor_1',
     name: 'Bachata Gardens',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4208.jpg'),
     tags: ['European', 'Outdoor'],
     favorite: false,
   },
   {
     id: 'outdoor_2',
     name: 'Miti Taverna',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4209.jpg'),
     tags: ['Greek', 'Outdoor'],
     favorite: true,
   },
   {
     id: 'outdoor_3',
     name: 'Keto & Kote',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4210.jpg'),
     tags: ['Georgian', 'Outdoor'],
     favorite: false,
   },
   {
     id: 'outdoor_4',
     name: 'Tsiskvili',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_5679.jpg'),
     tags: ['Georgian', 'Outdoor'],
     favorite: false,
   },
   {
     id: 'outdoor_5',
     name: 'Mova Maisi',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4216.jpg'),
     tags: ['Georgian', 'Outdoor'],
     favorite: true,
   },
   {
     id: '6',
     name: 'Ninia\'s Garden',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4214.jpg'),
     tags: ['European', 'Outdoor'],
     favorite: false,
   },
   {
     id: '7',
     name: 'Cafe Stamba',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4221.jpg'),
     tags: ['Mixed', 'Outdoor'],
     favorite: false,
   },
   {
     id: '8',
     name: 'Iakobi\'s Ezo',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4222.jpg'),
     tags: ['Neo Bistro', 'Outdoor'],
     favorite: true,
   },
@@ -369,58 +369,8 @@ const outdoorDiningRestaurants = [
 const rooftopRestaurants = [
   {
     id: 'rooftop_1',
-    name: 'Republic Tbilisi',
-    image: require('../assets/images/lolita.jpg'),
-    tags: ['European', '$$$', 'Downtown'],
-    rating: 4.8,
-    people: 120,
-    description: 'Enjoy city views and modern European cuisine in the center of Tbilisi',
-    favorite: false,
-  },
-  {
-    id: 'rooftop_2',
-    name: 'Filini Terrace',
-    image: require('../assets/images/lolita.jpg'),
-    tags: ['Italian', '$$', 'Midtown'],
-    rating: 4.7,
-    people: 80,
-    description: 'Italian classics and cocktails with a skyline backdrop.',
-    favorite: true,
-  },
-  {
-    id: 'rooftop_3',
-    name: 'Monograph Terrace',
-    image: require('../assets/images/lolita.jpg'),
-    tags: ['Bar & Restaurant', '$$', 'Uptown'],
-    rating: 4.6,
-    people: 60,
-    description: 'Trendy rooftop bar with creative drinks and city lights.',
-    favorite: false,
-  },
-  {
-    id: 'rooftop_4',
-    name: 'Xeme Biltmore',
-    image: require('../assets/images/lolita.jpg'),
-    tags: ['Mediterranean', '$$$', 'Old Town'],
-    rating: 4.9,
-    people: 100,
-    description: 'Mediterranean flavors and open-air dining with a view.',
-    favorite: false,
-  },
-  {
-    id: 'rooftop_5',
-    name: 'Paragraph',
-    image: require('../assets/images/lolita.jpg'),
-    tags: ['Seafood', '$$$', 'Seaside'],
-    rating: 4.7,
-    people: 90,
-    description: 'Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi',
-    favorite: true,
-  },
-  {
-    id: 'rooftop_6',
     name: 'Tiflis Veranda',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/jo.jpg'),
     tags: ['International cuisine', '$$$', 'Financial District'],
     rating: 4.8,
     people: 110,
@@ -428,9 +378,19 @@ const rooftopRestaurants = [
     favorite: false,
   },
   {
-    id: 'rooftop_7',
+    id: 'rooftop_2',
+    name: 'Golden Tulip',
+    image: require('../assets/images/ok.jpg'),
+    tags: ['Restaurant, Grill', '$$', 'Uptown'],
+    rating: 4.5,
+    people: 60,
+    description: 'Grilled favorites and open-air seating under the sky.',
+    favorite: false,
+  },
+  {
+    id: 'rooftop_3',
     name: 'Sofiko',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/op.jpg'),
     tags: ['Georgian casual dining', '$$', 'Downtown'],
     rating: 4.5,
     people: 150,
@@ -438,19 +398,49 @@ const rooftopRestaurants = [
     favorite: false,
   },
   {
-    id: 'rooftop_8',
-    name: 'Atmosphere Bar',
-    image: require('../assets/images/lolita.jpg'),
-    tags: ['Asian Fusion Restaurant', '$$', 'Midtown'],
+    id: 'rooftop_4',
+    name: 'Monograph Terrace',
+    image: require('../assets/images/niak.jpg'),
+    tags: ['Bar & Restaurant', '$$', 'Uptown'],
     rating: 4.6,
-    people: 70,
-    description: 'Fusion cuisine, crafted drinks, and city views',
+    people: 60,
+    description: 'Trendy rooftop bar with creative drinks and city lights.',
     favorite: false,
   },
   {
-    id: 'rooftop_9',
+    id: 'rooftop_5',
+    name: 'Filini Terrace',
+    image: require('../assets/images/mmm.jpg'),
+    tags: ['Italian', '$$', 'Midtown'],
+    rating: 4.7,
+    people: 80,
+    description: 'Italian classics and cocktails with a skyline backdrop.',
+    favorite: true,
+  },
+  {
+    id: 'rooftop_6',
+    name: 'Republic Tbilisi',
+    image: require('../assets/images/IMG_4223.jpg'),
+    tags: ['European', '$$$', 'Downtown'],
+    rating: 4.8,
+    people: 120,
+    description: 'Enjoy city views and modern European cuisine in the center of Tbilisi',
+    favorite: false,
+  },
+  {
+    id: 'rooftop_7',
+    name: 'Xeme Biltmore',
+    image: require('../assets/images/IMG_5681.jpg'),
+    tags: ['Mediterranean', '$$$', 'Old Town'],
+    rating: 4.9,
+    people: 100,
+    description: 'Mediterranean flavors and open-air dining with a view.',
+    favorite: false,
+  },
+  {
+    id: 'rooftop_8',
     name: 'Weather Report Bar',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/ol.jpg'),
     tags: ['Tapas', '$$', 'City Center'],
     rating: 4.7,
     people: 130,
@@ -458,14 +448,24 @@ const rooftopRestaurants = [
     favorite: true,
   },
   {
-    id: '10',
-    name: 'Golden Tulip',
-    image: require('../assets/images/lolita.jpg'),
-    tags: ['Restaurant, Grill', '$$', 'Uptown'],
-    rating: 4.5,
-    people: 60,
-    description: 'Grilled favorites and open-air seating under the sky.',
+    id: 'rooftop_9',
+    name: 'Atmosphere Bar',
+    image: require('../assets/images/IMG_6679.jpg'),
+    tags: ['Asian Fusion Restaurant', '$$', 'Midtown'],
+    rating: 4.6,
+    people: 70,
+    description: 'Fusion cuisine, crafted drinks, and city views',
     favorite: false,
+  },
+  {
+    id: 'rooftop_10',
+    name: 'Paragraph',
+    image: require('../assets/images/nm.jpg'),
+    tags: ['Seafood', '$$$', 'Seaside'],
+    rating: 4.7,
+    people: 90,
+    description: 'Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi',
+    favorite: true,
   },
 ];
 
@@ -473,35 +473,35 @@ const dateNightRestaurants = [
   {
     id: 'date_1',
     name: 'Barbarestan',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/hi.jpg'),
     tags: ['Modern Georgian fine dining', 'Romantic'],
     favorite: true,
   },
   {
     id: 'date_2',
     name: 'Casa Fiori',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/oi.jpg'),
     tags: ['Modern Italian Restaurant & Cocktail Bar', 'Intimate'],
     favorite: false,
   },
   {
     id: 'date_3',
     name: 'Ambrosiano',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/z.jpg'),
     tags: ['Italy\'s finest artisan dishes', 'Romantic'],
     favorite: false,
   },
   {
     id: 'date_4',
     name: 'Madre',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/po.jpg'),
     tags: ['Spanish', 'Date Night'],
     favorite: true,
   },
   {
     id: 'date_5',
     name: 'Littera',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/y.jpg'),
     tags: ['Modern Georgian cuisine', 'Romantic'],
     favorite: false,
   },
@@ -512,7 +512,7 @@ const dateNightRestaurants = [
   {
     id: 'add_1',
     name: 'Bachata Gardens',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4208.jpg'),
     location: 'Vake District',
     cuisine: 'Latin & Georgian',
     rating: 4.4,
@@ -524,7 +524,7 @@ const dateNightRestaurants = [
   {
     id: 'add_2',
     name: 'Miti Taverna',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4209.jpg'),
     location: 'Old Town',
     cuisine: 'Greek',
     rating: 4.6,
@@ -560,7 +560,7 @@ const dateNightRestaurants = [
   {
     id: 'add_5',
     name: 'Ninia\'s Garden',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4214.jpg'),
     location: 'Saburtalo',
     cuisine: 'European',
     rating: 4.5,
@@ -584,7 +584,7 @@ const dateNightRestaurants = [
   {
     id: 'add_7',
     name: 'Cafe Stamba',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4221.jpg'),
     location: 'Mtatsminda',
     cuisine: 'Mixed',
     rating: 4.3,
@@ -608,7 +608,7 @@ const dateNightRestaurants = [
   {
     id: 'add_9',
     name: 'Iakobi\'s Ezo',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4222.jpg'),
     location: 'Sololaki',
     cuisine: 'Neo Bistro',
     rating: 4.4,
@@ -993,7 +993,7 @@ export default function HomeScreen() {
               }}
               activeOpacity={0.85}
             >
-              <Image source={item.name === 'Honoré' ? require('../assets/images/IMG_5583.jpg') : item.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : item.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : item.name === 'Khedi' ? require('../assets/images/IMG_5586.jpg') : item.name === 'Keto and Kote' ? require('../assets/images/IMG_4210.jpg') : item.name === 'Tsiskvili' ? require('../assets/images/nn.jpg') : item.image} style={styles.restaurantImage} />
+              <Image source={item.name === 'Honoré' ? require('../assets/images/IMG_5583.jpg') : item.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : item.name === 'Orangery' ? require('../assets/images/IMG_0992.jpg') : item.name === 'Khedi' ? require('../assets/images/IMG_5586.jpg') : item.name === 'Keto and Kote' ? require('../assets/images/IMG_4210.jpg') : item.name === 'Tsiskvili' ? require('../assets/images/nn.jpg') : item.image} style={styles.restaurantImage} />
               <Text style={styles.restaurantName}>{item.name}</Text>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 0, marginLeft: 0 }}>
                 <View style={{ flex: 1 }}>
@@ -1072,7 +1072,7 @@ export default function HomeScreen() {
               setSelectedRestaurant(restaurant);
               setShowRestaurantModal(true);
             }}>
-              <Image source={r.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : r.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : r.name === 'Coffee Shop Company' ? require('../assets/images/IMG_4193.jpg') : r.name === 'Monday Greens' ? require('../assets/images/IMG_5587.jpg') : r.name === 'Strada' ? require('../assets/images/IMG_5588.jpg') : r.image} style={styles.trendingImage} />
+              <Image source={r.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : r.name === 'Orangery' ? require('../assets/images/IMG_0992.jpg') : r.name === 'Coffee Shop Company' ? require('../assets/images/IMG_4193.jpg') : r.name === 'Monday Greens' ? require('../assets/images/IMG_5587.jpg') : r.name === 'Strada' ? require('../assets/images/IMG_5588.jpg') : r.image} style={styles.trendingImage} />
               <View style={styles.trendingInfo}>
                 <Text style={styles.trendingName}>{r.name}</Text>
                 <Text style={styles.trendingLocation}>{r.location}</Text>
@@ -1538,11 +1538,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_4192.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_0992.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_0992.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_0992.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_0992.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_0992.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1730,11 +1730,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5356.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_5679.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5679.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5679.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5679.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5679.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1754,11 +1754,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5581.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4208.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4208.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4208.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4208.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4208.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1778,11 +1778,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5582.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4209.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4209.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4209.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4209.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4209.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1802,11 +1802,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5355.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4210.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4210.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4210.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4210.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4210.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1850,11 +1850,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5583.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4216.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4216.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4216.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4216.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4216.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1874,11 +1874,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5586.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4214.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4214.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4214.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4214.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4214.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1898,11 +1898,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4221.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4221.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4221.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4221.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4221.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1922,11 +1922,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/IMG_5588.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4222.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4222.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4222.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4222.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4222.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1946,11 +1946,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4197.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4197.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4197.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4197.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4197.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1970,11 +1970,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4198.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4198.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4198.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4198.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4198.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -1994,11 +1994,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4205.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4205.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4205.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4205.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4205.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2018,11 +2018,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_5678.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5678.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5678.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5678.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5678.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2042,11 +2042,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4207.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4207.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4207.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4207.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4207.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2066,11 +2066,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_4223.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4223.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4223.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4223.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_4223.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2090,11 +2090,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/mmm.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/mmm.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/mmm.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/mmm.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/mmm.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2114,11 +2114,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/niak.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/niak.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/niak.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/niak.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/niak.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2138,11 +2138,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_5681.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5681.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5681.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5681.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_5681.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2162,11 +2162,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/nm.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/nm.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/nm.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/nm.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/nm.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2186,11 +2186,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/jo.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/jo.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/jo.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/jo.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/jo.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2210,11 +2210,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/op.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/op.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/op.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/op.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/op.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2234,11 +2234,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/IMG_6679.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_6679.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_6679.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_6679.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/IMG_6679.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2258,11 +2258,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/ol.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/ol.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/ol.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/ol.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/ol.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2282,11 +2282,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/ok.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/ok.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/ok.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/ok.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/ok.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2306,11 +2306,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/hi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/hi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/hi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/hi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/hi.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2330,11 +2330,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/oi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/oi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/oi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/oi.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/oi.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2354,11 +2354,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/z.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/z.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/z.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/z.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/z.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2378,11 +2378,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/po.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/po.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/po.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/po.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/po.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -2402,11 +2402,11 @@ export default function HomeScreen() {
                   style={{ width: '100%', height: 180 }}
                   contentContainerStyle={{ alignItems: 'center' }}
                 >
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
-                  <Image source={require("../assets/images/lolita.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
+                  <Image source={require("../assets/images/y.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/y.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/y.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/y.jpg")} style={{ width: 340, height: 180, borderRadius: 16, marginRight: 12 }} />
+                  <Image source={require("../assets/images/y.jpg")} style={{ width: 340, height: 180, borderRadius: 16 }} />
                 </ScrollView>
                 {/* Pagination dots */}
                 <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 8 }}>
@@ -5760,7 +5760,7 @@ export default function HomeScreen() {
                                restaurant.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : 
                                restaurant.name === 'Khedi' ? require('../assets/images/IMG_5586.jpg') : 
                                restaurant.name === 'Keto and Kote' ? require('../assets/images/IMG_4210.jpg') : 
-                               restaurant.name === 'Tsiskvili' ? require('../assets/images/nn.jpg') : 
+                               restaurant.name === 'Tsiskvili' ? require('../assets/images/IMG_5679.jpg') : 
                                restaurant.image} 
                         style={{ width: 40, height: 40, borderRadius: 8, marginRight: 12 }}
                       />
@@ -5833,10 +5833,37 @@ export default function HomeScreen() {
                       <Image 
                         source={restaurant.name === 'Honoré' ? require('../assets/images/IMG_5583.jpg') : 
                                restaurant.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : 
-                               restaurant.name === 'Orangery' ? require('../assets/images/IMG_4192.jpg') : 
+                               restaurant.name === 'Orangery' ? require('../assets/images/IMG_0992.jpg') : 
                                restaurant.name === 'Khedi' ? require('../assets/images/IMG_5586.jpg') : 
                                restaurant.name === 'Keto and Kote' ? require('../assets/images/IMG_4210.jpg') : 
-                               restaurant.name === 'Tsiskvili' ? require('../assets/images/nn.jpg') : 
+                               restaurant.name === 'Keto & Kote' ? require('../assets/images/IMG_4210.jpg') : 
+                               restaurant.name === 'Tsiskvili' ? require('../assets/images/IMG_5679.jpg') : 
+                               restaurant.name === '8000 Vintages' ? require('../assets/images/IMG_4197.jpg') : 
+                               restaurant.name === 'Sadzvele' ? require('../assets/images/IMG_4198.jpg') : 
+                               restaurant.name === 'Wine Merchants' ? require('../assets/images/IMG_4205.jpg') : 
+                               restaurant.name === 'Wine Not' ? require('../assets/images/IMG_5678.jpg') : 
+                               restaurant.name === 'Apotheka Bar' ? require('../assets/images/IMG_4207.jpg') : 
+                               restaurant.name === 'Bachata Gardens' ? require('../assets/images/IMG_4208.jpg') : 
+                               restaurant.name === 'Miti Taverna' ? require('../assets/images/IMG_4209.jpg') : 
+                               restaurant.name === 'Cafe Stamba' ? require('../assets/images/IMG_4221.jpg') : 
+                               restaurant.name === 'Iakobi\'s Ezo' ? require('../assets/images/IMG_4222.jpg') : 
+                               restaurant.name === 'Republic Tbilisi' ? require('../assets/images/IMG_4223.jpg') : 
+                               restaurant.name === 'Filini Terrace' ? require('../assets/images/mmm.jpg') : 
+                               restaurant.name === 'Monograph Terrace' ? require('../assets/images/niak.jpg') : 
+                               restaurant.name === 'Xeme Biltmore' ? require('../assets/images/IMG_5681.jpg') : 
+                               restaurant.name === 'Paragraph' ? require('../assets/images/nm.jpg') : 
+                               restaurant.name === 'Sofiko' ? require('../assets/images/op.jpg') : 
+                               restaurant.name === 'Atmosphere Bar' ? require('../assets/images/IMG_6679.jpg') : 
+                               restaurant.name === 'Weather Report Bar' ? require('../assets/images/ol.jpg') : 
+                               restaurant.name === 'Golden Tulip' ? require('../assets/images/ok.jpg') : 
+                               restaurant.name === 'Tiflis Veranda' ? require('../assets/images/jo.jpg') : 
+                               restaurant.name === 'Barbarestan' ? require('../assets/images/hi.jpg') : 
+                               restaurant.name === 'Casa Fiori' ? require('../assets/images/oi.jpg') : 
+                               restaurant.name === 'Ambrosiano' ? require('../assets/images/z.jpg') : 
+                               restaurant.name === 'Madre' ? require('../assets/images/po.jpg') : 
+                               restaurant.name === 'Littera' ? require('../assets/images/y.jpg') : 
+                               restaurant.name === 'Mova Maisi' ? require('../assets/images/IMG_4216.jpg') : 
+                               restaurant.name === 'Ninia\'s Garden' ? require('../assets/images/IMG_4214.jpg') : 
                                restaurant.image} 
                         style={{ width: 75, height: 75, borderRadius: 6, marginRight: 12 }}
                       />
