@@ -683,8 +683,42 @@ export default function HomeScreen() {
   const [showMapModal, setShowMapModal] = useState(false);
   const [showReservationConfirmation, setShowReservationConfirmation] = useState(false);
   const [showAllRestaurantsModal, setShowAllRestaurantsModal] = useState(false);
+  const [showAllWineTastingModal, setShowAllWineTastingModal] = useState(false);
+  const [showAllOutdoorDiningModal, setShowAllOutdoorDiningModal] = useState(false);
+  const [showAllDateNightModal, setShowAllDateNightModal] = useState(false);
+  const [selectedWineTastingFilter, setSelectedWineTastingFilter] = useState('All');
+  const [selectedOutdoorDiningFilter, setSelectedOutdoorDiningFilter] = useState('All');
+  const [selectedDateNightFilter, setSelectedDateNightFilter] = useState('All');
   const [selectedCuisineFilter, setSelectedCuisineFilter] = useState('All');
   const [selectedPopularityFilter, setSelectedPopularityFilter] = useState('All');
+
+  // Filter wine tasting venues based on selected filter
+  const getFilteredWineTastingVenues = () => {
+    switch (selectedWineTastingFilter) {
+      case 'Open now':
+        return wineTastingVenues.filter(venue => venue.isOpen);
+      case 'Happy hour':
+        return wineTastingVenues.filter(venue => venue.hasHappyHour);
+      case 'Top rated':
+        return wineTastingVenues.filter(venue => venue.rating >= 4.5);
+      default:
+        return wineTastingVenues;
+    }
+  };
+
+  // Filter outdoor dining restaurants based on selected filter
+  const getFilteredOutdoorDiningRestaurants = () => {
+    switch (selectedOutdoorDiningFilter) {
+      case 'Open now':
+        return outdoorDiningRestaurants.filter(restaurant => restaurant.isOpen);
+      case 'Happy hour':
+        return outdoorDiningRestaurants.filter(restaurant => restaurant.hasHappyHour);
+      case 'Top rated':
+        return outdoorDiningRestaurants.filter(restaurant => restaurant.rating >= 4.5);
+      default:
+        return outdoorDiningRestaurants;
+    }
+  };
   const [trendingFilter, setTrendingFilter] = useState('all'); // 'all', 'open', 'happy', 'rated'
   const [allRestaurantsSearchQuery, setAllRestaurantsSearchQuery] = useState('');
   const [allRestaurantsSearchSuggestions, setAllRestaurantsSearchSuggestions] = useState([]);
@@ -994,25 +1028,11 @@ export default function HomeScreen() {
               activeOpacity={0.85}
             >
               <Image source={item.name === 'Honoré' ? require('../assets/images/IMG_5583.jpg') : item.name === 'Alubali' ? require('../assets/images/IMG_5584.jpg') : item.name === 'Orangery' ? require('../assets/images/IMG_0992.jpg') : item.name === 'Khedi' ? require('../assets/images/IMG_5586.jpg') : item.name === 'Keto and Kote' ? require('../assets/images/IMG_4210.jpg') : item.name === 'Tsiskvili' ? require('../assets/images/nn.jpg') : item.image} style={styles.restaurantImage} />
-              <Text style={styles.restaurantName}>{item.name}</Text>
-              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginRight: 0, marginLeft: 0 }}>
-                <View style={{ flex: 1 }}>
-                <Text style={[styles.restaurantTags, { flex: 1 }]}> 
-                  {item.tags.map((tag, idx) => {
-                    return (
-                      <React.Fragment key={tag}>
-                        {tag}{idx < item.tags.length - 1 ? ' • ' : ''}
-                      </React.Fragment>
-                    );
-                  })}
-                  {' '}
-                  <Ionicons name="star" size={14} color="#FFD700" />
-                  <Text style={styles.ratingText}>{item.rating}</Text>
-                </Text>
-                </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 1 }}>
+                <Text style={styles.restaurantName}>{item.name}</Text>
                 {/* Favourites icon inside card, right side, never overflowing */}
                 <TouchableOpacity
-                  style={{ padding: 4, marginLeft: 8, backgroundColor: 'rgba(42,42,42,0.85)', borderRadius: 16, alignSelf: 'flex-start' }}
+                  style={{ padding: 4, backgroundColor: 'rgba(42,42,42,0.85)', borderRadius: 16, alignSelf: 'flex-start' }}
                   onPress={() => {
                     setFavorites(favs => ({ ...favs, [item.id]: !favs[item.id] }));
                   }}
@@ -1020,6 +1040,18 @@ export default function HomeScreen() {
                   <Ionicons name={favorites[item.id] ? 'bookmark' : 'bookmark-outline'} size={22} color={'#FF8C00'} />
                 </TouchableOpacity>
               </View>
+              <Text style={[styles.restaurantTags, { flex: 1 }]}> 
+                {item.tags.map((tag, idx) => {
+                  return (
+                    <React.Fragment key={tag}>
+                      {tag}{idx < item.tags.length - 1 ? ' • ' : ''}
+                    </React.Fragment>
+                  );
+                })}
+                {' '}
+                <Ionicons name="star" size={14} color="#FFD700" />
+                <Text style={styles.ratingText}>{item.rating}</Text>
+              </Text>
               <View style={styles.timesRowEven}>
                 {item.times.map((time, idx) => (
                   <TouchableOpacity key={idx} style={styles.timeButtonSmall}>
@@ -1271,7 +1303,7 @@ export default function HomeScreen() {
         {/* Wine Tasting Section */}
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.wineTastingTitle}>Wine tasting</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowAllWineTastingModal(true)}>
             <View style={{ flexDirection: "row", alignItems: "center" }}><Text style={styles.cuisineViewAll}>View all</Text><Ionicons name="chevron-forward" size={16} color="#FF8C00" style={{ marginLeft: 4 }} /></View>
           </TouchableOpacity>
         </View>
@@ -1297,21 +1329,19 @@ export default function HomeScreen() {
               setShowRestaurantModal(true);
             }}>
               <Image source={item.image} style={styles.wineImage} />
-              <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.wineName}>{item.name}</Text>
-                  <Text style={styles.wineTags}>{'$'.repeat(item.price)} • {item.tags.join(' • ')} <Ionicons name="star" size={14} color="#FFD700" /> {item.rating} </Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2 }}>
-                    <Ionicons name="location-outline" size={14} color="#fff" style={{ marginRight: 2 }} />
-                    <Text style={styles.wineTags}>{item.distance} km</Text>
-                  </View>
-                </View>
-                <TouchableOpacity onPress={(e) => {
+              <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginBottom: 2 }}>
+                <Text style={styles.wineName}>{item.name}</Text>
+                <TouchableOpacity style={{ marginLeft: 'auto' }} onPress={(e) => {
                   e.stopPropagation();
                   setFavorites(favs => ({ ...favs, [item.id]: !favs[item.id] }));
                 }}>
                   <Ionicons name={favorites[item.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
                 </TouchableOpacity>
+              </View>
+              <Text style={styles.wineTags}>{'$'.repeat(item.price)} • {item.tags.join(' • ')} <Ionicons name="star" size={14} color="#FFD700" /> {item.rating} </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 2 }}>
+                <Ionicons name="location-outline" size={14} color="#fff" style={{ marginRight: 2 }} />
+                <Text style={styles.wineTags}>{item.distance} km</Text>
               </View>
               <View style={styles.wineTimesRow}>
                 {item.times.slice(0, 2).map((time, idx) => (
@@ -1328,7 +1358,7 @@ export default function HomeScreen() {
         {/* Fun Outdoor Dining Section */}
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.outdoorDiningTitle}>Fun outdoor dining</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setShowAllOutdoorDiningModal(true)}>
             <View style={{ flexDirection: "row", alignItems: "center" }}><Text style={styles.cuisineViewAll}>View all</Text><Ionicons name="chevron-forward" size={16} color="#FF8C00" style={{ marginLeft: 4 }} /></View>
           </TouchableOpacity>
         </View>
@@ -1408,12 +1438,15 @@ export default function HomeScreen() {
         {/* Date Night Section */}
         <View style={[styles.sectionHeaderRow, { marginTop: -8 }]}>
           <Text style={styles.outdoorDiningTitle}>Date Night</Text>
-          <TouchableOpacity onPress={() => setShowAllDateNight(true)}>
-            <Text style={styles.cuisineViewAll}>View all</Text>
+          <TouchableOpacity onPress={() => setShowAllDateNightModal(true)}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text style={styles.cuisineViewAll}>View all</Text>
+              <Ionicons name="chevron-forward" size={16} color="#FF8C00" style={{ marginLeft: 4 }} />
+            </View>
           </TouchableOpacity>
         </View>
         <FlatList
-          data={showAllDateNight ? dateNightRestaurants : dateNightRestaurants.slice(0, 5)}
+          data={dateNightRestaurants.slice(0, 5)}
           keyExtractor={item => item.id}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -5922,6 +5955,540 @@ export default function HomeScreen() {
         </View>
       </Modal>
       
+      {/* All Wine Tasting Modal */}
+      <Modal visible={showAllWineTastingModal} animationType="slide" onRequestClose={() => setShowAllWineTastingModal(false)} transparent={false}>
+        <View style={{ flex: 1, backgroundColor: '#000' }}>
+          <SafeAreaView style={{ flex: 1 }}>
+            <LinearGradient colors={['#000', '#1a1a1a']} style={{ flex: 1 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="wine" size={24} color="#FF8C00" style={{ marginRight: 8 }} />
+                  <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>All Wine Tasting</Text>
+                </View>
+                <TouchableOpacity onPress={() => setShowAllWineTastingModal(false)}>
+                  <Ionicons name="close" size={24} color="#b0b8c1" />
+                </TouchableOpacity>
+              </View>
+              
+              <View style={{ paddingHorizontal: 16, marginBottom: 16 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#FF8C00', marginRight: 8, marginLeft: 8 }} />
+                  <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Discover the finest wine experiences in Tbilisi</Text>
+                </View>
+                
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: selectedWineTastingFilter === 'Open now' ? '#FF8C00' : '#404040', 
+                      borderRadius: 20, 
+                      paddingHorizontal: 20, 
+                      paddingVertical: 10,
+                      flex: 1,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: '#fff'
+                    }}
+                    onPress={() => setSelectedWineTastingFilter(selectedWineTastingFilter === 'Open now' ? 'All' : 'Open now')}
+                  >
+                    <Ionicons name="time-outline" size={16} color={selectedWineTastingFilter === 'Open now' ? '#000' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: selectedWineTastingFilter === 'Open now' ? '#000' : '#fff', fontSize: 14, fontWeight: '500' }}>Open now</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: selectedWineTastingFilter === 'Happy hour' ? '#FF8C00' : '#404040', 
+                      borderRadius: 20, 
+                      paddingHorizontal: 20, 
+                      paddingVertical: 10,
+                      flex: 1,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: '#fff'
+                    }}
+                    onPress={() => setSelectedWineTastingFilter(selectedWineTastingFilter === 'Happy hour' ? 'All' : 'Happy hour')}
+                  >
+                    <Ionicons name="happy-outline" size={16} color={selectedWineTastingFilter === 'Happy hour' ? '#000' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: selectedWineTastingFilter === 'Happy hour' ? '#000' : '#fff', fontSize: 14, fontWeight: '500' }}>Happy hour</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: selectedWineTastingFilter === 'Top rated' ? '#FF8C00' : '#404040', 
+                      borderRadius: 20, 
+                      paddingHorizontal: 20, 
+                      paddingVertical: 10,
+                      flex: 1,
+                      borderWidth: 1,
+                      borderColor: '#fff'
+                    }}
+                    onPress={() => setSelectedWineTastingFilter(selectedWineTastingFilter === 'Top rated' ? 'All' : 'Top rated')}
+                  >
+                    <Ionicons name="star-outline" size={16} color={selectedWineTastingFilter === 'Top rated' ? '#000' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: selectedWineTastingFilter === 'Top rated' ? '#000' : '#fff', fontSize: 14, fontWeight: '500' }}>Top rated</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              
+              <View style={{ flex: 1, paddingHorizontal: 16 }}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+                  {getFilteredWineTastingVenues().map((restaurant, index) => (
+                    <TouchableOpacity
+                      key={`wine_${restaurant.id}_${index}`}
+                      style={{ 
+                        flexDirection: 'row', 
+                        alignItems: 'center', 
+                        backgroundColor: 'rgba(255,255,255,0.03)', 
+                        borderRadius: 12, 
+                        padding: 12, 
+                        marginBottom: 12,
+                        borderWidth: 1,
+                        borderColor: '#404040'
+                      }}
+                      onPress={() => {
+                        const restaurantObj = {
+                          id: restaurant.id,
+                          name: restaurant.name,
+                          image: restaurant.image,
+                          tags: restaurant.tags,
+                          rating: restaurant.rating,
+                          times: restaurant.times,
+                        };
+                        setSelectedRestaurant(restaurantObj);
+                        setShowAllWineTastingModal(false);
+                        setShowRestaurantModal(true);
+                      }}
+                    >
+                      <Image 
+                        source={restaurant.image} 
+                        style={{ width: 75, height: 75, borderRadius: 6, marginRight: 12 }}
+                      />
+                      <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16, marginBottom: 2 }}>{restaurant.name}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 1 }}>
+                          {'$'.repeat(restaurant.price)} • {restaurant.tags.join(' • ')}
+                        </Text>
+                        <Text style={{ color: '#666666', fontSize: 12, marginBottom: 2, lineHeight: 16 }}>
+                          {restaurant.name === '8000 Vintages' ? 'Exclusive wine merchants with rare and premium wines.' :
+                           restaurant.name === 'Sadzvele' ? 'Cozy wine hub with local and international wines.' :
+                           restaurant.name === 'Wine Merchants' ? 'Premium wine selection with expert sommeliers.' :
+                           restaurant.name === 'Wine Not' ? 'Unique apotheka-style wine bar with vintage atmosphere.' :
+                           restaurant.name === 'Apotheka Bar' ? 'Cozy wine hub with local and international wines.' :
+                           'Discover exceptional wines in a sophisticated atmosphere.'}
+                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Ionicons
+                              key={i}
+                              name={i < Math.round(restaurant.rating || 0) ? 'star' : 'star-outline'}
+                              size={14}
+                              color="#FFD700"
+                              style={{ marginRight: 2 }}
+                            />
+                          ))}
+                          <Text style={{ color: '#b0b8c1', fontSize: 13, marginLeft: 4 }}>
+                            ({restaurant.reviews || Math.floor(Math.random() * 50) + 10} Reviews)
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={{ alignItems: 'flex-end', justifyContent: 'space-between', marginLeft: 12, minWidth: 60 }}>
+                        <TouchableOpacity style={{ marginTop: 8 }} onPress={() => setFavorites(favs => ({ ...favs, [restaurant.id]: !favs[restaurant.id] }))}>
+                          <Ionicons name={favorites[restaurant.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
+                        </TouchableOpacity>
+
+                        <View style={{ width: 22, height: 1, backgroundColor: '#404040', marginTop: 8, marginBottom: 8 }} />
+
+                        <TouchableOpacity
+                          style={{ marginBottom: 8 }}
+                          onPress={(e) => {
+                            e.stopPropagation();
+                            setBookingFromRestaurantModal(true);
+                            setBookingRestaurantName(restaurant.name);
+                            setShowAllWineTastingModal(false);
+                            setShowBookingModal(true);
+                          }}
+                        >
+                          <Ionicons 
+                            name="calendar-outline" 
+                            size={22} 
+                            color="#FF8C00" 
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </LinearGradient>
+          </SafeAreaView>
+        </View>
+      </Modal>
+      
+      {/* All Outdoor Dining Modal */}
+      <Modal visible={showAllOutdoorDiningModal} animationType="slide" onRequestClose={() => setShowAllOutdoorDiningModal(false)} transparent={false}>
+        <View style={{ flex: 1, backgroundColor: '#000' }}>
+          <SafeAreaView style={{ flex: 1 }}>
+            <LinearGradient colors={['#000', '#1a1a1a']} style={{ flex: 1 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="leaf" size={24} color="#FF8C00" style={{ marginRight: 8 }} />
+                  <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>Fun Outdoor Dining</Text>
+                </View>
+                <TouchableOpacity onPress={() => setShowAllOutdoorDiningModal(false)}>
+                  <Ionicons name="close" size={24} color="#b0b8c1" />
+                </TouchableOpacity>
+              </View>
+              
+              <View style={{ paddingHorizontal: 16, marginBottom: 16 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#FF8C00', marginRight: 8, marginLeft: 8 }} />
+                  <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Enjoy dining in beautiful outdoor settings</Text>
+                </View>
+                
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: selectedOutdoorDiningFilter === 'Open now' ? '#FF8C00' : '#404040', 
+                      borderRadius: 20, 
+                      paddingHorizontal: 20, 
+                      paddingVertical: 10,
+                      flex: 1,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: '#fff'
+                    }}
+                    onPress={() => setSelectedOutdoorDiningFilter(selectedOutdoorDiningFilter === 'Open now' ? 'All' : 'Open now')}
+                  >
+                    <Ionicons name="time-outline" size={16} color={selectedOutdoorDiningFilter === 'Open now' ? '#000' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: selectedOutdoorDiningFilter === 'Open now' ? '#000' : '#fff', fontSize: 14, fontWeight: '500' }}>Open now</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: selectedOutdoorDiningFilter === 'Happy hour' ? '#FF8C00' : '#404040', 
+                      borderRadius: 20, 
+                      paddingHorizontal: 20, 
+                      paddingVertical: 10,
+                      flex: 1,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: '#fff'
+                    }}
+                    onPress={() => setSelectedOutdoorDiningFilter(selectedOutdoorDiningFilter === 'Happy hour' ? 'All' : 'Happy hour')}
+                  >
+                    <Ionicons name="happy-outline" size={16} color={selectedOutdoorDiningFilter === 'Happy hour' ? '#000' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: selectedOutdoorDiningFilter === 'Happy hour' ? '#000' : '#fff', fontSize: 14, fontWeight: '500' }}>Happy hour</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: selectedOutdoorDiningFilter === 'Top rated' ? '#FF8C00' : '#404040', 
+                      borderRadius: 20, 
+                      paddingHorizontal: 20, 
+                      paddingVertical: 10,
+                      flex: 1,
+                      borderWidth: 1,
+                      borderColor: '#fff'
+                    }}
+                    onPress={() => setSelectedOutdoorDiningFilter(selectedOutdoorDiningFilter === 'Top rated' ? 'All' : 'Top rated')}
+                  >
+                    <Ionicons name="star-outline" size={16} color={selectedOutdoorDiningFilter === 'Top rated' ? '#000' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: selectedOutdoorDiningFilter === 'Top rated' ? '#000' : '#fff', fontSize: 14, fontWeight: '500' }}>Top rated</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              
+              <View style={{ flex: 1, paddingHorizontal: 16 }}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+                  {outdoorDiningRestaurants.map((restaurant, index) => (
+                    <TouchableOpacity
+                      key={`outdoor_${restaurant.id}_${index}`}
+                      style={{ 
+                        flexDirection: 'row', 
+                        alignItems: 'center', 
+                        backgroundColor: 'rgba(255,255,255,0.03)', 
+                        borderRadius: 12, 
+                        padding: 12, 
+                        marginBottom: 12,
+                        borderWidth: 1,
+                        borderColor: '#404040'
+                      }}
+                      onPress={() => {
+                        const restaurantObj = {
+                          id: restaurant.id,
+                          name: restaurant.name,
+                          image: restaurant.image,
+                          tags: [restaurant.cuisine],
+                          rating: restaurant.rating,
+                          times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+                        };
+                        setSelectedRestaurant(restaurantObj);
+                        setShowAllOutdoorDiningModal(false);
+                        setShowRestaurantModal(true);
+                      }}
+                    >
+                      <Image 
+                        source={restaurant.image} 
+                        style={{ width: 75, height: 75, borderRadius: 6, marginRight: 12 }}
+                      />
+                      <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16, marginBottom: 2 }}>{restaurant.name}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 1 }}>
+                          {restaurant.tags.join(' • ')}
+                        </Text>
+                        <Text style={{ color: '#666666', fontSize: 12, marginBottom: 2, lineHeight: 16 }}>
+                          {restaurant.name === 'Bachata Gardens' ? 'Latin-inspired outdoor dining with live music and dancing.' :
+                           restaurant.name === 'Miti Taverna' ? 'Authentic Greek taverna with beautiful garden seating.' :
+                           restaurant.name === 'Keto & Kote' ? 'Georgian cuisine in a charming outdoor courtyard setting.' :
+                           restaurant.name === 'Tsiskvili' ? 'Traditional Georgian restaurant with riverside terrace.' :
+                           restaurant.name === 'Mova Maisi' ? 'Modern outdoor dining with city skyline views.' :
+                           restaurant.name === 'Ninia\'s Garden' ? 'European cuisine in a romantic garden atmosphere.' :
+                           restaurant.name === 'Cafe Stamba' ? 'Industrial-chic outdoor space with craft coffee and food.' :
+                           restaurant.name === 'Iakobi\'s Ezo' ? 'Cozy outdoor cafe with local Georgian specialties.' :
+                           'Enjoy dining in beautiful outdoor settings.'}
+                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Ionicons
+                              key={i}
+                              name={i < 4 ? 'star' : 'star-outline'}
+                              size={14}
+                              color="#FFD700"
+                              style={{ marginRight: 2 }}
+                            />
+                          ))}
+                          <Text style={{ color: '#b0b8c1', fontSize: 13, marginLeft: 4 }}>
+                            ({restaurant.reviews || Math.floor(Math.random() * 50) + 10} Reviews)
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={{ alignItems: 'flex-end', justifyContent: 'space-between', marginLeft: 12, minWidth: 60 }}>
+                        <TouchableOpacity style={{ marginTop: 8 }} onPress={() => setFavorites(favs => ({ ...favs, [restaurant.id]: !favs[restaurant.id] }))}>
+                          <Ionicons name={favorites[restaurant.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
+                        </TouchableOpacity>
+
+                        <View style={{ width: 22, height: 1, backgroundColor: '#404040', marginTop: 8, marginBottom: 8 }} />
+
+                        <TouchableOpacity
+                          style={{ marginBottom: 8 }}
+                          onPress={(e) => {
+                            e.stopPropagation();
+                            setBookingFromRestaurantModal(true);
+                            setBookingRestaurantName(restaurant.name);
+                            setShowAllOutdoorDiningModal(false);
+                            setShowBookingModal(true);
+                          }}
+                        >
+                          <Ionicons 
+                            name="calendar-outline" 
+                            size={22} 
+                            color="#FF8C00" 
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </LinearGradient>
+          </SafeAreaView>
+        </View>
+      </Modal>
+      
+      {/* All Date Night Modal */}
+      <Modal visible={showAllDateNightModal} animationType="slide" onRequestClose={() => setShowAllDateNightModal(false)} transparent={false}>
+        <View style={{ flex: 1, backgroundColor: '#000' }}>
+          <SafeAreaView style={{ flex: 1 }}>
+            <LinearGradient colors={['#000', '#1a1a1a']} style={{ flex: 1 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Ionicons name="heart" size={24} color="#FF8C00" style={{ marginRight: 8 }} />
+                  <Text style={{ color: '#fff', fontSize: 24, fontWeight: 'bold' }}>All Date Night</Text>
+                </View>
+                <TouchableOpacity onPress={() => setShowAllDateNightModal(false)}>
+                  <Ionicons name="close" size={24} color="#b0b8c1" />
+                </TouchableOpacity>
+              </View>
+              
+              <View style={{ paddingHorizontal: 16, marginBottom: 16 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: '#FF8C00', marginRight: 8, marginLeft: 8 }} />
+                  <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Perfect restaurants for romantic evenings</Text>
+                </View>
+                
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 16 }}>
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: selectedDateNightFilter === 'Open now' ? '#FF8C00' : '#404040', 
+                      borderRadius: 20, 
+                      paddingHorizontal: 20, 
+                      paddingVertical: 10,
+                      flex: 1,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: '#fff'
+                    }}
+                    onPress={() => setSelectedDateNightFilter(selectedDateNightFilter === 'Open now' ? 'All' : 'Open now')}
+                  >
+                    <Ionicons name="time-outline" size={16} color={selectedDateNightFilter === 'Open now' ? '#000' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: selectedDateNightFilter === 'Open now' ? '#000' : '#fff', fontSize: 14, fontWeight: '500' }}>Open now</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: selectedDateNightFilter === 'Happy hour' ? '#FF8C00' : '#404040', 
+                      borderRadius: 20, 
+                      paddingHorizontal: 20, 
+                      paddingVertical: 10,
+                      flex: 1,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: '#fff'
+                    }}
+                    onPress={() => setSelectedDateNightFilter(selectedDateNightFilter === 'Happy hour' ? 'All' : 'Happy hour')}
+                  >
+                    <Ionicons name="happy-outline" size={16} color={selectedDateNightFilter === 'Happy hour' ? '#000' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: selectedDateNightFilter === 'Happy hour' ? '#000' : '#fff', fontSize: 14, fontWeight: '500' }}>Happy hour</Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity 
+                    style={{ 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'center',
+                      backgroundColor: selectedDateNightFilter === 'Top rated' ? '#FF8C00' : '#404040', 
+                      borderRadius: 20, 
+                      paddingHorizontal: 20, 
+                      paddingVertical: 10,
+                      flex: 1,
+                      borderWidth: 1,
+                      borderColor: '#fff'
+                    }}
+                    onPress={() => setSelectedDateNightFilter(selectedDateNightFilter === 'Top rated' ? 'All' : 'Top rated')}
+                  >
+                    <Ionicons name="star-outline" size={16} color={selectedDateNightFilter === 'Top rated' ? '#000' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: selectedDateNightFilter === 'Top rated' ? '#000' : '#fff', fontSize: 14, fontWeight: '500' }}>Top rated</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              
+              <View style={{ flex: 1, paddingHorizontal: 16 }}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+                  {dateNightRestaurants.map((restaurant, index) => (
+                    <TouchableOpacity
+                      key={`date_${restaurant.id}_${index}`}
+                      style={{ 
+                        flexDirection: 'row', 
+                        alignItems: 'center', 
+                        backgroundColor: 'rgba(255,255,255,0.03)', 
+                        borderRadius: 12, 
+                        padding: 12, 
+                        marginBottom: 12,
+                        borderWidth: 1,
+                        borderColor: '#404040'
+                      }}
+                      onPress={() => {
+                        const restaurantObj = {
+                          id: restaurant.id,
+                          name: restaurant.name,
+                          image: restaurant.image,
+                          tags: restaurant.tags,
+                          rating: restaurant.rating,
+                          times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+                        };
+                        setSelectedRestaurant(restaurantObj);
+                        setShowAllDateNightModal(false);
+                        setShowRestaurantModal(true);
+                      }}
+                    >
+                      <Image 
+                        source={restaurant.image} 
+                        style={{ width: 75, height: 75, borderRadius: 6, marginRight: 12 }}
+                      />
+                      <View style={{ flex: 1, justifyContent: 'center' }}>
+                        <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16, marginBottom: 2 }}>{restaurant.name}</Text>
+                        <Text style={{ color: '#b0b8c1', fontSize: 13, marginBottom: 1 }}>
+                          {restaurant.tags.join(' • ')}
+                        </Text>
+                        <Text style={{ color: '#666666', fontSize: 12, marginBottom: 2, lineHeight: 16 }}>
+                          {restaurant.name === 'Barbarestan' ? 'Elegant modern Georgian fine dining perfect for romantic evenings.' :
+                           restaurant.name === 'Casa Fiori' ? 'Intimate modern Italian restaurant with exceptional cocktail bar.' :
+                           restaurant.name === 'Ambrosiano' ? 'Italy\'s finest artisan dishes in a romantic setting.' :
+                           restaurant.name === 'Madre' ? 'Authentic Spanish cuisine perfect for romantic date nights.' :
+                           restaurant.name === 'Littera' ? 'Modern Georgian cuisine in an intimate romantic atmosphere.' :
+                           'Perfect restaurant for romantic date nights.'}
+                        </Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Ionicons
+                              key={i}
+                              name={i < 4 ? 'star' : 'star-outline'}
+                              size={14}
+                              color="#FFD700"
+                              style={{ marginRight: 2 }}
+                            />
+                          ))}
+                          <Text style={{ color: '#b0b8c1', fontSize: 13, marginLeft: 4 }}>
+                            ({restaurant.reviews || Math.floor(Math.random() * 50) + 10} Reviews)
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={{ alignItems: 'flex-end', justifyContent: 'space-between', marginLeft: 12, minWidth: 60 }}>
+                        <TouchableOpacity style={{ marginTop: 8 }} onPress={() => setFavorites(favs => ({ ...favs, [restaurant.id]: !favs[restaurant.id] }))}>
+                          <Ionicons name={favorites[restaurant.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
+                        </TouchableOpacity>
+
+                        <View style={{ width: 22, height: 1, backgroundColor: '#404040', marginTop: 8, marginBottom: 8 }} />
+
+                        <TouchableOpacity
+                          style={{ marginBottom: 8 }}
+                          onPress={(e) => {
+                            e.stopPropagation();
+                            setBookingFromRestaurantModal(true);
+                            setBookingRestaurantName(restaurant.name);
+                            setShowAllDateNightModal(false);
+                            setShowBookingModal(true);
+                          }}
+                        >
+                          <Ionicons 
+                            name="calendar-outline" 
+                            size={22} 
+                            color="#FF8C00" 
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            </LinearGradient>
+          </SafeAreaView>
+        </View>
+      </Modal>
+      
       {/* Bottom Navigation Bar - Always Visible */}
       <SafeAreaView style={[styles.tabBarContainer, { position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 9999 }]} edges={['bottom']}>
         <View style={styles.tabBar}>
@@ -5938,6 +6505,9 @@ export default function HomeScreen() {
             setShowSavedModal(false);
             setShowAllTrending(false);
             setShowAllDateNight(false);
+            setShowAllWineTastingModal(false);
+            setShowAllOutdoorDiningModal(false);
+            setShowAllDateNightModal(false);
           }}>
             <Ionicons name={activeTab === 'Home' ? 'ellipse' : 'ellipse-outline'} size={28} color={activeTab === 'Home' ? '#FF8C00' : '#b0b8c1'} />
             <Text style={[styles.tabLabel, activeTab === 'Home' && styles.tabLabelActive]}>Home</Text>
