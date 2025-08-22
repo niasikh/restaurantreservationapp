@@ -312,56 +312,72 @@ const outdoorDiningRestaurants = [
     id: 'outdoor_1',
     name: 'Bachata Gardens',
     image: require('../assets/images/IMG_4208.jpg'),
-    tags: ['European', 'Outdoor'],
+    tags: ['$$', 'European', 'Outdoor'],
+    rating: 4.4,
+    distance: 2.1,
     favorite: false,
   },
   {
     id: 'outdoor_2',
     name: 'Miti Taverna',
     image: require('../assets/images/IMG_4209.jpg'),
-    tags: ['Greek', 'Outdoor'],
+    tags: ['$$', 'Greek', 'Outdoor'],
+    rating: 4.6,
+    distance: 1.8,
     favorite: true,
   },
   {
     id: 'outdoor_3',
     name: 'Keto & Kote',
     image: require('../assets/images/IMG_4210.jpg'),
-    tags: ['Georgian', 'Outdoor'],
+    tags: ['$', 'Georgian', 'Outdoor'],
+    rating: 4.7,
+    distance: 0.9,
     favorite: false,
   },
   {
     id: 'outdoor_4',
     name: 'Tsiskvili',
     image: require('../assets/images/IMG_5679.jpg'),
-    tags: ['Georgian', 'Outdoor'],
+    tags: ['$$', 'Georgian', 'Outdoor'],
+    rating: 4.5,
+    distance: 1.5,
     favorite: false,
   },
   {
     id: 'outdoor_5',
     name: 'Mova Maisi',
     image: require('../assets/images/IMG_4216.jpg'),
-    tags: ['Georgian', 'Outdoor'],
+    tags: ['$$', 'Georgian', 'Outdoor'],
+    rating: 4.3,
+    distance: 2.8,
     favorite: true,
   },
   {
     id: '6',
     name: 'Ninia\'s Garden',
     image: require('../assets/images/IMG_4214.jpg'),
-    tags: ['European', 'Outdoor'],
+    tags: ['$$', 'European', 'Outdoor'],
+    rating: 4.5,
+    distance: 3.2,
     favorite: false,
   },
   {
     id: '7',
     name: 'Cafe Stamba',
     image: require('../assets/images/IMG_4221.jpg'),
-    tags: ['Mixed', 'Outdoor'],
+    tags: ['$$', 'Mixed', 'Outdoor'],
+    rating: 4.4,
+    distance: 1.2,
     favorite: false,
   },
   {
     id: '8',
     name: 'Iakobi\'s Ezo',
     image: require('../assets/images/IMG_4222.jpg'),
-    tags: ['Neo Bistro', 'Outdoor'],
+    tags: ['$$', 'Neo Bistro', 'Outdoor'],
+    rating: 4.6,
+    distance: 2.5,
     favorite: true,
   },
 ];
@@ -474,35 +490,40 @@ const dateNightRestaurants = [
     id: 'date_1',
     name: 'Barbarestan',
     image: require('../assets/images/hi.jpg'),
-    tags: ['Modern Georgian fine dining', 'Romantic'],
+    tags: ['$$$', 'Modern Georgian fine dining', 'Romantic'],
+    rating: 4.8,
     favorite: true,
   },
   {
     id: 'date_2',
     name: 'Casa Fiori',
     image: require('../assets/images/oi.jpg'),
-    tags: ['Modern Italian Restaurant & Cocktail Bar', 'Intimate'],
+    tags: ['$$$', 'Modern Italian Restaurant & Cocktail Bar'],
+    rating: 4.7,
     favorite: false,
   },
   {
     id: 'date_3',
     name: 'Ambrosiano',
     image: require('../assets/images/z.jpg'),
-    tags: ['Italy\'s finest artisan dishes', 'Romantic'],
+    tags: ['$$$', 'Classic', 'Italy\'s finest artisan dishes', 'Romantic'],
+    rating: 4.6,
     favorite: false,
   },
   {
     id: 'date_4',
     name: 'Madre',
     image: require('../assets/images/po.jpg'),
-    tags: ['Spanish', 'Date Night'],
+    tags: ['$$', 'Spanish', 'Date Night', 'Cozy, romantic atmosphere'],
+    rating: 4.5,
     favorite: true,
   },
   {
     id: 'date_5',
     name: 'Littera',
     image: require('../assets/images/y.jpg'),
-    tags: ['Modern Georgian cuisine', 'Romantic'],
+    tags: ['$$$', 'Modern Georgian cuisine', 'Romantic', 'Wine'],
+    rating: 4.7,
     favorite: false,
   },
 ];
@@ -1393,7 +1414,25 @@ export default function HomeScreen() {
                   <Ionicons name={favorites[item.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
                 </TouchableOpacity>
               </View>
-              <Text style={styles.outdoorTags}>{item.tags.join(' • ')}</Text>
+              <Text style={styles.outdoorTags}> 
+                {item.tags.join(' • ')}
+              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Ionicons
+                    key={i}
+                    name={i < Math.round(item.rating) ? 'star' : 'star-outline'}
+                    size={14}
+                    color="#FFD700"
+                    style={{ marginRight: 2 }}
+                  />
+                ))}
+                <Text style={[styles.ratingText, { marginLeft: 4, color: '#FFD700' }]}>{item.rating}</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 4 }}>
+                <Ionicons name="location-outline" size={14} color="#b0b8c1" style={{ marginRight: 4 }} />
+                <Text style={{ color: '#b0b8c1', fontSize: 12 }}>{item.distance} km</Text>
+              </View>
             </TouchableOpacity>
           )}
         />
@@ -1476,7 +1515,12 @@ export default function HomeScreen() {
                   <Ionicons name={favorites[item.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
                 </TouchableOpacity>
               </View>
-              <Text style={styles.outdoorTags}>{item.tags.join(' • ')}</Text>
+              <Text style={styles.outdoorTags}> 
+                {item.tags.join(' • ')}
+                {' '}
+                <Ionicons name="star" size={14} color="#FFD700" />
+                <Text style={styles.ratingText}>{item.rating}</Text>
+              </Text>
             </TouchableOpacity>
           )}
         />
