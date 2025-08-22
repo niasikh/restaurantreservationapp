@@ -1016,7 +1016,7 @@ export default function HomeScreen() {
               <Ionicons name="people-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>{partySize} • {selectedTime} {selectedDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.selectorButton, { minWidth: 200 }]} onPress={() => setShowSearchModal(true)}>
+            <TouchableOpacity style={[styles.selectorButton, { minWidth: 212 }]} onPress={() => setShowSearchModal(true)}>
               <Ionicons name="search-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>Search</Text>
             </TouchableOpacity>
@@ -1453,16 +1453,16 @@ export default function HomeScreen() {
               setSelectedRestaurant(restaurant);
               setShowRestaurantModal(true);
             }}>
-              <View style={{ position: 'relative' }}>
-                <Image source={r.image} style={styles.rooftopImage} />
-                <TouchableOpacity style={styles.rooftopBookmark} onPress={(e) => {
+              <Image source={r.image} style={styles.rooftopImage} />
+              <View style={{ flexDirection: 'row', alignItems: 'center', width: '100%', marginTop: 8 }}>
+                <Text style={styles.rooftopName}>{r.name}</Text>
+                <TouchableOpacity style={{ marginLeft: 'auto' }} onPress={(e) => {
                   e.stopPropagation();
                   setFavorites(favs => ({ ...favs, [r.id]: !favs[r.id] }));
                 }}>
-                  <Ionicons name={favorites[r.id] ? 'bookmark' : 'bookmark-outline'} size={28} color="#fff" />
+                  <Ionicons name={favorites[r.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
                 </TouchableOpacity>
               </View>
-              <Text style={styles.rooftopName}>{r.name}</Text>
               <Text style={styles.rooftopTags}>{r.tags.join(' • ')}</Text>
               <View style={styles.rooftopMetaRow}>
                 <Ionicons name="star" size={16} color="#FFD700" style={{ marginRight: 2 }} />
