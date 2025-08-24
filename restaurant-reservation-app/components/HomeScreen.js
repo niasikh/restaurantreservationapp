@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image, Modal, TextInput, FlatList, SafeAreaView, Dimensions, StyleSheet, Animated, Pressable, Platform, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import MapComponent from './MapComponent';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import CuisineResultsModal from './CuisineResultsModal';
 import { COUNTRIES } from './countries';
+import { WebView } from 'react-native-webview';
 
 const { width } = Dimensions.get('window');
 
@@ -868,10 +870,11 @@ export default function HomeScreen() {
     return uniqueRestaurants;
   };
 
+  // Create allRestaurants variable accessible throughout component
+  const allRestaurants = getAllUniqueRestaurants();
+
   // Get filtered restaurants based on selected filters
   const getFilteredRestaurants = () => {
-    const allRestaurants = getAllUniqueRestaurants();
-    
     return allRestaurants.filter(restaurant => {
       // Cuisine filter
       if (selectedCuisineFilter !== 'All') {
@@ -929,8 +932,7 @@ export default function HomeScreen() {
   const handleAllRestaurantsSearch = (query) => {
     setAllRestaurantsSearchQuery(query);
     if (query.length > 0) {
-      const filteredRestaurants = getFilteredRestaurants();
-      const suggestions = filteredRestaurants.filter(restaurant =>
+      const suggestions = allRestaurants.filter(restaurant =>
         restaurant.name.toLowerCase().includes(query.toLowerCase()) ||
         (restaurant.tags && restaurant.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))) ||
         (restaurant.cuisine && restaurant.cuisine.toLowerCase().includes(query.toLowerCase()))
@@ -1016,7 +1018,7 @@ export default function HomeScreen() {
               <Ionicons name="people-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>{partySize} • {selectedTime} {selectedDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.selectorButton, { minWidth: 212 }]} onPress={() => setShowSearchModal(true)}>
+            <TouchableOpacity style={[styles.selectorButton, { minWidth: 180 }]} onPress={() => setShowSearchModal(true)}>
               <Ionicons name="search-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>Search</Text>
             </TouchableOpacity>
@@ -4898,9 +4900,12 @@ export default function HomeScreen() {
               borderColor: '#808080',
             }}>
             <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
-              <Text style={{ fontSize: 24, fontWeight: "700", color: "white", flex: 1 }}>
-                Search
-              </Text>
+              <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+                <Ionicons name="search" size={24} color="#FF8C00" style={{ marginRight: 8 }} />
+                <Text style={{ fontSize: 24, fontWeight: "700", color: "white" }}>
+                  Search
+                </Text>
+              </View>
               <TouchableOpacity onPress={() => setShowSearchModal(false)}>
                 <Ionicons name="close" size={28} color="#fff" />
               </TouchableOpacity>
@@ -5036,7 +5041,7 @@ export default function HomeScreen() {
               </View>
             )}
 
-            {/* Map Placeholder */}
+            {/* Map */}
             <View style={{ marginTop: 20 }}>
               <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 12 }}>Map</Text>
               <View style={{
@@ -5045,11 +5050,113 @@ export default function HomeScreen() {
                 height: 200,
                 borderWidth: 1,
                 borderColor: '#808080',
-                justifyContent: 'center',
-                alignItems: 'center',
+                overflow: 'hidden',
               }}>
-                <Ionicons name="map-outline" size={48} color="#b0b8c1" />
-                <Text style={{ color: '#b0b8c1', fontSize: 16, marginTop: 8 }}>Map placeholder</Text>
+                <View style={{ flex: 1 }}>
+                  <WebView
+                    source={{ 
+                      html: `
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+                          <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+                          <style>
+                            body { margin: 0; padding: 0; }
+                            #map { width: 100%; height: 100%; }
+                          </style>
+                        </head>
+                        <body>
+                          <div id="map"></div>
+                          <script>
+                            const map = L.map('map').setView([41.7151, 44.8271], 13);
+                            
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                              attribution: '© OpenStreetMap contributors',
+                              maxZoom: 18
+                            }).addTo(map);
+                            
+                            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                              attribution: '© Esri',
+                              maxZoom: 18,
+                              opacity: 0.3
+                            }).addTo(map);
+                            
+                            const restaurants = ${JSON.stringify(allRestaurants.map(restaurant => ({
+                              id: restaurant.id,
+                              name: restaurant.name,
+                              lat: 41.7151 + (Math.random() - 0.5) * 0.02,
+                              lng: 44.8271 + (Math.random() - 0.5) * 0.02,
+                              rating: restaurant.rating || 4.5,
+                              price: restaurant.tags?.find(tag => tag.includes('$')) || '$$',
+                              description: restaurant.tags?.filter(tag => !tag.includes('$')).join(', ') || 'Restaurant'
+                            })))};
+                            
+                            restaurants.forEach(restaurant => {
+                              const customIcon = L.divIcon({
+                                className: 'custom-marker',
+                                html: \`
+                                  <div style="
+                                    width: 24px;
+                                    height: 24px;
+                                    background: #FF8C00;
+                                    border: 2px solid white;
+                                    border-radius: 50%;
+                                    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+                                  "></div>
+                                \`,
+                                iconSize: [24, 24],
+                                iconAnchor: [12, 12]
+                              });
+                              
+                              const marker = L.marker([restaurant.lat, restaurant.lng], { icon: customIcon }).addTo(map);
+                              
+                              marker.bindPopup(\`
+                                <div style="font-family: Arial, sans-serif; background: #1a1a1a; color: white; padding: 12px; border-radius: 8px; min-width: 200px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
+                                  <div style="font-weight: bold; margin-bottom: 5px; color: white;">\${restaurant.name}</div>
+                                  <div style="display: flex; align-items: center; margin-bottom: 10px; gap: 8px;">
+                                    <span style="color: #b0b8c1; font-size: 12px;">\${restaurant.price}</span>
+                                    <span style="color: #b0b8c1; font-size: 11px; font-style: italic;">\${restaurant.description}</span>
+                                  </div>
+                                  <div style="color: #FFD700; font-size: 14px;">★★★★★ <span style="color: #FFD700; font-size: 12px; margin-left: 4px;">\${restaurant.rating}</span></div>
+                                  <button onclick="window.ReactNativeWebView.postMessage(JSON.stringify({type: 'book_restaurant', restaurantId: '\${restaurant.id}', restaurantName: '\${restaurant.name}'}))" style="background: #FF8C00; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px;">Book Now</button>
+                                </div>
+                              \`);
+                            });
+                          </script>
+                        </body>
+                        </html>
+                      ` 
+                    }}
+                    style={{ flex: 1 }}
+                    javaScriptEnabled={true}
+                    domStorageEnabled={true}
+                    onMessage={(event) => {
+                      try {
+                        const data = JSON.parse(event.nativeEvent.data);
+                        if (data.type === 'book_restaurant') {
+                          const restaurant = allRestaurants.find(r => r.id === data.restaurantId);
+                          if (restaurant) {
+                            const restaurantObj = {
+                              id: restaurant.id,
+                              name: restaurant.name,
+                              image: restaurant.image,
+                              tags: restaurant.tags,
+                              rating: restaurant.rating,
+                              times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+                            };
+                            setSelectedRestaurant(restaurantObj);
+                            setShowSearchModal(false);
+                            setShowRestaurantModal(true);
+                          }
+                        }
+                      } catch (error) {
+                        console.log('Error parsing message:', error);
+                      }
+                    }}
+                  />
+                </View>
               </View>
             </View>
       </LinearGradient>
@@ -5628,67 +5735,24 @@ export default function HomeScreen() {
       </LinearGradient>
       
       {/* Map Modal */}
-      <Modal visible={showMapModal} animationType="slide" onRequestClose={() => setShowMapModal(false)} transparent={true}>
-        <BlurView intensity={20} style={{ ...StyleSheet.absoluteFill, bottom: 80 }}>
-          <View style={{ flex: 1, backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
-            <LinearGradient colors={["rgba(0, 0, 0, 0.9)", "rgba(0, 0, 0, 0.8)", "rgba(0, 0, 0, 0.9)"]} style={{ flex: 1, paddingTop: 60, paddingHorizontal: 16 }}>
-              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-                <Text style={{ color: "#fff", fontSize: 28, fontWeight: "bold" }}>Restaurant Map</Text>
-                <TouchableOpacity onPress={() => setShowMapModal(false)}>
-                  <Ionicons name="close" size={28} color="#fff" />
-                </TouchableOpacity>
-              </View>
-              
-              {/* Search Bar */}
-              <View style={{ flexDirection: "row", alignItems: "center", backgroundColor: "#1a1a1a", borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, marginBottom: 20 }}>
-                <Ionicons name="search" size={20} color="#b0b8c1" style={{ marginRight: 12 }} />
-                <TextInput
-                  style={{ flex: 1, color: "#fff", fontSize: 16 }}
-                  placeholder="Search restaurants..."
-                  placeholderTextColor="#b0b8c1"
-                />
-              </View>
-              
-              {/* Filter Buttons */}
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 20 }}>
-                <TouchableOpacity style={{ backgroundColor: "#FF8C00", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12 }}>
-                  <Text style={{ color: "#000", fontSize: 14, fontWeight: "600" }}>All</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12, borderWidth: 1, borderColor: "#333" }}>
-                  <Text style={{ color: "#fff", fontSize: 14 }}>Georgian</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12, borderWidth: 1, borderColor: "#333" }}>
-                  <Text style={{ color: "#fff", fontSize: 14 }}>Italian</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12, borderWidth: 1, borderColor: "#333" }}>
-                  <Text style={{ color: "#fff", fontSize: 14 }}>Fine Dining</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 20, paddingHorizontal: 16, paddingVertical: 8, marginRight: 12, borderWidth: 1, borderColor: "#333" }}>
-                  <Text style={{ color: "#fff", fontSize: 14 }}>Outdoor</Text>
-                </TouchableOpacity>
-              </ScrollView>
-              
-              {/* Map Placeholder */}
-              <View style={{ flex: 1, backgroundColor: "#1a1a1a", borderRadius: 16, marginBottom: 20, justifyContent: "center", alignItems: "center" }}>
-                <Ionicons name="map" size={64} color="#404040" />
-                <Text style={{ color: "#666", fontSize: 18, marginTop: 16, textAlign: "center" }}>Map Integration Coming Soon</Text>
-                <Text style={{ color: "#666", fontSize: 14, marginTop: 8, textAlign: "center" }}>Interactive restaurant map will be displayed here</Text>
-              </View>
-              
-              {/* Quick Actions */}
-              <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 20 }}>
-                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 12, padding: 16, flex: 1, marginRight: 8, borderWidth: 1, borderColor: "#333" }}>
-                  <Ionicons name="location" size={24} color="#FF8C00" style={{ marginBottom: 8 }} />
-                  <Text style={{ color: "#fff", fontSize: 14, fontWeight: "600" }}>My Location</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ backgroundColor: "#1a1a1a", borderRadius: 12, padding: 16, flex: 1, marginLeft: 8, borderWidth: 1, borderColor: "#333" }}>
-                  <Ionicons name="star" size={24} color="#FF8C00" style={{ marginBottom: 8 }} />
-                  <Text style={{ color: "#fff", fontSize: 14, fontWeight: "600" }}>Favorites</Text>
-                </TouchableOpacity>
-              </View>
-            </LinearGradient>
+      <Modal visible={showMapModal} animationType="slide" onRequestClose={() => setShowMapModal(false)} transparent={false}>
+        <View style={{ flex: 1, backgroundColor: '#000' }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 60, paddingHorizontal: 16, paddingBottom: 24 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Ionicons name="map" size={28} color="#FF8C00" />
+              <Text style={{ color: '#b0b8c1', fontSize: 16, marginLeft: 12 }}>Discover dining nearby</Text>
+            </View>
+            <TouchableOpacity onPress={() => setShowMapModal(false)}>
+              <Ionicons name="close" size={24} color="#b0b8c1" />
+            </TouchableOpacity>
           </View>
-        </BlurView>
+          
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 }}>
+            <Ionicons name="map-outline" size={64} color="#404040" />
+            <Text style={{ color: '#666', fontSize: 18, marginTop: 16, textAlign: 'center' }}>Map Coming Soon</Text>
+            <Text style={{ color: '#666', fontSize: 14, marginTop: 8, textAlign: 'center' }}>Interactive restaurant map will be available here</Text>
+          </View>
+        </View>
       </Modal>
       
       {/* Reservation Confirmation Modal */}
