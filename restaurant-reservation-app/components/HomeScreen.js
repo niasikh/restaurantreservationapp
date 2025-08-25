@@ -1,12 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image, Modal, TextInput, FlatList, SafeAreaView, Dimensions, StyleSheet, Animated, Pressable, Platform, StatusBar } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, Modal, TextInput, FlatList, SafeAreaView, Dimensions, StyleSheet, Animated, Pressable, Platform, StatusBar, useColorScheme } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import MapComponent from './MapComponent';
+import ReactNativeMapComponent from './ReactNativeMapComponent';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import CuisineResultsModal from './CuisineResultsModal';
 import { COUNTRIES } from './countries';
 import { WebView } from 'react-native-webview';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 const { width } = Dimensions.get('window');
 
@@ -5053,91 +5055,32 @@ export default function HomeScreen() {
                 overflow: 'hidden',
               }}>
                 <View style={{ flex: 1 }}>
-                  <WebView
-                    source={{ 
-                      html: `
-                        <!DOCTYPE html>
-                        <html>
-                        <head>
-                          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                          <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-                          <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-                          <style>
-                            body { margin: 0; padding: 0; }
-                            #map { width: 100%; height: 100%; }
-                          </style>
-                        </head>
-                        <body>
-                          <div id="map"></div>
-                          <script>
-                            const map = L.map('map').setView([41.7151, 44.8271], 13);
-                            
-                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                              attribution: '© OpenStreetMap contributors',
-                              maxZoom: 18
-                            }).addTo(map);
-                            
-                            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                              attribution: '© Esri',
-                              maxZoom: 18,
-                              opacity: 0.3
-                            }).addTo(map);
-                            
-                            const restaurants = ${JSON.stringify(allRestaurants.map(restaurant => ({
-                              id: restaurant.id,
-                              name: restaurant.name,
-                              lat: 41.7151 + (Math.random() - 0.5) * 0.02,
-                              lng: 44.8271 + (Math.random() - 0.5) * 0.02,
-                              rating: restaurant.rating || 4.5,
-                              price: restaurant.tags?.find(tag => tag.includes('$')) || '$$',
-                              description: restaurant.tags?.filter(tag => !tag.includes('$')).join(', ') || 'Restaurant'
-                            })))};
-                            
-                            restaurants.forEach(restaurant => {
-                              const customIcon = L.divIcon({
-                                className: 'custom-marker',
-                                html: \`
-                                  <div style="
-                                    width: 24px;
-                                    height: 24px;
-                                    background: #FF8C00;
-                                    border: 2px solid white;
-                                    border-radius: 50%;
-                                    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-                                  "></div>
-                                \`,
-                                iconSize: [24, 24],
-                                iconAnchor: [12, 12]
-                              });
-                              
-                              const marker = L.marker([restaurant.lat, restaurant.lng], { icon: customIcon }).addTo(map);
-                              
-                              marker.bindPopup(\`
-                                <div style="font-family: Arial, sans-serif; background: #1a1a1a; color: white; padding: 12px; border-radius: 8px; min-width: 200px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.3);">
-                                  <div style="font-weight: bold; margin-bottom: 5px; color: white;">\${restaurant.name}</div>
-                                  <div style="display: flex; align-items: center; margin-bottom: 10px; gap: 8px;">
-                                    <span style="color: #b0b8c1; font-size: 12px;">\${restaurant.price}</span>
-                                    <span style="color: #b0b8c1; font-size: 11px; font-style: italic;">\${restaurant.description}</span>
-                                  </div>
-                                  <div style="color: #FFD700; font-size: 14px;">★★★★★ <span style="color: #FFD700; font-size: 12px; margin-left: 4px;">\${restaurant.rating}</span></div>
-                                  <button onclick="window.ReactNativeWebView.postMessage(JSON.stringify({type: 'book_restaurant', restaurantId: '\${restaurant.id}', restaurantName: '\${restaurant.name}'}))" style="background: #FF8C00; color: white; border: none; border-radius: 6px; padding: 8px 16px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px;">Book Now</button>
-                                </div>
-                              \`);
-                            });
-                          </script>
-                        </body>
-                        </html>
-                      ` 
-                    }}
+                  <MapView
                     style={{ flex: 1 }}
-                    javaScriptEnabled={true}
-                    domStorageEnabled={true}
-                    onMessage={(event) => {
-                      try {
-                        const data = JSON.parse(event.nativeEvent.data);
-                        if (data.type === 'book_restaurant') {
-                          const restaurant = allRestaurants.find(r => r.id === data.restaurantId);
-                          if (restaurant) {
+                    provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
+                    initialRegion={{
+                      latitude: 41.7151,
+                      longitude: 44.8271,
+                      latitudeDelta: 0.02,
+                      longitudeDelta: 0.02,
+                    }}
+                    mapType="standard"
+                    userInterfaceStyle="dark"
+                  >
+                    {allRestaurants.map((restaurant, index) => {
+                      // Generate stable coordinates based on restaurant ID
+                      const seed = restaurant.id.toString().split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+                      const lat = 41.7151 + (Math.sin(seed) * 0.01);
+                      const lng = 44.8271 + (Math.cos(seed) * 0.01);
+                      
+                      return (
+                        <Marker
+                          key={`${restaurant.id}-${index}`}
+                          coordinate={{ latitude: lat, longitude: lng }}
+                          title={restaurant.name}
+                          description={restaurant.tags?.filter(tag => !tag.includes('$')).join(', ') || 'Restaurant'}
+                          pinColor="#FF9500"
+                          onPress={() => {
                             const restaurantObj = {
                               id: restaurant.id,
                               name: restaurant.name,
@@ -5149,13 +5092,11 @@ export default function HomeScreen() {
                             setSelectedRestaurant(restaurantObj);
                             setShowSearchModal(false);
                             setShowRestaurantModal(true);
-                          }
-                        }
-                      } catch (error) {
-                        console.log('Error parsing message:', error);
-                      }
-                    }}
-                  />
+                          }}
+                        />
+                      );
+                    })}
+                  </MapView>
                 </View>
               </View>
             </View>
@@ -5736,23 +5677,26 @@ export default function HomeScreen() {
       
       {/* Map Modal */}
       <Modal visible={showMapModal} animationType="slide" onRequestClose={() => setShowMapModal(false)} transparent={false}>
-        <View style={{ flex: 1, backgroundColor: '#000' }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingTop: 60, paddingHorizontal: 16, paddingBottom: 24 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Ionicons name="map" size={28} color="#FF8C00" />
-              <Text style={{ color: '#b0b8c1', fontSize: 16, marginLeft: 12 }}>Discover dining nearby</Text>
-            </View>
-            <TouchableOpacity onPress={() => setShowMapModal(false)}>
-              <Ionicons name="close" size={24} color="#b0b8c1" />
-            </TouchableOpacity>
-          </View>
-          
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 16 }}>
-            <Ionicons name="map-outline" size={64} color="#404040" />
-            <Text style={{ color: '#666', fontSize: 18, marginTop: 16, textAlign: 'center' }}>Map Coming Soon</Text>
-            <Text style={{ color: '#666', fontSize: 14, marginTop: 8, textAlign: 'center' }}>Interactive restaurant map will be available here</Text>
-          </View>
-        </View>
+        <ReactNativeMapComponent
+          restaurants={allRestaurants}
+          onRestaurantSelect={(data) => {
+            const restaurant = allRestaurants.find(r => r.id === data.restaurantId);
+            if (restaurant) {
+              const restaurantObj = {
+                id: restaurant.id,
+                name: restaurant.name,
+                image: restaurant.image,
+                tags: restaurant.tags,
+                rating: restaurant.rating,
+                times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+              };
+              setSelectedRestaurant(restaurantObj);
+              setShowMapModal(false);
+              setShowRestaurantModal(true);
+            }
+          }}
+          onClose={() => setShowMapModal(false)}
+        />
       </Modal>
       
       {/* Reservation Confirmation Modal */}
