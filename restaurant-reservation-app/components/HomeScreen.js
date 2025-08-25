@@ -132,9 +132,9 @@ const trendingRestaurants = [
   {
     id: 'trending_3',
     name: 'Coffee Shop Company',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_4193.jpg'),
     location: 'Tbilisi',
-    cuisine: 'Austrian & Eastern European',
+    cuisine: 'Coffee & Brunch',
     rating: 4.2,
     reviews: 30,
     distance: 1.1,
@@ -144,7 +144,7 @@ const trendingRestaurants = [
   {
     id: 'trending_4',
     name: 'Monday Greens',
-    image: require('../assets/images/lolita.jpg'),
+    image: require('../assets/images/IMG_5587.jpg'),
     location: 'Tbilisi',
     cuisine: 'European',
     rating: 4.6,
@@ -481,7 +481,7 @@ const rooftopRestaurants = [
     id: 'rooftop_10',
     name: 'Paragraph',
     image: require('../assets/images/nm.jpg'),
-    tags: ['Seafood', '$$$', 'Seaside'],
+    tags: ['Seafood', '$$$', 'Seaside', 'Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi. Experience sophisticated dining with stunning city views.'],
     rating: 4.7,
     people: 90,
     description: 'Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi',
@@ -5075,10 +5075,9 @@ export default function HomeScreen() {
                       
                       return (
                         <Marker
-                          key={`${restaurant.id}-${index}`}
+                          key={`rest-${restaurant.id}-${index}`}
+                          identifier={`rest-${restaurant.id}-${index}`}
                           coordinate={{ latitude: lat, longitude: lng }}
-                          title={restaurant.name}
-                          description={restaurant.tags?.filter(tag => !tag.includes('$')).join(', ') || 'Restaurant'}
                           pinColor="#FF9500"
                           onPress={() => {
                             const restaurantObj = {
@@ -5696,6 +5695,7 @@ export default function HomeScreen() {
             }
           }}
           onClose={() => setShowMapModal(false)}
+          setBookingFromRestaurantModal={setBookingFromRestaurantModal}
         />
       </Modal>
       
