@@ -153,7 +153,7 @@ const ReactNativeMapComponent = ({ restaurants = [], onRestaurantSelect, onClose
       'Bachata Gardens': 'Beautiful garden restaurant with European cuisine. Enjoy al fresco dining surrounded by lush greenery and romantic ambiance.',
       'Littera': 'Modern Georgian cuisine in an intimate romantic atmosphere. Experience innovative dishes with traditional Georgian flavors.',
       'Filini Terrace': 'Italian classics and cocktails with a skyline backdrop. Enjoy authentic Italian cuisine with breathtaking city views.',
-      'Paragraph': 'Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi. Experience sophisticated dining with stunning city views.',
+      'Paragraph': 'Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi. Experience sophisticated dining with stunning city views and authentic local flavors.',
       'Golden Tulip': 'Grilled favorites and open-air seating under the sky. Enjoy delicious grilled dishes in a relaxed rooftop atmosphere.',
       'Keto & Kote': 'Charming outdoor Georgian restaurant serving traditional dishes. Enjoy authentic local cuisine in a relaxed garden setting.',
       'Sofiko': 'Enjoy outstanding views with dishes inspired by the timeless culture of Tbilisi city. Experience authentic Georgian flavors with modern rooftop dining.',

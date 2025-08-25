@@ -484,7 +484,7 @@ const rooftopRestaurants = [
     tags: ['Seafood', '$$$', 'Seaside', 'Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi. Experience sophisticated dining with stunning city views.'],
     rating: 4.7,
     people: 90,
-    description: 'Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi',
+    description: 'Contemporary luxury dining in the heart of Tbilisi',
     favorite: true,
   },
 ];
@@ -711,6 +711,8 @@ export default function HomeScreen() {
   const [showAllWineTastingModal, setShowAllWineTastingModal] = useState(false);
   const [showAllOutdoorDiningModal, setShowAllOutdoorDiningModal] = useState(false);
   const [showAllDateNightModal, setShowAllDateNightModal] = useState(false);
+  const [showAllRooftopModal, setShowAllRooftopModal] = useState(false);
+  const [rooftopFilter, setRooftopFilter] = useState('all'); // 'all', 'open', 'happy', 'rated'
   const [selectedWineTastingFilter, setSelectedWineTastingFilter] = useState('All');
   const [selectedOutdoorDiningFilter, setSelectedOutdoorDiningFilter] = useState('All');
   const [selectedDateNightFilter, setSelectedDateNightFilter] = useState('All');
@@ -765,6 +767,23 @@ export default function HomeScreen() {
         return allTrending.filter(r => r.rating >= 4.5);
       default:
         return allTrending;
+    }
+  };
+  
+  // Filter rooftop restaurants based on selected filter
+  const getFilteredRooftopRestaurants = () => {
+    switch (rooftopFilter) {
+      case 'open':
+        // Filter for restaurants that are likely open now (placeholder logic)
+        return rooftopRestaurants.filter(r => r.name === 'Paragraph' || r.name === 'Golden Tulip' || r.name === 'Sofiko' || r.name === 'Monograph Terrace');
+      case 'happy':
+        // Filter for happy hour restaurants (placeholder logic)
+        return rooftopRestaurants.filter(r => r.name === 'Atmosphere Bar' || r.name === 'Casa Fiori' || r.name === 'Ambrosiano' || r.name === 'Madre');
+      case 'rated':
+        // Filter for top rated restaurants (rating 4.5+)
+        return rooftopRestaurants.filter(r => r.rating >= 4.5);
+      default:
+        return rooftopRestaurants;
     }
   };
   
@@ -1325,6 +1344,164 @@ export default function HomeScreen() {
             </SafeAreaView>
           </View>
         </Modal>
+        {/* Rooftop Views Modal */}
+        <Modal
+          visible={showAllRooftopModal}
+          animationType="slide"
+          onRequestClose={() => setShowAllRooftopModal(false)}
+          transparent={false}
+        >
+          <View style={{ flex: 1, backgroundColor: '#000' }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
+              <LinearGradient
+                colors={['#000000', '#1a1a1a', '#000000']}
+                style={{ flex: 1 }}
+              >
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 8 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Ionicons name="business" size={24} color="#FF8C00" style={{ marginRight: 8 }} />
+                    <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>Rooftop Views</Text>
+                  </View>
+                  <TouchableOpacity onPress={() => setShowAllRooftopModal(false)}>
+                    <Ionicons name="close" size={24} color="#666666" />
+                  </TouchableOpacity>
+                </View>
+                <View style={{ paddingHorizontal: 20, paddingBottom: 20 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: '#FF8C00', marginRight: 8 }} />
+                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Discover the best rooftop dining experiences with stunning city views</Text>
+                  </View>
+                </View>
+                
+                {/* Filter buttons */}
+                <View style={{ flexDirection: 'row', marginBottom: 20, justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 16 }}>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: rooftopFilter === 'open' ? '#FF8C00' : '#404040',
+                      borderRadius: 24,
+                      paddingHorizontal: 14,
+                      paddingVertical: 8,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: rooftopFilter === 'open' ? '#FF8C00' : '#fff',
+                      flex: 1,
+                    }}
+                    onPress={() => setRooftopFilter(rooftopFilter === 'open' ? 'all' : 'open')}
+                  >
+                    <Ionicons name="time-outline" size={16} color={rooftopFilter === 'open' ? '#fff' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: '#fff', fontSize: 14 }}>
+                      Open Now
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: rooftopFilter === 'happy' ? '#FF8C00' : '#404040',
+                      borderRadius: 24,
+                      paddingHorizontal: 14,
+                      paddingVertical: 8,
+                      marginRight: 8,
+                      borderWidth: 1,
+                      borderColor: rooftopFilter === 'happy' ? '#FF8C00' : '#fff',
+                      flex: 1,
+                    }}
+                    onPress={() => setRooftopFilter(rooftopFilter === 'happy' ? 'all' : 'happy')}
+                  >
+                    <Ionicons name="wine-outline" size={16} color={rooftopFilter === 'happy' ? '#fff' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: '#fff', fontSize: 14 }}>
+                      Happy Hour
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: rooftopFilter === 'rated' ? '#FF8C00' : '#404040',
+                      borderRadius: 24,
+                      paddingHorizontal: 14,
+                      paddingVertical: 8,
+                      borderWidth: 1,
+                      borderColor: rooftopFilter === 'rated' ? '#FF8C00' : '#fff',
+                      flex: 1,
+                    }}
+                    onPress={() => setRooftopFilter(rooftopFilter === 'rated' ? 'all' : 'rated')}
+                  >
+                    <Ionicons name="star" size={16} color={rooftopFilter === 'rated' ? '#fff' : '#FF8C00'} style={{ marginRight: 6 }} />
+                    <Text style={{ color: '#fff', fontSize: 14 }}>
+                      Top Rated
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                
+                <ScrollView style={{ flex: 1, paddingHorizontal: 4, paddingTop: 8 }} showsVerticalScrollIndicator={true} indicatorStyle="white" scrollIndicatorInsets={{right: 0}} scrollEventThrottle={16}>
+                  {/* All rooftop restaurants */}
+                  {getFilteredRooftopRestaurants().map((r) => (
+                    <TouchableOpacity key={r.id} style={[styles.rooftopCard, { marginBottom: 10, backgroundColor: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: 0, borderWidth: 1, borderColor: '#404040', width: '90%', alignSelf: 'center', marginLeft: 0, overflow: 'hidden' }]} onPress={() => {
+                      // Find the restaurant in the main restaurants array or create a compatible object
+                      const restaurant = restaurants.find(rest => rest.name === r.name) || {
+                        id: r.id,
+                        name: r.name,
+                        image: r.image,
+                        tags: r.tags,
+                        rating: r.rating,
+                        times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+                      };
+                      setSelectedRestaurant(restaurant);
+                      setShowAllRooftopModal(false);
+                      setShowRestaurantModal(true);
+                    }}>
+                      <Image source={r.image} style={{ width: '100%', height: 120, borderRadius: 10 }} />
+                      <View style={{ padding: 12 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                          <Text style={styles.rooftopName}>{r.name}</Text>
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <TouchableOpacity style={{ marginRight: 12 }} onPress={() => setFavorites(favs => ({ ...favs, [r.id]: !favs[r.id] }))}>
+                              <Ionicons name={favorites[r.id] ? 'bookmark' : 'bookmark-outline'} size={22} color="#FF8C00" />
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                              onPress={(e) => {
+                                e.stopPropagation();
+                                setBookingFromGeorgian(true);
+                                setBookingRestaurantName(r.name);
+                                setShowAllRooftopModal(false);
+                                setShowBookingModal(true);
+                              }}
+                            >
+                              <Ionicons 
+                                name="calendar-outline" 
+                                size={22} 
+                                color="#FF8C00" 
+                              />
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                        <Text style={styles.rooftopTags}>{r.tags.join(' • ')}</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Ionicons
+                              key={i}
+                              name={i < Math.round(r.rating) ? 'star' : 'star-outline'}
+                              size={16}
+                              color="#FFD700"
+                              style={{ marginRight: 2 }}
+                            />
+                          ))}
+                          <Text style={[styles.rooftopRating, { marginLeft: 4 }]}>{r.rating}</Text>
+                          <Ionicons name="people-outline" size={16} color="#fff" style={{ marginLeft: 12, marginRight: 2 }} />
+                          <Text style={styles.rooftopPeople}>Up to {r.people} people</Text>
+                        </View>
+                        <Text style={styles.rooftopDesc} numberOfLines={2}>{r.description}</Text>
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </LinearGradient>
+            </SafeAreaView>
+          </View>
+        </Modal>
         {/* Wine Tasting Section */}
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.wineTastingTitle}>Wine tasting</Text>
@@ -1443,7 +1620,7 @@ export default function HomeScreen() {
         {/* Rooftop Views Section */}
         <Text style={styles.rooftopTitle}>Rooftop Views</Text>
         <View style={styles.rooftopListSection}>
-          {rooftopRestaurants.map((r) => (
+          {rooftopRestaurants.slice(0, 5).map((r) => (
             <TouchableOpacity key={r.id} style={styles.rooftopCard} onPress={() => {
               // Find the restaurant in the main restaurants array or create a compatible object
               const restaurant = restaurants.find(rest => rest.name === r.name) || {
@@ -1477,6 +1654,9 @@ export default function HomeScreen() {
               <Text style={styles.rooftopDesc} numberOfLines={2}>{r.description}</Text>
             </TouchableOpacity>
           ))}
+          <TouchableOpacity style={styles.seeAllButton} onPress={() => setShowAllRooftopModal(true)}>
+            <Text style={styles.seeAllButtonText}>See all</Text>
+          </TouchableOpacity>
         </View>
         {/* Date Night Section */}
         <View style={[styles.sectionHeaderRow, { marginTop: -8 }]}>
@@ -6842,7 +7022,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginHorizontal: 8,
-    marginTop: 8,
+    marginTop: 0,
     marginBottom: 8,
     borderWidth: 2,
     borderColor: '#fff',
@@ -6983,7 +7163,7 @@ const styles = StyleSheet.create({
   },
   rooftopListSection: {
     paddingHorizontal: 8,
-    marginBottom: 32,
+    marginBottom: 16,
   },
   rooftopCard: {
     backgroundColor: '#2a2a2a',
