@@ -7,9 +7,9 @@ import { darkMapStyle } from '../src/maps/darkMapStyle';
 
 const { width, height } = Dimensions.get('window');
 
-const ReactNativeMapComponent = ({ restaurants = [], onRestaurantSelect, onClose, setBookingFromRestaurantModal }) => {
+const ReactNativeMapComponent = ({ restaurants = [], onRestaurantSelect, onClose, setBookingFromRestaurantModal, searchQuery: externalSearchQuery = '', locationQuery: externalLocationQuery = '' }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(externalSearchQuery);
   const [selectedCuisineFilter, setSelectedCuisineFilter] = useState('All');
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [savedRestaurants, setSavedRestaurants] = useState(new Set());
@@ -20,6 +20,11 @@ const ReactNativeMapComponent = ({ restaurants = [], onRestaurantSelect, onClose
   
   const provider = Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined;
   const scheme = useColorScheme();
+
+  // Update internal search query when external one changes
+  useEffect(() => {
+    setSearchQuery(externalSearchQuery);
+  }, [externalSearchQuery]);
 
   // Tbilisi coordinates
   const TBILISI_LAT = 41.7151;
@@ -94,7 +99,7 @@ const ReactNativeMapComponent = ({ restaurants = [], onRestaurantSelect, onClose
   const markers = useMemo(() => {
     const filteredRestaurants = getFilteredRestaurants();
     return generateMarkers(filteredRestaurants);
-  }, [searchQuery, selectedCuisineFilter, restaurants]);
+  }, [searchQuery, selectedCuisineFilter, restaurants, externalSearchQuery]);
 
   const handleMarkerPress = (marker) => {
     setSelectedMarker(marker.restaurant);

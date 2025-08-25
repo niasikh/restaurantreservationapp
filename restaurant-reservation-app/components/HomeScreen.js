@@ -9,6 +9,7 @@ import CuisineResultsModal from './CuisineResultsModal';
 import { COUNTRIES } from './countries';
 import { WebView } from 'react-native-webview';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
+import { darkMapStyle } from '../src/maps/darkMapStyle';
 
 const { width } = Dimensions.get('window');
 
@@ -714,6 +715,13 @@ export default function HomeScreen() {
   const [showAllRooftopModal, setShowAllRooftopModal] = useState(false);
   const [rooftopFilter, setRooftopFilter] = useState('all'); // 'all', 'open', 'happy', 'rated'
   const [selectedWineTastingFilter, setSelectedWineTastingFilter] = useState('All');
+  
+  // Map state for search modal
+  const [selectedMapMarker, setSelectedMapMarker] = useState(null);
+  const [mapSavedRestaurants, setMapSavedRestaurants] = useState(new Set());
+  
+  // Reservations state
+  const [userReservations, setUserReservations] = useState([]);
   const [selectedOutdoorDiningFilter, setSelectedOutdoorDiningFilter] = useState('All');
   const [selectedDateNightFilter, setSelectedDateNightFilter] = useState('All');
   const [selectedCuisineFilter, setSelectedCuisineFilter] = useState('All');
@@ -849,9 +857,9 @@ export default function HomeScreen() {
   const handleSearch = (query) => {
     setSearchQuery(query);
     if (query.length > 0) {
-      const suggestions = restaurants.filter(restaurant =>
+      const suggestions = allRestaurants.filter(restaurant =>
         restaurant.name.toLowerCase().includes(query.toLowerCase()) ||
-        restaurant.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
+        (restaurant.tags && restaurant.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase())))
       );
       setSearchSuggestions(suggestions);
     } else {
@@ -924,6 +932,126 @@ export default function HomeScreen() {
       
       return true;
     });
+  };
+
+  // Get filtered restaurants for map based on search query
+  const getFilteredRestaurantsForMap = () => {
+    if (!searchQuery && !locationQuery) {
+      return allRestaurants;
+    }
+    
+    return allRestaurants.filter(restaurant => {
+      // Search query filter
+      if (searchQuery) {
+        const matchesSearch = restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (restaurant.tags && restaurant.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))) ||
+          (restaurant.cuisine && restaurant.cuisine.toLowerCase().includes(searchQuery.toLowerCase()));
+        
+        if (!matchesSearch) return false;
+      }
+      
+      // Location query filter (for now, just return all if location is specified)
+      if (locationQuery) {
+        // In a real app, you would filter by actual location/coordinates
+        // For now, we'll just return all restaurants when location is specified
+        return true;
+      }
+      
+      return true;
+    });
+  };
+
+  // Generate markers for map with natural scatter (same as map modal)
+  const generateMapMarkers = () => {
+    const TBILISI_LAT = 41.7151;
+    const TBILISI_LNG = 44.8271;
+    const LAT_JITTER = 0.0075;  // ≈ 830m
+    const LNG_JITTER = 0.0100;  // scale long jitter slightly larger for variety
+    
+    return getFilteredRestaurantsForMap().map((restaurant, index) => {
+      const dx = (Math.random() - 0.5) * 2 * LAT_JITTER;
+      const dy = (Math.random() - 0.5) * 2 * LNG_JITTER;
+      const lat = TBILISI_LAT + dx;
+      const lng = TBILISI_LNG + dy;
+      
+      return {
+        id: restaurant.id,
+        coordinate: { latitude: lat, longitude: lng },
+        title: restaurant.name,
+        description: restaurant.tags?.filter(tag => !tag.includes('$')).join(', ') || 'Restaurant',
+        rating: restaurant.rating || 4.5,
+        price: restaurant.tags?.find(tag => tag.includes('$')) || '$$',
+        restaurant: restaurant
+      };
+    });
+  };
+
+  // Handle map marker press
+  const handleMapMarkerPress = (marker) => {
+    setSelectedMapMarker(marker.restaurant);
+  };
+
+  // Toggle bookmark for map
+  const toggleMapBookmark = (restaurantId) => {
+    setMapSavedRestaurants(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(restaurantId)) {
+        newSet.delete(restaurantId);
+      } else {
+        newSet.add(restaurantId);
+      }
+      return newSet;
+    });
+  };
+
+  // Add new reservation to user's reservations
+  const addReservation = (reservationData) => {
+    const newReservation = {
+      id: Date.now().toString(), // Generate unique ID
+      restaurantName: reservationData.restaurantName,
+      date: reservationData.date,
+      time: reservationData.time,
+      partySize: reservationData.partySize,
+      hasChildren: reservationData.hasChildren,
+      createdAt: new Date(),
+      status: 'confirmed'
+    };
+    
+    setUserReservations(prev => [newReservation, ...prev]);
+  };
+
+  // Get restaurant description for map popup (same as map modal)
+  const getMapRestaurantDescription = (restaurantName) => {
+    const descriptions = {
+      'Coffee Shop Company': 'Cozy coffee shop serving delicious brunch and specialty coffee. Perfect spot for morning meetings or casual dining with friends.',
+      'Apotheka Bar': 'Unique apotheka-style wine bar with a vintage atmosphere and curated wine collection. Experience wine tasting in a historical setting.',
+      'Alubali': 'Traditional Georgian restaurant serving authentic local cuisine. Experience the rich flavors and warm hospitality of Georgia in a cozy atmosphere.',
+      'Monday Greens': 'Elegant European cafe with beautiful outdoor seating. Perfect for brunch, coffee, and light meals in a sophisticated atmosphere.',
+      '8000 Vintages': 'Exclusive wine merchants with rare and premium wines. Experience curated wine tastings in an elegant setting.',
+      'Canape': 'Sophisticated European restaurant offering refined cuisine and elegant dining experience. Perfect for special occasions and romantic dinners.',
+      'Sadzvele': 'Cozy wine hub with local and international wines. Experience authentic Georgian wine culture in a warm, welcoming atmosphere.',
+      'Wine Not': 'Unique apotheka-style wine bar with vintage atmosphere. Discover rare wines and enjoy intimate tastings in a charming setting.',
+      'Bachata Gardens': 'Beautiful garden restaurant with European cuisine. Enjoy al fresco dining surrounded by lush greenery and romantic ambiance.',
+      'Littera': 'Modern Georgian cuisine in an intimate romantic atmosphere. Experience innovative dishes with traditional Georgian flavors.',
+      'Filini Terrace': 'Italian classics and cocktails with a skyline backdrop. Enjoy authentic Italian cuisine with breathtaking city views.',
+      'Paragraph': 'Explore Georgian culture in contemporary luxury setting in the heart of Tbilisi. Experience sophisticated dining with stunning city views and authentic local flavors.',
+      'Golden Tulip': 'Grilled favorites and open-air seating under the sky. Enjoy delicious grilled dishes in a relaxed rooftop atmosphere.',
+      'Keto & Kote': 'Charming outdoor Georgian restaurant serving traditional dishes. Enjoy authentic local cuisine in a relaxed garden setting.',
+      'Sofiko': 'Enjoy outstanding views with dishes inspired by the timeless culture of Tbilisi city. Experience authentic Georgian flavors with modern rooftop dining.',
+      'Monograph Terrace': 'Trendy rooftop bar with creative drinks and city lights. Enjoy innovative cocktails and contemporary cuisine with stunning urban views.',
+      'Atmosphere Bar': 'Fusion cuisine, crafted drinks, and city views. Experience innovative Asian fusion dishes with expertly crafted cocktails.',
+      'Casa Fiori': 'Sophisticated modern Italian restaurant with craft cocktails. Experience contemporary Italian cuisine in an elegant romantic setting.',
+      'Ambrosiano': 'Authentic Italian restaurant serving Italy\'s finest artisan dishes. Experience classic Italian cuisine in a romantic atmosphere.',
+      'Madre': 'Authentic Spanish restaurant with cozy romantic atmosphere. Perfect for date nights with traditional Spanish flavors.',
+      'Strada': 'International restaurant offering diverse global cuisine. Experience flavors from around the world in a welcoming atmosphere.',
+      'Tiflis Veranda': 'Enjoy exquisite dishes, live music, and mesmerizing views with local wines. Experience fine dining with spectacular city panoramas.',
+      'Khedi': 'Authentic Georgian restaurant serving traditional dishes. Experience the rich flavors and warm hospitality of Georgian cuisine.',
+      'Wine Merchants': 'Premium wine bar offering curated selection of local and international wines. Experience expert wine tastings in an elegant atmosphere.',
+      'Lolita': 'Trendy restaurant serving New American cuisine with Italian influences. Enjoy creative cocktails and modern dishes in a vibrant atmosphere.',
+      'Rooms Tbilisi': 'Sophisticated restaurant offering modern American cuisine with Nordic influences. Experience farm-to-table dining in an elegant setting.',
+      'Honoré': 'Elegant restaurant combining Georgian and European flavors with barbecue specialties. Enjoy craft cocktails and refined dining experience.'
+    };
+    return descriptions[restaurantName];
   };
 
   // Calculate distance between two coordinates (Haversine formula)
@@ -1034,12 +1162,12 @@ export default function HomeScreen() {
           <View style={styles.selectorsRow}>
             <TouchableOpacity style={styles.selectorButton} onPress={() => {
               setShowBookingModal(true);
-              setBookingFromLolita(false);
+              setBookingFromRestaurantModal(true);
             }}>
               <Ionicons name="people-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>{partySize} • {selectedTime} {selectedDate.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[styles.selectorButton, { minWidth: 180 }]} onPress={() => setShowSearchModal(true)}>
+            <TouchableOpacity style={[styles.selectorButton, { minWidth: 200 }]} onPress={() => setShowSearchModal(true)}>
               <Ionicons name="search-outline" size={20} color="#fff" style={{ marginRight: 6 }} />
               <Text style={styles.selectorText}>Search</Text>
             </TouchableOpacity>
@@ -1322,7 +1450,7 @@ export default function HomeScreen() {
                           style={{ marginBottom: 8 }}
                           onPress={(e) => {
                             e.stopPropagation();
-                            setBookingFromGeorgian(true);
+                            setBookingFromRestaurantModal(true);
                             setBookingRestaurantName(r.name);
                             setShowAllTrending(false);
                             setShowBookingModal(true);
@@ -1464,7 +1592,7 @@ export default function HomeScreen() {
                             <TouchableOpacity
                               onPress={(e) => {
                                 e.stopPropagation();
-                                setBookingFromGeorgian(true);
+                                setBookingFromRestaurantModal(true);
                                 setBookingRestaurantName(r.name);
                                 setShowAllRooftopModal(false);
                                 setShowBookingModal(true);
@@ -2701,7 +2829,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(true);
+                    setBookingFromRestaurantModal(true);
                     setBookingRestaurantName(selectedRestaurant?.name || 'Lolita');
                   }}
                 >
@@ -3022,7 +3150,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3068,7 +3196,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3114,7 +3242,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3160,7 +3288,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3206,7 +3334,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3252,7 +3380,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3298,7 +3426,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3344,7 +3472,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3390,7 +3518,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3436,7 +3564,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3482,7 +3610,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3528,7 +3656,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3574,7 +3702,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3620,7 +3748,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3666,7 +3794,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3712,7 +3840,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3758,7 +3886,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3804,7 +3932,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3850,7 +3978,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3896,7 +4024,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3942,7 +4070,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -3988,7 +4116,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4034,7 +4162,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4080,7 +4208,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4126,7 +4254,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4172,7 +4300,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4218,7 +4346,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4264,7 +4392,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4310,7 +4438,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4356,7 +4484,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4402,7 +4530,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4448,7 +4576,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4494,7 +4622,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4540,7 +4668,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4586,7 +4714,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4632,7 +4760,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4678,7 +4806,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowRestaurantModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 18, fontWeight: 'bold' }}>Book a Table</Text>
@@ -4898,8 +5026,18 @@ export default function HomeScreen() {
                   if (!bookingRestaurantName && selectedRestaurant?.name) {
                     setBookingRestaurantName(selectedRestaurant.name);
                   }
+                  
+                  // Add the reservation to user's reservations
+                  addReservation({
+                    restaurantName: bookingRestaurantName || selectedRestaurant?.name,
+                    date: selectedDate,
+                    time: selectedTime,
+                    partySize: partySize,
+                    hasChildren: hasChildren
+                  });
+                  
                   setShowReservationConfirmation(true);
-                  setBookingFromLolita(false);
+                  setBookingFromRestaurantModal(true);
                   setBookingFromGeorgian(false);
                   setBookingFromRestaurantModal(false);
                 }
@@ -5051,7 +5189,7 @@ export default function HomeScreen() {
         }}
         onBookRestaurant={(restaurant) => {
           setShowCuisineModal(false);
-          setBookingFromGeorgian(true);
+          setBookingFromRestaurantModal(true);
           setBookingRestaurantName(restaurant.name);
           setShowBookingModal(true);
         }}
@@ -5203,9 +5341,29 @@ export default function HomeScreen() {
                         marginBottom: 8,
                       }}
                       onPress={() => {
-                        setSelectedRestaurant(restaurant);
-                        setShowSearchModal(false);
-                        setShowRestaurantModal(true);
+                        // Find the restaurant in the filtered map data and show its popup
+                        const mapRestaurant = getFilteredRestaurantsForMap().find(r => r.id === restaurant.id);
+                        if (mapRestaurant) {
+                          // Generate the marker data for this restaurant
+                          const TBILISI_LAT = 41.7151;
+                          const TBILISI_LNG = 44.8271;
+                          const LAT_JITTER = 0.0075;
+                          const LNG_JITTER = 0.0100;
+                          
+                          // Use the same coordinate generation logic as the map
+                          const seed = restaurant.id.toString().split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+                          const dx = (Math.sin(seed) * 0.5) * 2 * LAT_JITTER;
+                          const dy = (Math.cos(seed) * 0.5) * 2 * LNG_JITTER;
+                          const lat = TBILISI_LAT + dx;
+                          const lng = TBILISI_LNG + dy;
+                          
+                          // Set the selected marker to show the popup
+                          setSelectedMapMarker(restaurant);
+                          
+                          // Clear search suggestions
+                          setSearchSuggestions([]);
+                          setSearchQuery(restaurant.name);
+                        }
                       }}
                     >
                       <Image source={restaurant.image} style={{ width: 40, height: 40, borderRadius: 8, marginRight: 12 }} />
@@ -5224,59 +5382,111 @@ export default function HomeScreen() {
             )}
 
             {/* Map */}
-            <View style={{ marginTop: 20 }}>
+            <View style={{ flex: 1, marginTop: 20 }}>
               <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold', marginBottom: 12 }}>Map</Text>
               <View style={{
                 backgroundColor: '#404040',
                 borderRadius: 12,
-                height: 200,
+                flex: 1,
                 borderWidth: 1,
                 borderColor: '#808080',
                 overflow: 'hidden',
+                position: 'relative',
               }}>
-                <View style={{ flex: 1 }}>
-                  <MapView
-                    style={{ flex: 1 }}
-                    provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
-                    initialRegion={{
-                      latitude: 41.7151,
-                      longitude: 44.8271,
-                      latitudeDelta: 0.02,
-                      longitudeDelta: 0.02,
-                    }}
-                    mapType="standard"
-                    userInterfaceStyle="dark"
-                  >
-                    {allRestaurants.map((restaurant, index) => {
-                      // Generate stable coordinates based on restaurant ID
-                      const seed = restaurant.id.toString().split('').reduce((a, b) => a + b.charCodeAt(0), 0);
-                      const lat = 41.7151 + (Math.sin(seed) * 0.01);
-                      const lng = 44.8271 + (Math.cos(seed) * 0.01);
-                      
-                      return (
-                        <Marker
-                          key={`rest-${restaurant.id}-${index}`}
-                          identifier={`rest-${restaurant.id}-${index}`}
-                          coordinate={{ latitude: lat, longitude: lng }}
-                          pinColor="#FF9500"
-                          onPress={() => {
-                            const restaurantObj = {
-                              id: restaurant.id,
-                              name: restaurant.name,
-                              image: restaurant.image,
-                              tags: restaurant.tags,
-                              rating: restaurant.rating,
-                              times: ['6:00 PM', '6:30 PM', '7:00 PM'],
-                            };
-                            setSelectedRestaurant(restaurantObj);
-                            setShowSearchModal(false);
-                            setShowRestaurantModal(true);
-                          }}
-                        />
-                      );
-                    })}
-                  </MapView>
-                </View>
+                <MapView
+                  style={{ flex: 1 }}
+                  provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
+                  initialRegion={{
+                    latitude: 41.7151,
+                    longitude: 44.8271,
+                    latitudeDelta: 0.02,
+                    longitudeDelta: 0.02,
+                  }}
+                  mapType="standard"
+                  userInterfaceStyle="dark"
+                  customMapStyle={darkMapStyle}
+                >
+                  {generateMapMarkers().map((marker, index) => (
+                    <Marker
+                      key={`rest-${marker.id}-${index}`}
+                      identifier={`rest-${marker.id}-${index}`}
+                      coordinate={marker.coordinate}
+                      pinColor="#FF9500"
+                      onPress={() => handleMapMarkerPress(marker)}
+                    />
+                  ))}
+                </MapView>
+
+                {/* Restaurant Popup */}
+                {selectedMapMarker && (
+                  <View style={styles.popupContainer}>
+                    <View style={styles.popup}>
+                      <Image
+                        source={selectedMapMarker.image}
+                        resizeMode="cover"
+                        style={styles.popupImage}
+                      />
+                      <View style={styles.popupContent}>
+                        <View style={styles.popupHeader}>
+                          <Text style={styles.popupTitle}>{selectedMapMarker.name}</Text>
+                          <TouchableOpacity 
+                            style={styles.bookmarkButton}
+                            onPress={() => toggleMapBookmark(selectedMapMarker.id)}
+                          >
+                            <Ionicons 
+                              name={mapSavedRestaurants.has(selectedMapMarker.id) ? "bookmark" : "bookmark-outline"} 
+                              size={20} 
+                              color="#FF8C00" 
+                            />
+                          </TouchableOpacity>
+                        </View>
+                        <Text style={styles.popupDescription}>
+                          {getMapRestaurantDescription(selectedMapMarker.name) || 
+                           selectedMapMarker.tags?.filter(tag => !tag.includes('$') && tag.length > 5).join(', ') ||
+                           selectedMapMarker.cuisine ||
+                           'Restaurant'}
+                        </Text>
+                        <View style={styles.popupFooter}>
+                          <View style={styles.popupInfo}>
+                            <Text style={styles.popupPrice}>
+                              {selectedMapMarker.tags?.find(tag => tag.includes('$'))}
+                            </Text>
+                            <View style={styles.popupRating}>
+                              <Text style={styles.stars}>★★★★★</Text>
+                              <Text style={styles.ratingText}>{selectedMapMarker.rating}</Text>
+                            </View>
+                          </View>
+                          <TouchableOpacity 
+                            style={styles.bookButton}
+                            onPress={() => {
+                              const restaurantObj = {
+                                id: selectedMapMarker.id,
+                                name: selectedMapMarker.name,
+                                image: selectedMapMarker.image,
+                                tags: selectedMapMarker.tags,
+                                rating: selectedMapMarker.rating,
+                                times: ['6:00 PM', '6:30 PM', '7:00 PM'],
+                              };
+                              setSelectedRestaurant(restaurantObj);
+                              setBookingRestaurantName(selectedMapMarker.name);
+                              setBookingFromRestaurantModal(true);
+                              setShowSearchModal(false);
+                              setShowRestaurantModal(true);
+                            }}
+                          >
+                            <Text style={styles.bookButtonText}>Book a Table</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </View>
+                    <TouchableOpacity 
+                      style={styles.closePopup}
+                      onPress={() => setSelectedMapMarker(null)}
+                    >
+                      <Ionicons name="close" size={20} color="#fff" />
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
             </View>
       </LinearGradient>
@@ -5335,7 +5545,7 @@ export default function HomeScreen() {
                   onPress={() => {
                     setShowCartModal(false);
                     setShowBookingModal(true);
-                    setBookingFromLolita(false);
+                    setBookingFromRestaurantModal(true);
                   }}
                 >
                   <Text style={{ color: '#000', fontSize: 16, fontWeight: '600', textAlign: 'center' }}>Book a Table</Text>
@@ -5688,67 +5898,99 @@ export default function HomeScreen() {
             </View>
 
             <ScrollView style={{ maxHeight: 500 }}>
-              {/* Current Reservations */}
-              <View style={{ marginBottom: 24 }}>
-                <Text style={{ color: '#FF8C00', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Current Reservations</Text>
-                <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16 }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-                    <Ionicons name="restaurant" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Lolita Restaurant</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-                    <Ionicons name="calendar" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Today, 7:00 PM</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-                    <Ionicons name="people" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Table for 2 people</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-                    <Ionicons name="fast-food" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Pre-ordered items:</Text>
-                  </View>
-                  <View style={{ marginLeft: 28 }}>
-                    <Text style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 2 }}>• Cheesesticks x1</Text>
-                    <Text style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 2 }}>• Avocado Toast x2</Text>
-                    <Text style={{ color: '#b0b8c1', fontSize: 12, marginBottom: 2 }}>• Truffle Fries x1</Text>
-                  </View>
+              {userReservations.length === 0 ? (
+                <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 40 }}>
+                  <Ionicons name="calendar-outline" size={64} color="#666" />
+                  <Text style={{ color: '#666', fontSize: 18, marginTop: 16 }}>No reservations yet</Text>
+                  <Text style={{ color: '#666', fontSize: 14, marginTop: 8, textAlign: 'center' }}>Book a table to see your reservations here</Text>
                 </View>
-              </View>
+              ) : (
+                <>
+                  {/* Current Reservations */}
+                  <View style={{ marginBottom: 24 }}>
+                    <Text style={{ color: '#FF8C00', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Current Reservations</Text>
+                    {userReservations
+                      .filter(reservation => {
+                        const reservationDate = new Date(reservation.date);
+                        const today = new Date();
+                        return reservationDate >= today;
+                      })
+                      .map((reservation, index) => (
+                        <View key={reservation.id} style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16, marginBottom: 12 }}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                            <Ionicons name="restaurant" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                            <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>{reservation.restaurantName}</Text>
+                          </View>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                            <Ionicons name="calendar" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                            <Text style={{ color: '#b0b8c1', fontSize: 14 }}>
+                              {reservation.date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}, {reservation.time}
+                            </Text>
+                          </View>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                            <Ionicons name="people" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                            <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Table for {reservation.partySize} {reservation.partySize === 1 ? 'person' : 'people'}</Text>
+                          </View>
+                          {reservation.hasChildren && (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                              <Ionicons name="happy" size={20} color="#FF8C00" style={{ marginRight: 8 }} />
+                              <Text style={{ color: '#b0b8c1', fontSize: 14 }}>Children included in party</Text>
+                            </View>
+                          )}
+                        </View>
+                      ))}
+                    {userReservations.filter(reservation => {
+                      const reservationDate = new Date(reservation.date);
+                      const today = new Date();
+                      return reservationDate >= today;
+                    }).length === 0 && (
+                      <Text style={{ color: '#666', fontSize: 14, textAlign: 'center', fontStyle: 'italic' }}>No current reservations</Text>
+                    )}
+                  </View>
 
-              {/* Previous Reservations */}
-              <View style={{ marginBottom: 24 }}>
-                <Text style={{ color: '#b0b8c1', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Previous Reservations</Text>
-                <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16 }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-                    <Ionicons name="restaurant" size={20} color="#666" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#666', fontSize: 16, fontWeight: 'bold' }}>Honoré Restaurant</Text>
+                  {/* Previous Reservations */}
+                  <View style={{ marginBottom: 24 }}>
+                    <Text style={{ color: '#b0b8c1', fontSize: 18, fontWeight: 'bold', marginBottom: 12 }}>Previous Reservations</Text>
+                    {userReservations
+                      .filter(reservation => {
+                        const reservationDate = new Date(reservation.date);
+                        const today = new Date();
+                        return reservationDate < today;
+                      })
+                      .map((reservation, index) => (
+                        <View key={reservation.id} style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16, marginBottom: 12 }}>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
+                            <Ionicons name="restaurant" size={20} color="#666" style={{ marginRight: 8 }} />
+                            <Text style={{ color: '#666', fontSize: 16, fontWeight: 'bold' }}>{reservation.restaurantName}</Text>
+                          </View>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                            <Ionicons name="calendar" size={20} color="#666" style={{ marginRight: 8 }} />
+                            <Text style={{ color: '#666', fontSize: 14 }}>
+                              {reservation.date.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })}, {reservation.time}
+                            </Text>
+                          </View>
+                          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                            <Ionicons name="people" size={20} color="#666" style={{ marginRight: 8 }} />
+                            <Text style={{ color: '#666', fontSize: 14 }}>Table for {reservation.partySize} {reservation.partySize === 1 ? 'person' : 'people'}</Text>
+                          </View>
+                          {reservation.hasChildren && (
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                              <Ionicons name="happy" size={20} color="#666" style={{ marginRight: 8 }} />
+                              <Text style={{ color: '#666', fontSize: 14 }}>Children included in party</Text>
+                            </View>
+                          )}
+                        </View>
+                      ))}
+                    {userReservations.filter(reservation => {
+                      const reservationDate = new Date(reservation.date);
+                      const today = new Date();
+                      return reservationDate < today;
+                    }).length === 0 && (
+                      <Text style={{ color: '#666', fontSize: 14, textAlign: 'center', fontStyle: 'italic' }}>No previous reservations</Text>
+                    )}
                   </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-                    <Ionicons name="calendar" size={20} color="#666" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#666', fontSize: 14 }}>Yesterday, 6:30 PM</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-                    <Ionicons name="people" size={20} color="#666" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#666', fontSize: 14 }}>Table for 4 people</Text>
-                  </View>
-                </View>
-                
-                <View style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 12, padding: 16, marginTop: 12 }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}>
-                    <Ionicons name="restaurant" size={20} color="#666" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#666', fontSize: 16, fontWeight: 'bold' }}>Rooms Tbilisi</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-                    <Ionicons name="calendar" size={20} color="#666" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#666', fontSize: 14 }}>Last Week, 8:00 PM</Text>
-                  </View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
-                    <Ionicons name="people" size={20} color="#666" style={{ marginRight: 8 }} />
-                    <Text style={{ color: '#666', fontSize: 14 }}>Table for 2 people</Text>
-                  </View>
-                </View>
-              </View>
+                </>
+              )}
             </ScrollView>
           </LinearGradient>
         </View>
@@ -7032,6 +7274,109 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: 16,
     textAlign: 'center',
+  },
+  // Map popup styles
+  popupContainer: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    zIndex: 1000,
+  },
+  popup: {
+    backgroundColor: '#1a1a1a',
+    borderRadius: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#404040',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  popupImage: {
+    width: '100%',
+    height: 100,
+    borderRadius: 8,
+    marginBottom: 8,
+  },
+  popupContent: {
+    flex: 1,
+  },
+  popupHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  popupTitle: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    flex: 1,
+  },
+  bookmarkButton: {
+    padding: 4,
+  },
+  popupDescription: {
+    color: '#b0b8c1',
+    fontSize: 14,
+    marginBottom: 8,
+    lineHeight: 20,
+  },
+  popupFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  popupInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    paddingRight: 8,
+  },
+  popupPrice: {
+    color: '#b0b8c1',
+    fontSize: 14,
+  },
+  popupRating: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  stars: {
+    color: '#FFD700',
+    fontSize: 14,
+    marginRight: 4,
+  },
+  ratingText: {
+    color: '#FFD700',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  bookButton: {
+    backgroundColor: '#FF8C00',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  bookButtonText: {
+    color: '#000',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  closePopup: {
+    position: 'absolute',
+    top: -10,
+    right: -10,
+    backgroundColor: '#404040',
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#808080',
   },
   modalOverlay: {
     flex: 1,
